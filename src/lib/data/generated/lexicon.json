@@ -1,0 +1,395 @@
+{
+	"source": "Quranic Arabic Corpus v0.4 (GNU GPL), Kais Dukes, https://corpus.quran.com; corrected fork: https://github.com/mustafa0x/quran-morphology",
+	"lexemes": [
+		{
+			"id": "allah",
+			"arabic": "اللَّه",
+			"root": "أله",
+			"pos": "noun",
+			"gloss": "Allah (God)",
+			"count": 2699,
+			"rank": 2,
+			"sample": {
+				"loc": "1:1:2:1",
+				"form": "ٱللَّهِ"
+			}
+		},
+		{
+			"id": "rabb",
+			"arabic": "رَبّ",
+			"root": "ربب",
+			"pos": "noun",
+			"gloss": "Lord, master, sustainer",
+			"count": 975,
+			"rank": 12,
+			"sample": {
+				"loc": "1:2:3:1",
+				"form": "رَبِّ"
+			}
+		},
+		{
+			"id": "rahman",
+			"arabic": "رَحْمٰن",
+			"root": "رحم",
+			"pos": "noun",
+			"gloss": "the Most Gracious",
+			"count": 57,
+			"rank": 194,
+			"sample": {
+				"loc": "1:1:3:2",
+				"form": "رَّحْمَٰنِ"
+			}
+		},
+		{
+			"id": "rahim",
+			"arabic": "رَحِيم",
+			"root": "رحم",
+			"pos": "noun",
+			"gloss": "the Most Merciful",
+			"count": 116,
+			"rank": 95,
+			"sample": {
+				"loc": "1:1:4:2",
+				"form": "رَّحِيمِ"
+			}
+		},
+		{
+			"id": "hamd",
+			"arabic": "حَمْد",
+			"root": "حمد",
+			"pos": "noun",
+			"gloss": "praise",
+			"count": 43,
+			"rank": 255,
+			"sample": {
+				"loc": "1:2:1:2",
+				"form": "حَمْدُ"
+			}
+		},
+		{
+			"id": "ism",
+			"arabic": "اسْم",
+			"root": "سمو",
+			"pos": "noun",
+			"gloss": "name",
+			"count": 39,
+			"rank": 285,
+			"sample": {
+				"loc": "1:1:1:2",
+				"form": "سْمِ"
+			}
+		},
+		{
+			"id": "yawm",
+			"arabic": "يَوْم",
+			"root": "يوم",
+			"pos": "noun",
+			"gloss": "day",
+			"count": 475,
+			"rank": 20,
+			"sample": {
+				"loc": "1:4:2:1",
+				"form": "يَوْمِ"
+			}
+		},
+		{
+			"id": "din",
+			"arabic": "دِين",
+			"root": "دين",
+			"pos": "noun",
+			"gloss": "judgement; religion",
+			"count": 92,
+			"rank": 110,
+			"sample": {
+				"loc": "1:4:3:2",
+				"form": "دِّينِ"
+			}
+		},
+		{
+			"id": "maalik",
+			"arabic": "مالِك",
+			"root": "ملك",
+			"pos": "noun",
+			"gloss": "owner, master",
+			"count": 4,
+			"rank": 1426,
+			"sample": {
+				"loc": "1:4:1:1",
+				"form": "مَٰلِكِ"
+			}
+		},
+		{
+			"id": "alam",
+			"arabic": "عالَم",
+			"root": "علم",
+			"pos": "noun",
+			"gloss": "world, all that exists",
+			"count": 73,
+			"rank": 150,
+			"sample": {
+				"loc": "1:2:4:2",
+				"form": "عَٰلَمِينَ"
+			}
+		},
+		{
+			"id": "abada",
+			"arabic": "عَبَدَ",
+			"root": "عبد",
+			"pos": "verb",
+			"gloss": "to worship, to serve",
+			"count": 122,
+			"rank": 92,
+			"sample": {
+				"loc": "1:5:2:1",
+				"form": "نَعْبُدُ"
+			}
+		},
+		{
+			"id": "hada",
+			"arabic": "هَدَى",
+			"root": "هدي",
+			"pos": "verb",
+			"gloss": "to guide",
+			"count": 144,
+			"rank": 76,
+			"sample": {
+				"loc": "1:6:1:1",
+				"form": "ٱهْدِ"
+			}
+		},
+		{
+			"id": "sirat",
+			"arabic": "صِراط",
+			"root": "صرط",
+			"pos": "noun",
+			"gloss": "path, way",
+			"count": 45,
+			"rank": 242,
+			"sample": {
+				"loc": "1:6:2:2",
+				"form": "صِّرَٰطَ"
+			}
+		},
+		{
+			"id": "mustaqim",
+			"arabic": "مُسْتَقِيم",
+			"root": "قوم",
+			"pos": "noun",
+			"gloss": "straight, upright",
+			"count": 37,
+			"rank": 299,
+			"sample": {
+				"loc": "1:6:3:2",
+				"form": "مُسْتَقِيمَ"
+			}
+		},
+		{
+			"id": "anama",
+			"arabic": "أَنْعَمَ",
+			"root": "نعم",
+			"pos": "verb",
+			"gloss": "to bestow a favour",
+			"count": 17,
+			"rank": 540,
+			"sample": {
+				"loc": "1:7:3:1",
+				"form": "أَنْعَمْ"
+			}
+		},
+		{
+			"id": "ghayr",
+			"arabic": "غَيْر",
+			"root": "غير",
+			"pos": "noun",
+			"gloss": "other than, not",
+			"count": 147,
+			"rank": 72,
+			"sample": {
+				"loc": "1:7:5:1",
+				"form": "غَيْرِ"
+			}
+		},
+		{
+			"id": "maghdub",
+			"arabic": "مَغْضُوب",
+			"root": "غضب",
+			"pos": "noun",
+			"gloss": "one who has earned anger",
+			"count": 1,
+			"rank": 2812,
+			"sample": {
+				"loc": "1:7:6:2",
+				"form": "مَغْضُوبِ"
+			}
+		},
+		{
+			"id": "dall",
+			"arabic": "ضالّ",
+			"root": "ضلل",
+			"pos": "noun",
+			"gloss": "one who goes astray",
+			"count": 14,
+			"rank": 624,
+			"sample": {
+				"loc": "1:7:9:2",
+				"form": "ضَّآلِّينَ"
+			}
+		},
+		{
+			"id": "rahma",
+			"arabic": "رَحْمَة",
+			"root": "رحم",
+			"pos": "noun",
+			"gloss": "mercy",
+			"count": 114,
+			"rank": 97,
+			"sample": {
+				"loc": "2:64:10:2",
+				"form": "رَحْمَتُ"
+			}
+		},
+		{
+			"id": "rahima",
+			"arabic": "رَحِمَ",
+			"root": "رحم",
+			"pos": "verb",
+			"gloss": "to show mercy",
+			"count": 28,
+			"rank": 378,
+			"sample": {
+				"loc": "2:286:43:2",
+				"form": "ٱرْحَمْ"
+			}
+		},
+		{
+			"id": "alima",
+			"arabic": "عَلِمَ",
+			"root": "علم",
+			"pos": "verb",
+			"gloss": "to know",
+			"count": 382,
+			"rank": 26,
+			"sample": {
+				"loc": "2:13:19:1",
+				"form": "يَعْلَمُ"
+			}
+		},
+		{
+			"id": "alim",
+			"arabic": "عَلِيم",
+			"root": "علم",
+			"pos": "noun",
+			"gloss": "all-knowing",
+			"count": 163,
+			"rank": 66,
+			"sample": {
+				"loc": "2:29:19:1",
+				"form": "عَلِيمٌ"
+			}
+		},
+		{
+			"id": "ilm",
+			"arabic": "عِلْم",
+			"root": "علم",
+			"pos": "noun",
+			"gloss": "knowledge",
+			"count": 105,
+			"rank": 103,
+			"sample": {
+				"loc": "2:32:4:1",
+				"form": "عِلْمَ"
+			}
+		},
+		{
+			"id": "allama",
+			"arabic": "عَلَّمَ",
+			"root": "علم",
+			"pos": "verb",
+			"gloss": "to teach",
+			"count": 41,
+			"rank": 267,
+			"sample": {
+				"loc": "2:31:1:2",
+				"form": "عَلَّمَ"
+			}
+		},
+		{
+			"id": "abd",
+			"arabic": "عَبْد",
+			"root": "عبد",
+			"pos": "noun",
+			"gloss": "servant (of God)",
+			"count": 131,
+			"rank": 84,
+			"sample": {
+				"loc": "2:23:8:1",
+				"form": "عَبْدِ"
+			}
+		},
+		{
+			"id": "abid",
+			"arabic": "عابِد",
+			"root": "عبد",
+			"pos": "noun",
+			"gloss": "worshipper",
+			"count": 11,
+			"rank": 752,
+			"sample": {
+				"loc": "2:138:10:1",
+				"form": "عَٰبِدُونَ"
+			}
+		},
+		{
+			"id": "ibada",
+			"arabic": "عِبادَت",
+			"root": "عبد",
+			"pos": "noun",
+			"gloss": "worship",
+			"count": 9,
+			"rank": 904,
+			"sample": {
+				"loc": "4:172:14:1",
+				"form": "عِبَادَتِ"
+			}
+		},
+		{
+			"id": "mulk",
+			"arabic": "مُلْك",
+			"root": "ملك",
+			"pos": "noun",
+			"gloss": "dominion, kingdom",
+			"count": 48,
+			"rank": 235,
+			"sample": {
+				"loc": "2:102:6:1",
+				"form": "مُلْكِ"
+			}
+		},
+		{
+			"id": "malik",
+			"arabic": "مَلِك",
+			"root": "ملك",
+			"pos": "noun",
+			"gloss": "king",
+			"count": 15,
+			"rank": 608,
+			"sample": {
+				"loc": "2:246:17:1",
+				"form": "مَلِكًا"
+			}
+		},
+		{
+			"id": "malak",
+			"arabic": "مَلَك",
+			"root": "ملك",
+			"pos": "noun",
+			"gloss": "angel",
+			"count": 88,
+			"rank": 117,
+			"sample": {
+				"loc": "2:30:4:3",
+				"form": "مَلَٰٓئِكَةِ"
+			}
+		}
+	]
+}

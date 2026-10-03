@@ -1,0 +1,810 @@
+{
+	"source": "Quranic Arabic Corpus v0.4 (GNU GPL), Kais Dukes, https://corpus.quran.com; corrected fork: https://github.com/mustafa0x/quran-morphology",
+	"verses": [
+		{
+			"surah": 1,
+			"ayah": 1,
+			"words": [
+				{
+					"n": 1,
+					"text": "بِسْمِ",
+					"gloss": "In the name of",
+					"lexemeId": "ism",
+					"segments": [
+						{
+							"text": "بِ",
+							"pos": "P",
+							"lemma": "ب",
+							"tags": [
+								"P",
+								"PREF",
+								"LEM:ب"
+							]
+						},
+						{
+							"text": "سْمِ",
+							"pos": "N",
+							"lemma": "اسْم",
+							"root": "سمو",
+							"tags": [
+								"ROOT:سمو",
+								"LEM:اسْم",
+								"M",
+								"GEN"
+							]
+						}
+					]
+				},
+				{
+					"n": 2,
+					"text": "ٱللَّهِ",
+					"gloss": "Allah",
+					"lexemeId": "allah",
+					"segments": [
+						{
+							"text": "ٱللَّهِ",
+							"pos": "N",
+							"lemma": "اللَّه",
+							"root": "أله",
+							"tags": [
+								"PN",
+								"ROOT:أله",
+								"LEM:اللَّه",
+								"GEN"
+							]
+						}
+					]
+				},
+				{
+					"n": 3,
+					"text": "ٱلرَّحْمَٰنِ",
+					"gloss": "the Most Gracious",
+					"lexemeId": "rahman",
+					"segments": [
+						{
+							"text": "ٱل",
+							"pos": "P",
+							"lemma": "ال",
+							"tags": [
+								"DET",
+								"PREF",
+								"LEM:ال"
+							]
+						},
+						{
+							"text": "رَّحْمَٰنِ",
+							"pos": "N",
+							"lemma": "رَحْمٰن",
+							"root": "رحم",
+							"tags": [
+								"ROOT:رحم",
+								"LEM:رَحْمٰن",
+								"MS",
+								"GEN",
+								"ADJ"
+							]
+						}
+					]
+				},
+				{
+					"n": 4,
+					"text": "ٱلرَّحِيمِ",
+					"gloss": "the Most Merciful",
+					"lexemeId": "rahim",
+					"segments": [
+						{
+							"text": "ٱل",
+							"pos": "P",
+							"lemma": "ال",
+							"tags": [
+								"DET",
+								"PREF",
+								"LEM:ال"
+							]
+						},
+						{
+							"text": "رَّحِيمِ",
+							"pos": "N",
+							"lemma": "رَحِيم",
+							"root": "رحم",
+							"tags": [
+								"ROOT:رحم",
+								"LEM:رَحِيم",
+								"MS",
+								"GEN",
+								"ADJ"
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"surah": 1,
+			"ayah": 2,
+			"words": [
+				{
+					"n": 1,
+					"text": "ٱلْحَمْدُ",
+					"gloss": "the praise",
+					"lexemeId": "hamd",
+					"segments": [
+						{
+							"text": "ٱلْ",
+							"pos": "P",
+							"lemma": "ال",
+							"tags": [
+								"DET",
+								"PREF",
+								"LEM:ال"
+							]
+						},
+						{
+							"text": "حَمْدُ",
+							"pos": "N",
+							"lemma": "حَمْد",
+							"root": "حمد",
+							"tags": [
+								"ROOT:حمد",
+								"LEM:حَمْد",
+								"M",
+								"NOM"
+							]
+						}
+					]
+				},
+				{
+					"n": 2,
+					"text": "لِلَّهِ",
+					"gloss": "is for Allah",
+					"lexemeId": "allah",
+					"segments": [
+						{
+							"text": "لِ",
+							"pos": "P",
+							"lemma": "ل",
+							"tags": [
+								"P",
+								"PREF",
+								"LEM:ل"
+							]
+						},
+						{
+							"text": "لَّهِ",
+							"pos": "N",
+							"lemma": "اللَّه",
+							"root": "أله",
+							"tags": [
+								"PN",
+								"ROOT:أله",
+								"LEM:اللَّه",
+								"GEN"
+							]
+						}
+					]
+				},
+				{
+					"n": 3,
+					"text": "رَبِّ",
+					"gloss": "Lord of",
+					"lexemeId": "rabb",
+					"segments": [
+						{
+							"text": "رَبِّ",
+							"pos": "N",
+							"lemma": "رَبّ",
+							"root": "ربب",
+							"tags": [
+								"ROOT:ربب",
+								"LEM:رَبّ",
+								"M",
+								"GEN"
+							]
+						}
+					]
+				},
+				{
+					"n": 4,
+					"text": "ٱلْعَٰلَمِينَ",
+					"gloss": "the worlds",
+					"lexemeId": "alam",
+					"segments": [
+						{
+							"text": "ٱلْ",
+							"pos": "P",
+							"lemma": "ال",
+							"tags": [
+								"DET",
+								"PREF",
+								"LEM:ال"
+							]
+						},
+						{
+							"text": "عَٰلَمِينَ",
+							"pos": "N",
+							"lemma": "عالَم",
+							"root": "علم",
+							"tags": [
+								"ROOT:علم",
+								"LEM:عالَم",
+								"MP",
+								"GEN"
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"surah": 1,
+			"ayah": 3,
+			"words": [
+				{
+					"n": 1,
+					"text": "ٱلرَّحْمَٰنِ",
+					"gloss": "the Most Gracious",
+					"lexemeId": "rahman",
+					"segments": [
+						{
+							"text": "ٱل",
+							"pos": "P",
+							"lemma": "ال",
+							"tags": [
+								"DET",
+								"PREF",
+								"LEM:ال"
+							]
+						},
+						{
+							"text": "رَّحْمَٰنِ",
+							"pos": "N",
+							"lemma": "رَحْمٰن",
+							"root": "رحم",
+							"tags": [
+								"ROOT:رحم",
+								"LEM:رَحْمٰن",
+								"MS",
+								"GEN",
+								"ADJ"
+							]
+						}
+					]
+				},
+				{
+					"n": 2,
+					"text": "ٱلرَّحِيمِ",
+					"gloss": "the Most Merciful",
+					"lexemeId": "rahim",
+					"segments": [
+						{
+							"text": "ٱل",
+							"pos": "P",
+							"lemma": "ال",
+							"tags": [
+								"DET",
+								"PREF",
+								"LEM:ال"
+							]
+						},
+						{
+							"text": "رَّحِيمِ",
+							"pos": "N",
+							"lemma": "رَحِيم",
+							"root": "رحم",
+							"tags": [
+								"ROOT:رحم",
+								"LEM:رَحِيم",
+								"MS",
+								"GEN",
+								"ADJ"
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"surah": 1,
+			"ayah": 4,
+			"words": [
+				{
+					"n": 1,
+					"text": "مَٰلِكِ",
+					"gloss": "Master of",
+					"lexemeId": "maalik",
+					"segments": [
+						{
+							"text": "مَٰلِكِ",
+							"pos": "N",
+							"lemma": "مالِك",
+							"root": "ملك",
+							"tags": [
+								"ACT_PCPL",
+								"VF:1",
+								"ROOT:ملك",
+								"LEM:مالِك",
+								"M",
+								"GEN"
+							]
+						}
+					]
+				},
+				{
+					"n": 2,
+					"text": "يَوْمِ",
+					"gloss": "Day of",
+					"lexemeId": "yawm",
+					"segments": [
+						{
+							"text": "يَوْمِ",
+							"pos": "N",
+							"lemma": "يَوْم",
+							"root": "يوم",
+							"tags": [
+								"ROOT:يوم",
+								"LEM:يَوْم",
+								"M",
+								"GEN"
+							]
+						}
+					]
+				},
+				{
+					"n": 3,
+					"text": "ٱلدِّينِ",
+					"gloss": "the Judgement",
+					"lexemeId": "din",
+					"segments": [
+						{
+							"text": "ٱل",
+							"pos": "P",
+							"lemma": "ال",
+							"tags": [
+								"DET",
+								"PREF",
+								"LEM:ال"
+							]
+						},
+						{
+							"text": "دِّينِ",
+							"pos": "N",
+							"lemma": "دِين",
+							"root": "دين",
+							"tags": [
+								"ROOT:دين",
+								"LEM:دِين",
+								"M",
+								"GEN"
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"surah": 1,
+			"ayah": 5,
+			"words": [
+				{
+					"n": 1,
+					"text": "إِيَّاكَ",
+					"gloss": "You alone",
+					"segments": [
+						{
+							"text": "إِيَّاكَ",
+							"pos": "N",
+							"lemma": "إِيّا",
+							"tags": [
+								"PRON",
+								"LEM:إِيّا",
+								"2MS"
+							]
+						}
+					]
+				},
+				{
+					"n": 2,
+					"text": "نَعْبُدُ",
+					"gloss": "we worship",
+					"lexemeId": "abada",
+					"segments": [
+						{
+							"text": "نَعْبُدُ",
+							"pos": "V",
+							"lemma": "عَبَدَ",
+							"root": "عبد",
+							"tags": [
+								"IMPF",
+								"VF:1",
+								"ROOT:عبد",
+								"LEM:عَبَدَ",
+								"1P",
+								"MOOD:IND"
+							]
+						}
+					]
+				},
+				{
+					"n": 3,
+					"text": "وَإِيَّاكَ",
+					"gloss": "and You alone",
+					"segments": [
+						{
+							"text": "وَ",
+							"pos": "P",
+							"lemma": "و",
+							"tags": [
+								"CONJ",
+								"PREF",
+								"LEM:و"
+							]
+						},
+						{
+							"text": "إِيَّاكَ",
+							"pos": "N",
+							"lemma": "إِيّا",
+							"tags": [
+								"PRON",
+								"LEM:إِيّا",
+								"2MS"
+							]
+						}
+					]
+				},
+				{
+					"n": 4,
+					"text": "نَسْتَعِينُ",
+					"gloss": "we ask for help",
+					"segments": [
+						{
+							"text": "نَسْتَعِينُ",
+							"pos": "V",
+							"lemma": "اسْتَعِينُ",
+							"root": "عون",
+							"tags": [
+								"IMPF",
+								"VF:10",
+								"ROOT:عون",
+								"LEM:اسْتَعِينُ",
+								"1P",
+								"MOOD:IND"
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"surah": 1,
+			"ayah": 6,
+			"words": [
+				{
+					"n": 1,
+					"text": "ٱهْدِنَا",
+					"gloss": "guide us",
+					"lexemeId": "hada",
+					"segments": [
+						{
+							"text": "ٱهْدِ",
+							"pos": "V",
+							"lemma": "هَدَى",
+							"root": "هدي",
+							"tags": [
+								"IMPV",
+								"VF:1",
+								"ROOT:هدي",
+								"LEM:هَدَى",
+								"2MS"
+							]
+						},
+						{
+							"text": "نَا",
+							"pos": "N",
+							"tags": [
+								"PRON",
+								"SUFF",
+								"1P"
+							]
+						}
+					]
+				},
+				{
+					"n": 2,
+					"text": "ٱلصِّرَٰطَ",
+					"gloss": "the path",
+					"lexemeId": "sirat",
+					"segments": [
+						{
+							"text": "ٱل",
+							"pos": "P",
+							"lemma": "ال",
+							"tags": [
+								"DET",
+								"PREF",
+								"LEM:ال"
+							]
+						},
+						{
+							"text": "صِّرَٰطَ",
+							"pos": "N",
+							"lemma": "صِراط",
+							"root": "صرط",
+							"tags": [
+								"ROOT:صرط",
+								"LEM:صِراط",
+								"M",
+								"ACC"
+							]
+						}
+					]
+				},
+				{
+					"n": 3,
+					"text": "ٱلْمُسْتَقِيمَ",
+					"gloss": "the straight",
+					"lexemeId": "mustaqim",
+					"segments": [
+						{
+							"text": "ٱلْ",
+							"pos": "P",
+							"lemma": "ال",
+							"tags": [
+								"DET",
+								"PREF",
+								"LEM:ال"
+							]
+						},
+						{
+							"text": "مُسْتَقِيمَ",
+							"pos": "N",
+							"lemma": "مُسْتَقِيم",
+							"root": "قوم",
+							"tags": [
+								"ACT_PCPL",
+								"VF:10",
+								"ROOT:قوم",
+								"LEM:مُسْتَقِيم",
+								"M",
+								"ACC",
+								"ADJ"
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"surah": 1,
+			"ayah": 7,
+			"words": [
+				{
+					"n": 1,
+					"text": "صِرَٰطَ",
+					"gloss": "the path of",
+					"lexemeId": "sirat",
+					"segments": [
+						{
+							"text": "صِرَٰطَ",
+							"pos": "N",
+							"lemma": "صِراط",
+							"root": "صرط",
+							"tags": [
+								"ROOT:صرط",
+								"LEM:صِراط",
+								"M",
+								"ACC"
+							]
+						}
+					]
+				},
+				{
+					"n": 2,
+					"text": "ٱلَّذِينَ",
+					"gloss": "those whom",
+					"segments": [
+						{
+							"text": "ٱلَّذِينَ",
+							"pos": "N",
+							"lemma": "الَّذِي",
+							"tags": [
+								"REL",
+								"LEM:الَّذِي",
+								"MP"
+							]
+						}
+					]
+				},
+				{
+					"n": 3,
+					"text": "أَنْعَمْتَ",
+					"gloss": "You have favoured",
+					"lexemeId": "anama",
+					"segments": [
+						{
+							"text": "أَنْعَمْ",
+							"pos": "V",
+							"lemma": "أَنْعَمَ",
+							"root": "نعم",
+							"tags": [
+								"PERF",
+								"VF:4",
+								"ROOT:نعم",
+								"LEM:أَنْعَمَ",
+								"2MS"
+							]
+						},
+						{
+							"text": "تَ",
+							"pos": "N",
+							"tags": [
+								"PRON",
+								"SUFF",
+								"2MS"
+							]
+						}
+					]
+				},
+				{
+					"n": 4,
+					"text": "عَلَيْهِمْ",
+					"gloss": "upon them",
+					"segments": [
+						{
+							"text": "عَلَيْ",
+							"pos": "P",
+							"lemma": "عَلَى",
+							"tags": [
+								"P",
+								"LEM:عَلَى"
+							]
+						},
+						{
+							"text": "هِمْ",
+							"pos": "N",
+							"tags": [
+								"PRON",
+								"SUFF",
+								"3MP"
+							]
+						}
+					]
+				},
+				{
+					"n": 5,
+					"text": "غَيْرِ",
+					"gloss": "not",
+					"lexemeId": "ghayr",
+					"segments": [
+						{
+							"text": "غَيْرِ",
+							"pos": "N",
+							"lemma": "غَيْر",
+							"root": "غير",
+							"tags": [
+								"ROOT:غير",
+								"LEM:غَيْر",
+								"M",
+								"GEN"
+							]
+						}
+					]
+				},
+				{
+					"n": 6,
+					"text": "ٱلْمَغْضُوبِ",
+					"gloss": "those who earned anger",
+					"lexemeId": "maghdub",
+					"segments": [
+						{
+							"text": "ٱلْ",
+							"pos": "P",
+							"lemma": "ال",
+							"tags": [
+								"DET",
+								"PREF",
+								"LEM:ال"
+							]
+						},
+						{
+							"text": "مَغْضُوبِ",
+							"pos": "N",
+							"lemma": "مَغْضُوب",
+							"root": "غضب",
+							"tags": [
+								"PASS_PCPL",
+								"VF:1",
+								"ROOT:غضب",
+								"LEM:مَغْضُوب",
+								"M",
+								"GEN"
+							]
+						}
+					]
+				},
+				{
+					"n": 7,
+					"text": "عَلَيْهِمْ",
+					"gloss": "upon them",
+					"segments": [
+						{
+							"text": "عَلَيْ",
+							"pos": "P",
+							"lemma": "عَلَى",
+							"tags": [
+								"P",
+								"LEM:عَلَى"
+							]
+						},
+						{
+							"text": "هِمْ",
+							"pos": "N",
+							"tags": [
+								"PRON",
+								"SUFF",
+								"3MP"
+							]
+						}
+					]
+				},
+				{
+					"n": 8,
+					"text": "وَلَا",
+					"gloss": "and not",
+					"segments": [
+						{
+							"text": "وَ",
+							"pos": "P",
+							"lemma": "و",
+							"tags": [
+								"CONJ",
+								"PREF",
+								"LEM:و"
+							]
+						},
+						{
+							"text": "لَا",
+							"pos": "P",
+							"lemma": "لا",
+							"tags": [
+								"NEG",
+								"LEM:لا"
+							]
+						}
+					]
+				},
+				{
+					"n": 9,
+					"text": "ٱلضَّآلِّينَ",
+					"gloss": "those who go astray",
+					"lexemeId": "dall",
+					"segments": [
+						{
+							"text": "ٱل",
+							"pos": "P",
+							"lemma": "ال",
+							"tags": [
+								"DET",
+								"PREF",
+								"LEM:ال"
+							]
+						},
+						{
+							"text": "ضَّآلِّينَ",
+							"pos": "N",
+							"lemma": "ضالّ",
+							"root": "ضلل",
+							"tags": [
+								"ACT_PCPL",
+								"VF:1",
+								"ROOT:ضلل",
+								"LEM:ضالّ",
+								"MP",
+								"GEN"
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

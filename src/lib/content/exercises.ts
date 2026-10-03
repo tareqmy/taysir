@@ -1,0 +1,290 @@
+import { wordAudioFromLoc } from '../audio';
+import { formatRoot, lexemeById } from '../data';
+import type { Lexeme } from '../data/types';
+import { shuffle, type Rng } from '../random';
+import { letterById, letters } from './alphabet';
+import { letterCardId, lexemeCardId, parseCardId } from './cards';
+import type {
+	BuildExercise,
+	ChooseExercise,
+	Chunk,
+	Exercise,
+	Letter,
+	MatchExercise
+} from './types';
+
+export const ar = (text: string): Chunk => ({ text, lang: 'ar' });
+export const en = (text: string): Chunk => ({ text, lang: 'en' });
+
+/** Picks `n` wrong answers from `pool`, preferring ones that pass `similar`. */
+function distractors<T extends { id: string }>(
+	correct: T,
+	pool: readonly T[],
+	n: number,
+	rng: Rng,
+	similar: (item: T) => boolean = () => true
+): T[] {
+	const candidates = shuffle(
+		pool.filter((item) => item.id !== correct.id),
+		rng
+	);
+	const preferred = candidates.filter(similar);
+	const rest = candidates.filter((item) => !similar(item));
+	return [...preferred, ...rest].slice(0, n);
+}
+
+// --- Vocabulary -------------------------------------------------------------
+
+/** Arabic word → English meaning. */
+export function meaningChoice(lexeme: Lexeme, pool: readonly Lexeme[], rng: Rng): ChooseExercise {
+	const wrong = distractors(
+		lexeme,
+		pool.filter((l) => l.gloss !== lexeme.gloss),
+		3,
+		rng,
+		(l) => l.pos === lexeme.pos
+	);
+	return {
+		kind: 'choose',
+		id: `meaning:${lexeme.id}`,
+		question: 'What does this word mean?',
+		prompt: ar(lexeme.arabic),
+		choices: shuffle([lexeme, ...wrong], rng).map((l) => ({ id: l.id, chunk: en(l.gloss) })),
+		answerId: lexeme.id,
+		cardId: lexemeCardId(lexeme.id),
+		audioUrl: wordAudioFromLoc(lexeme.sample.loc),
+		explanation: `${lexeme.arabic} means “${lexeme.gloss}”.`
+	};
+}
+
+/** English meaning → Arabic word. */
+export function arabicChoice(lexeme: Lexeme, pool: readonly Lexeme[], rng: Rng): ChooseExercise {
+	const wrong = distractors(
+		lexeme,
+		pool.filter((l) => l.arabic !== lexeme.arabic),
+		3,
+		rng,
+		(l) => l.pos === lexeme.pos
+	);
+	return {
+		kind: 'choose',
+		id: `arabic:${lexeme.id}`,
+		question: 'Which word means this?',
+		prompt: en(lexeme.gloss),
+		choices: shuffle([lexeme, ...wrong], rng).map((l) => ({ id: l.id, chunk: ar(l.arabic) })),
+		answerId: lexeme.id,
+		cardId: lexemeCardId(lexeme.id),
+		audioUrl: wordAudioFromLoc(lexeme.sample.loc),
+		explanation: `“${lexeme.gloss}” is ${lexeme.arabic}.`
+	};
+}
+
+export function lexemeMatch(lexemes: readonly Lexeme[], rng: Rng): MatchExercise {
+	return {
+		kind: 'match',
+		id: `match:${lexemes.map((l) => l.id).join('+')}`,
+		question: 'Match each word with its meaning.',
+		pairs: shuffle(lexemes, rng).map((l) => ({ id: l.id, left: ar(l.arabic), right: en(l.gloss) }))
+	};
+}
+
+/** Standard vocabulary practice: recognise, then recall, then match. */
+export function vocabularyExercises(ids: string[], pool: readonly Lexeme[], rng: Rng): Exercise[] {
+	const lexemes = ids.map(lexemeById);
+	return [
+		...shuffle(lexemes, rng).map((l) => meaningChoice(l, pool, rng)),
+		...shuffle(lexemes, rng).map((l) => arabicChoice(l, pool, rng)),
+		...(lexemes.length >= 3 ? [lexemeMatch(lexemes, rng)] : [])
+	];
+}
+
+// --- Roots -----------------------------------------------------------------
+
+/** Arabic word → its three-letter root. */
+export function rootOfChoice(lexeme: Lexeme, roots: readonly string[], rng: Rng): ChooseExercise {
+	const root = lexeme.root!;
+	const wrong = shuffle(
+		roots.filter((r) => r !== root),
+		rng
+	).slice(0, 2);
+	return {
+		kind: 'choose',
+		id: `rootof:${lexeme.id}`,
+		question: 'Which root does this word come from?',
+		prompt: ar(lexeme.arabic),
+		choices: shuffle([root, ...wrong], rng).map((r) => ({ id: r, chunk: ar(formatRoot(r)) })),
+		answerId: root,
+		explanation: `${lexeme.arabic} is built on the root ${formatRoot(root)}.`
+	};
+}
+
+/** A root → the word that belongs to it. */
+export function belongsToRootChoice(
+	lexeme: Lexeme,
+	pool: readonly Lexeme[],
+	rng: Rng
+): ChooseExercise {
+	const root = lexeme.root!;
+	const wrong = distractors(
+		lexeme,
+		pool.filter((l) => l.root !== root),
+		2,
+		rng
+	);
+	return {
+		kind: 'choose',
+		id: `belongs:${lexeme.id}`,
+		question: `Which word comes from the root ${formatRoot(root)}?`,
+		prompt: ar(formatRoot(root)),
+		choices: shuffle([lexeme, ...wrong], rng).map((l) => ({ id: l.id, chunk: ar(l.arabic) })),
+		answerId: lexeme.id,
+		explanation: `${lexeme.arabic} (“${lexeme.gloss}”) shares the root ${formatRoot(root)}.`
+	};
+}
+
+export function rootExercises(
+	ids: string[],
+	pool: readonly Lexeme[],
+	roots: readonly string[],
+	rng: Rng
+): Exercise[] {
+	const lexemes = ids.map(lexemeById);
+	const sample = shuffle(lexemes, rng);
+	return [
+		...sample.map((l) => meaningChoice(l, pool, rng)),
+		...sample.slice(0, 3).map((l) => rootOfChoice(l, roots, rng)),
+		...sample.slice(0, 2).map((l) => belongsToRootChoice(l, pool, rng))
+	];
+}
+
+// --- Letters ----------------------------------------------------------------
+
+/** Letter shape → its name. */
+export function letterNameChoice(
+	letter: Letter,
+	pool: readonly Letter[],
+	rng: Rng
+): ChooseExercise {
+	const wrong = distractors(letter, pool, 3, rng);
+	return {
+		kind: 'choose',
+		id: `letter-name:${letter.id}`,
+		question: 'What is this letter called?',
+		prompt: ar(letter.glyph),
+		choices: shuffle([letter, ...wrong], rng).map((l) => ({ id: l.id, chunk: en(l.name) })),
+		answerId: letter.id,
+		cardId: letterCardId(letter.id),
+		explanation: `${letter.glyph} is ${letter.name}: ${letter.sound}.`
+	};
+}
+
+/** Letter name → its shape. */
+export function letterGlyphChoice(
+	letter: Letter,
+	pool: readonly Letter[],
+	rng: Rng
+): ChooseExercise {
+	const wrong = distractors(letter, pool, 3, rng);
+	return {
+		kind: 'choose',
+		id: `letter-glyph:${letter.id}`,
+		question: 'Which letter is this?',
+		prompt: en(letter.name),
+		choices: shuffle([letter, ...wrong], rng).map((l) => ({ id: l.id, chunk: ar(l.glyph) })),
+		answerId: letter.id,
+		cardId: letterCardId(letter.id),
+		explanation: `${letter.name} is written ${letter.glyph}.`
+	};
+}
+
+export function letterMatch(group: readonly Letter[], rng: Rng): MatchExercise {
+	return {
+		kind: 'match',
+		id: `letter-match:${group.map((l) => l.id).join('+')}`,
+		question: 'Match each letter with its name.',
+		pairs: shuffle(group, rng).map((l) => ({ id: l.id, left: ar(l.glyph), right: en(l.name) }))
+	};
+}
+
+export function letterExercises(ids: string[], rng: Rng): Exercise[] {
+	const group = ids.map(letterById);
+	return [
+		...shuffle(group, rng).map((l) => letterNameChoice(l, letters, rng)),
+		...shuffle(group, rng).map((l) => letterGlyphChoice(l, letters, rng)),
+		letterMatch(group, rng)
+	];
+}
+
+// --- Grammar ----------------------------------------------------------------
+
+/** A multiple-choice question written by hand, with the right answer listed first. */
+export function handChoice(
+	id: string,
+	question: string,
+	prompt: Chunk | undefined,
+	correct: Chunk,
+	wrong: Chunk[],
+	explanation: string,
+	rng: Rng
+): ChooseExercise {
+	const options = [correct, ...wrong].map((chunk, i) => ({ id: String(i), chunk }));
+	return {
+		kind: 'choose',
+		id,
+		question,
+		prompt,
+		choices: shuffle(options, rng),
+		answerId: '0',
+		explanation
+	};
+}
+
+/** Arrange Arabic words into a phrase that matches an English meaning. */
+export function buildPhrase(
+	id: string,
+	prompt: string,
+	words: string[],
+	extras: string[],
+	explanation: string,
+	rng: Rng
+): BuildExercise {
+	return {
+		kind: 'build',
+		id,
+		question: 'Put the words in order.',
+		prompt: en(prompt),
+		answer: words.map((text, i) => ({ id: `w${i}`, chunk: ar(text) })),
+		extras: shuffle(
+			extras.map((text, i) => ({ id: `x${i}`, chunk: ar(text) })),
+			rng
+		),
+		explanation
+	};
+}
+
+// --- Reviews ----------------------------------------------------------------
+
+/** One spaced-repetition question for a card, in a randomly chosen direction. */
+export function reviewExercise(cardId: string, allLexemes: readonly Lexeme[], rng: Rng): Exercise {
+	const parsed = parseCardId(cardId);
+	const forward = rng() < 0.5;
+	if (parsed.type === 'lexeme') {
+		const lexeme = lexemeById(parsed.id);
+		return forward ? meaningChoice(lexeme, allLexemes, rng) : arabicChoice(lexeme, allLexemes, rng);
+	}
+	const letter = letterById(parsed.id);
+	return forward ? letterNameChoice(letter, letters, rng) : letterGlyphChoice(letter, letters, rng);
+}
+
+/** Whether a response to a single-answer exercise is right. */
+export function isCorrect(
+	exercise: ChooseExercise | BuildExercise,
+	response: string | string[]
+): boolean {
+	if (exercise.kind === 'choose') return response === exercise.answerId;
+	return (
+		Array.isArray(response) &&
+		response.length === exercise.answer.length &&
+		response.every((id, i) => id === exercise.answer[i].id)
+	);
+}

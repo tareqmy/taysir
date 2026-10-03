@@ -1,0 +1,11 @@
+{
+	"name": "Taysir: understand the Arabic of the Quran",
+	"short_name": "Taysir",
+	"description": "Learn the vocabulary and grammar of Quranic Arabic through real verses.",
+	"start_url": "/",
+	"scope": "/",
+	"display": "standalone",
+	"background_color": "#fbf8f1",
+	"theme_color": "#1f5c4a",
+	"icons": [{ "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }]
+}
