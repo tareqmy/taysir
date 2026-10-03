@@ -36,7 +36,9 @@
 			<h2 id="where">Where would you like to start?</h2>
 			<button type="button" class="choice card" onclick={() => (placement = 'beginner')}>
 				<strong>I am new to Arabic letters</strong>
-				<span class="muted">Start with the alphabet and its sounds, then move into Al-Fatiha.</span>
+				<span class="muted"
+					>Start with the alphabet and its sounds, then move into Al-Fatiha and the short surahs.</span
+				>
 			</button>
 			<button type="button" class="choice card" onclick={() => (placement = 'reader')}>
 				<strong>I can read the Quran, but I do not understand it</strong>

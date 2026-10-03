@@ -5,8 +5,9 @@
  *
  * Input:  data/source/quran-morphology.txt   (GPL, kept unchanged)
  *         data/lexicon-seeds.ts               (authored meanings, by corpus location)
- *         data/fatiha-glosses.ts              (authored word glosses)
- * Output: src/lib/data/generated/fatiha.json
+ *         data/fatiha-glosses.ts              (authored word glosses, Al-Fatiha)
+ *         data/juz-amma-glosses.ts            (authored word glosses, surahs 105–114)
+ * Output: src/lib/data/generated/verses.json
  *         src/lib/data/generated/lexicon.json
  *
  * Runs directly on Node (type stripping), so it uses explicit `.ts` imports.
@@ -14,16 +15,26 @@
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { fatihaWordGlosses } from '../data/fatiha-glosses.ts';
+import { juzAmmaWordGlosses } from '../data/juz-amma-glosses.ts';
 import { lexemeSeeds } from '../data/lexicon-seeds.ts';
 import type {
 	CorpusPos,
-	FatihaData,
 	Lexeme,
 	LexiconData,
 	Segment,
 	Verse,
+	VerseData,
 	Word
 } from '../src/lib/data/types.ts';
+
+/** Surahs the app teaches from: Al-Fatiha, then Al-Fil to An-Nas. */
+const SURAHS = [1, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114];
+
+const wordGlosses: Record<string, string> = { ...fatihaWordGlosses };
+for (const [loc, gloss] of Object.entries(juzAmmaWordGlosses)) {
+	if (loc in wordGlosses) throw new Error(`Word ${loc} is glossed in two files`);
+	wordGlosses[loc] = gloss;
+}
 
 const SOURCE =
 	'Quranic Arabic Corpus v0.4 (GNU GPL), Kais Dukes, https://corpus.quran.com; ' +
@@ -69,6 +80,15 @@ function parseRows(): Row[] {
 	return rows;
 }
 
+/** Pronouns, relatives, demonstratives and “when” words behave like particles for a learner. */
+const FUNCTION_TAGS = ['REL', 'DEM', 'T'];
+
+function partOfSpeech(row: Row): Lexeme['pos'] {
+	if (row.pos === 'V') return 'verb';
+	if (row.pos === 'P' || row.tags.some((tag) => FUNCTION_TAGS.includes(tag))) return 'particle';
+	return 'noun';
+}
+
 const lemmaKey = (row: Row) => `${row.root ?? ''}|${row.lemma}|${row.pos}`;
 
 function buildLexicon(rows: Row[]): LexiconData {
@@ -97,7 +117,7 @@ function buildLexicon(rows: Row[]): LexiconData {
 			id: seed.id,
 			arabic: row.lemma,
 			root: row.root,
-			pos: row.pos === 'V' ? 'verb' : row.pos === 'P' ? 'particle' : 'noun',
+			pos: partOfSpeech(row),
 			gloss: seed.gloss,
 			count: stats.get(key)!.count,
 			rank: rankOf.get(key)!,
@@ -107,7 +127,7 @@ function buildLexicon(rows: Row[]): LexiconData {
 	return { source: SOURCE, lexemes };
 }
 
-function buildFatiha(rows: Row[], lexicon: LexiconData): FatihaData {
+function buildVerses(rows: Row[], lexicon: LexiconData): VerseData {
 	const byLemmaKey = new Map<string, string>();
 	const byLoc = new Map(rows.map((row) => [row.loc, row]));
 	for (const seed of lexemeSeeds) byLemmaKey.set(lemmaKey(byLoc.get(seed.loc)!), seed.id);
@@ -115,37 +135,47 @@ function buildFatiha(rows: Row[], lexicon: LexiconData): FatihaData {
 		throw new Error('Two seeds resolve to the same lemma; each lemma needs one id');
 	}
 
-	const verses = new Map<number, Map<number, Row[]>>();
+	// Keyed by `surah:ayah`; insertion order follows the corpus, which is already in reading order.
+	const verses = new Map<string, Map<number, Row[]>>();
 	for (const row of rows) {
-		if (row.surah !== 1) continue;
-		const words = verses.get(row.ayah) ?? new Map<number, Row[]>();
+		if (!SURAHS.includes(row.surah)) continue;
+		const key = `${row.surah}:${row.ayah}`;
+		const words = verses.get(key) ?? new Map<number, Row[]>();
 		words.set(row.word, [...(words.get(row.word) ?? []), row]);
-		verses.set(row.ayah, words);
+		verses.set(key, words);
 	}
 
-	const out: Verse[] = [...verses.entries()].map(([ayah, words]) => ({
-		surah: 1,
-		ayah,
-		words: [...words.entries()].map(([n, segs]): Word => {
-			const gloss = fatihaWordGlosses[`1:${ayah}:${n}`];
-			if (!gloss) throw new Error(`Missing gloss for word 1:${ayah}:${n}`);
-			const segments: Segment[] = segs.map((s) => ({
-				text: s.text,
-				pos: s.pos,
-				lemma: s.lemma,
-				root: s.root,
-				tags: s.tags
-			}));
-			const content = segs.find((s) => !s.isAffix && s.lemma);
-			return {
-				n,
-				text: segs.map((s) => s.text).join(''),
-				gloss,
-				lexemeId: content ? byLemmaKey.get(lemmaKey(content)) : undefined,
-				segments
-			};
-		})
-	}));
+	const out: Verse[] = [...verses.entries()].map(([key, words]) => {
+		const [surah, ayah] = key.split(':').map(Number);
+		return {
+			surah,
+			ayah,
+			words: [...words.entries()].map(([n, segs]): Word => {
+				const gloss = wordGlosses[`${key}:${n}`];
+				if (!gloss) throw new Error(`Missing gloss for word ${key}:${n}`);
+				const segments: Segment[] = segs.map((s) => ({
+					text: s.text,
+					pos: s.pos,
+					lemma: s.lemma,
+					root: s.root,
+					tags: s.tags
+				}));
+				const content = segs.find((s) => !s.isAffix && s.lemma);
+				return {
+					n,
+					text: segs.map((s) => s.text).join(''),
+					gloss,
+					lexemeId: content ? byLemmaKey.get(lemmaKey(content)) : undefined,
+					segments
+				};
+			})
+		};
+	});
+
+	const known = new Set(out.flatMap((v) => v.words.map((w) => `${v.surah}:${v.ayah}:${w.n}`)));
+	const stale = Object.keys(wordGlosses).filter((loc) => !known.has(loc));
+	if (stale.length > 0) throw new Error(`Glosses for words that do not exist: ${stale.join(', ')}`);
+
 	return { source: SOURCE, verses: out };
 }
 
@@ -156,12 +186,13 @@ function write(name: string, data: unknown) {
 
 const rows = parseRows();
 const lexicon = buildLexicon(rows);
-const fatiha = buildFatiha(rows, lexicon);
+const verseData = buildVerses(rows, lexicon);
 write('lexicon.json', lexicon);
-write('fatiha.json', fatiha);
+write('verses.json', verseData);
 console.log(
 	`Parsed ${rows.length} segments. Wrote ${lexicon.lexemes.length} lexemes and ` +
-		`${fatiha.verses.reduce((n, v) => n + v.words.length, 0)} Al-Fatiha words.`
+		`${verseData.verses.reduce((n, v) => n + v.words.length, 0)} words in ` +
+		`${verseData.verses.length} verses of ${SURAHS.length} surahs.`
 );
 for (const lx of lexicon.lexemes) {
 	console.log(

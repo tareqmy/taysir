@@ -1,25 +1,27 @@
 <script lang="ts">
 	import { playAudio, verseAudioUrl, wordAudioUrl } from '../audio';
-	import { verse as verseData } from '../data';
+	import { surahName, verse as verseData } from '../data';
 	import AudioButton from './AudioButton.svelte';
 
-	let { ayah, title, note }: { ayah: number; title?: string; note?: string } = $props();
+	let { surah, ayah, title, note }: { surah: number; ayah: number; title?: string; note?: string } =
+		$props();
 
-	const verse = $derived(verseData(ayah));
+	const verse = $derived(verseData(surah, ayah));
+	const name = $derived(surahName(surah));
 	let offline = $state(false);
 
 	async function playWord(n: number) {
-		offline = !(await playAudio(wordAudioUrl(1, ayah, n)));
+		offline = !(await playAudio(wordAudioUrl(surah, ayah, n)));
 	}
 </script>
 
-<section class="verse card" aria-label="Al-Fatiha verse {ayah}">
+<section class="verse card" aria-label="{name} verse {ayah}">
 	<header>
 		<div>
 			{#if title}<h3>{title}</h3>{/if}
-			<span class="pill">Al-Fatiha 1:{ayah}</span>
+			<span class="pill">{name} {surah}:{ayah}</span>
 		</div>
-		<AudioButton url={verseAudioUrl(1, ayah)} label="Listen to the whole verse" />
+		<AudioButton url={verseAudioUrl(surah, ayah)} label="Listen to the whole verse" />
 	</header>
 
 	<ol class="words" dir="rtl" lang="ar">

@@ -43,7 +43,7 @@ export interface Lexeme {
 	sample: { loc: string; form: string };
 }
 
-export interface FatihaData {
+export interface VerseData {
 	source: string;
 	verses: Verse[];
 }

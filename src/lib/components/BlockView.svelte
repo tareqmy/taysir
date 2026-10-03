@@ -34,9 +34,10 @@
 {:else if block.type === 'root'}
 	<RootView root={block.root} ids={block.ids} body={block.body} />
 {:else if block.type === 'verse'}
-	<VerseView ayah={block.ayah} title={block.title} note={block.note} />
+	<VerseView surah={block.surah} ayah={block.ayah} title={block.title} note={block.note} />
 {:else}
 	<PhraseView
+		surah={block.surah}
 		ayah={block.ayah}
 		from={block.from}
 		to={block.to}

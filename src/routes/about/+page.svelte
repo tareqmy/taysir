@@ -13,9 +13,9 @@
 			review brings each item back just before you would forget it.
 		</p>
 		<p class="muted">
-			This is an early version. Only Al-Fatiha is included so far, and the explanations and word
-			meanings are drafts that still need review by a qualified teacher. If you notice a mistake,
-			please trust your teacher over this app.
+			This is an early version. So far it covers Al-Fatiha and ten short surahs (Al-Fil to An-Nas),
+			and the explanations and word meanings are drafts that still need review by a qualified
+			teacher. If you notice a mistake, please trust your teacher over this app.
 		</p>
 	</section>
 

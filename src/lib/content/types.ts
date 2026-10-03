@@ -53,9 +53,10 @@ export type Block =
 	| { type: 'letters'; title?: string; ids: string[] }
 	| { type: 'lexemes'; title?: string; ids: string[] }
 	| { type: 'root'; root: string; ids: string[]; body?: string }
-	| { type: 'verse'; ayah: number; title?: string; note?: string }
+	| { type: 'verse'; surah: number; ayah: number; title?: string; note?: string }
 	| {
 			type: 'phrase';
+			surah: number;
 			ayah: number;
 			from: number;
 			to: number;

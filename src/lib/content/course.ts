@@ -1,5 +1,5 @@
-import { formatRoot, lexemeById, lexicon, verse } from '../data';
-import { hashString, seeded } from '../random';
+import { formatRoot, lexemeById, lexicon, wordText } from '../data';
+import { rngFor } from '../random';
 import { letterCardId, lexemeCardId } from './cards';
 import {
 	ar,
@@ -10,16 +10,11 @@ import {
 	rootExercises,
 	vocabularyExercises
 } from './exercises';
+import { shortSurahsUnit } from './short-surahs';
 import type { Block, Lesson, Unit } from './types';
 
-const rngFor = (lessonId: string) => seeded(hashString(lessonId));
-
 /** Text of word `n` in a verse of Al-Fatiha, straight from the corpus data. */
-const word = (ayah: number, n: number) => {
-	const found = verse(ayah).words.find((w) => w.n === n);
-	if (!found) throw new Error(`No word 1:${ayah}:${n}`);
-	return found.text;
-};
+const word = (ayah: number, n: number) => wordText(1, ayah, n);
 
 // --- Unit 1: Letters --------------------------------------------------------
 
@@ -154,8 +149,13 @@ const vocabLessons: {
 				title: 'Meet Al-Fatiha',
 				body: 'Al-Fatiha is the opening chapter of the Quran, recited in every prayer. You may already know it by heart. Now you will learn what each word means, starting with the first two verses.'
 			},
-			{ type: 'verse', ayah: 1, note: 'Tap a word to hear it. Under each word is its meaning.' },
-			{ type: 'verse', ayah: 2 },
+			{
+				type: 'verse',
+				surah: 1,
+				ayah: 1,
+				note: 'Tap a word to hear it. Under each word is its meaning.'
+			},
+			{ type: 'verse', surah: 1, ayah: 2 },
 			{
 				type: 'lexemes',
 				title: 'Five words to learn',
@@ -169,8 +169,13 @@ const vocabLessons: {
 		subtitle: 'Verses 1 to 4',
 		ids: ['ism', 'yawm', 'din', 'maalik', 'alam'],
 		intro: [
-			{ type: 'verse', ayah: 3 },
-			{ type: 'verse', ayah: 4, note: 'Here is a new pattern: “Master of the Day of Judgement”.' },
+			{ type: 'verse', surah: 1, ayah: 3 },
+			{
+				type: 'verse',
+				surah: 1,
+				ayah: 4,
+				note: 'Here is a new pattern: “Master of the Day of Judgement”.'
+			},
 			{ type: 'lexemes', title: 'Five more words', ids: ['ism', 'yawm', 'din', 'maalik', 'alam'] }
 		]
 	},
@@ -180,8 +185,8 @@ const vocabLessons: {
 		subtitle: 'Verses 5 and 6',
 		ids: ['abada', 'hada', 'sirat', 'mustaqim'],
 		intro: [
-			{ type: 'verse', ayah: 5 },
-			{ type: 'verse', ayah: 6 },
+			{ type: 'verse', surah: 1, ayah: 5 },
+			{ type: 'verse', surah: 1, ayah: 6 },
 			{
 				type: 'text',
 				title: 'Verbs change form',
@@ -196,7 +201,7 @@ const vocabLessons: {
 		subtitle: 'Verse 7',
 		ids: ['anama', 'ghayr', 'maghdub', 'dall'],
 		intro: [
-			{ type: 'verse', ayah: 7 },
+			{ type: 'verse', surah: 1, ayah: 7 },
 			{
 				type: 'lexemes',
 				title: 'Four words from the last verse',
@@ -304,6 +309,7 @@ const grammarUnit: Unit = {
 				},
 				{
 					type: 'phrase',
+					surah: 1,
 					ayah: 1,
 					from: 3,
 					to: 4,
@@ -318,6 +324,7 @@ const grammarUnit: Unit = {
 				},
 				{
 					type: 'phrase',
+					surah: 1,
 					ayah: 2,
 					from: 1,
 					to: 1,
@@ -389,6 +396,7 @@ const grammarUnit: Unit = {
 				},
 				{
 					type: 'phrase',
+					surah: 1,
 					ayah: 2,
 					from: 3,
 					to: 4,
@@ -398,6 +406,7 @@ const grammarUnit: Unit = {
 				},
 				{
 					type: 'phrase',
+					surah: 1,
 					ayah: 4,
 					from: 1,
 					to: 3,
@@ -462,7 +471,7 @@ const grammarUnit: Unit = {
 
 // --- Whole course -----------------------------------------------------------
 
-export const units: Unit[] = [lettersUnit, fatihaUnit, rootsUnit, grammarUnit];
+export const units: Unit[] = [lettersUnit, fatihaUnit, rootsUnit, grammarUnit, shortSurahsUnit];
 
 export const lessons: Lesson[] = units.flatMap((u) => u.lessons);
 

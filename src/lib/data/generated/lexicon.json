@@ -390,6 +390,968 @@
 				"loc": "2:30:4:3",
 				"form": "مَلَٰٓئِكَةِ"
 			}
+		},
+		{
+			"id": "qala",
+			"arabic": "قالَ",
+			"root": "قول",
+			"pos": "verb",
+			"gloss": "to say",
+			"count": 1618,
+			"rank": 6,
+			"sample": {
+				"loc": "112:1:1:1",
+				"form": "قُلْ"
+			}
+		},
+		{
+			"id": "ahad",
+			"arabic": "أَحَد",
+			"root": "أحد",
+			"pos": "noun",
+			"gloss": "one, any one",
+			"count": 74,
+			"rank": 149,
+			"sample": {
+				"loc": "112:1:4:1",
+				"form": "أَحَدٌ"
+			}
+		},
+		{
+			"id": "samad",
+			"arabic": "صَمَد",
+			"root": "صمد",
+			"pos": "noun",
+			"gloss": "self-sufficient; the one all turn to",
+			"count": 1,
+			"rank": 4768,
+			"sample": {
+				"loc": "112:2:2:2",
+				"form": "صَّمَدُ"
+			}
+		},
+		{
+			"id": "lam",
+			"arabic": "لَم",
+			"pos": "particle",
+			"gloss": "did not",
+			"count": 348,
+			"rank": 30,
+			"sample": {
+				"loc": "112:3:1:1",
+				"form": "لَمْ"
+			}
+		},
+		{
+			"id": "walada",
+			"arabic": "وَلَدَ",
+			"root": "ولد",
+			"pos": "verb",
+			"gloss": "to give birth, to beget",
+			"count": 9,
+			"rank": 916,
+			"sample": {
+				"loc": "112:3:2:1",
+				"form": "يَلِدْ"
+			}
+		},
+		{
+			"id": "kana",
+			"arabic": "كانَ",
+			"root": "كون",
+			"pos": "verb",
+			"gloss": "to be, to have been",
+			"count": 1358,
+			"rank": 10,
+			"sample": {
+				"loc": "112:4:2:1",
+				"form": "يَكُن"
+			}
+		},
+		{
+			"id": "audhu",
+			"arabic": "عُذْ",
+			"root": "عوذ",
+			"pos": "verb",
+			"gloss": "to seek refuge",
+			"count": 10,
+			"rank": 802,
+			"sample": {
+				"loc": "114:1:2:1",
+				"form": "أَعُوذُ"
+			}
+		},
+		{
+			"id": "nas",
+			"arabic": "ناس",
+			"root": "أنس",
+			"pos": "noun",
+			"gloss": "people, mankind",
+			"count": 241,
+			"rank": 50,
+			"sample": {
+				"loc": "114:1:4:2",
+				"form": "نَّاسِ"
+			}
+		},
+		{
+			"id": "ilah",
+			"arabic": "إِلٰه",
+			"root": "أله",
+			"pos": "noun",
+			"gloss": "god, deity",
+			"count": 147,
+			"rank": 74,
+			"sample": {
+				"loc": "114:3:1:1",
+				"form": "إِلَٰهِ"
+			}
+		},
+		{
+			"id": "min",
+			"arabic": "مِن",
+			"pos": "particle",
+			"gloss": "from, of",
+			"count": 3226,
+			"rank": 1,
+			"sample": {
+				"loc": "114:4:1:1",
+				"form": "مِن"
+			}
+		},
+		{
+			"id": "shar",
+			"arabic": "شَرّ",
+			"root": "شرر",
+			"pos": "noun",
+			"gloss": "evil, harm",
+			"count": 30,
+			"rank": 355,
+			"sample": {
+				"loc": "114:4:2:1",
+				"form": "شَرِّ"
+			}
+		},
+		{
+			"id": "alladhi",
+			"arabic": "الَّذِي",
+			"pos": "particle",
+			"gloss": "who, which, that",
+			"count": 1468,
+			"rank": 8,
+			"sample": {
+				"loc": "114:5:1:1",
+				"form": "ٱلَّذِى"
+			}
+		},
+		{
+			"id": "waswasa",
+			"arabic": "وَسْوَسَ",
+			"root": "وسوس",
+			"pos": "verb",
+			"gloss": "to whisper evil thoughts",
+			"count": 4,
+			"rank": 1552,
+			"sample": {
+				"loc": "114:5:2:1",
+				"form": "يُوَسْوِسُ"
+			}
+		},
+		{
+			"id": "fi",
+			"arabic": "فِي",
+			"pos": "particle",
+			"gloss": "in",
+			"count": 1701,
+			"rank": 4,
+			"sample": {
+				"loc": "114:5:3:1",
+				"form": "فِى"
+			}
+		},
+		{
+			"id": "sadr",
+			"arabic": "صَدْر",
+			"root": "صدر",
+			"pos": "noun",
+			"gloss": "chest, breast",
+			"count": 44,
+			"rank": 252,
+			"sample": {
+				"loc": "114:5:4:1",
+				"form": "صُدُورِ"
+			}
+		},
+		{
+			"id": "falaq",
+			"arabic": "فَلَق",
+			"root": "فلق",
+			"pos": "noun",
+			"gloss": "daybreak",
+			"count": 1,
+			"rank": 4770,
+			"sample": {
+				"loc": "113:1:4:2",
+				"form": "فَلَقِ"
+			}
+		},
+		{
+			"id": "khalaqa",
+			"arabic": "خَلَقَ",
+			"root": "خلق",
+			"pos": "verb",
+			"gloss": "to create",
+			"count": 184,
+			"rank": 57,
+			"sample": {
+				"loc": "113:2:4:1",
+				"form": "خَلَقَ"
+			}
+		},
+		{
+			"id": "ma",
+			"arabic": "ما",
+			"pos": "particle",
+			"gloss": "what, that which",
+			"count": 1592,
+			"rank": 7,
+			"sample": {
+				"loc": "113:2:3:1",
+				"form": "مَا"
+			}
+		},
+		{
+			"id": "idha",
+			"arabic": "إِذا",
+			"pos": "particle",
+			"gloss": "when",
+			"count": 383,
+			"rank": 24,
+			"sample": {
+				"loc": "113:3:4:1",
+				"form": "إِذَا"
+			}
+		},
+		{
+			"id": "uqda",
+			"arabic": "عُقْدَة",
+			"root": "عقد",
+			"pos": "noun",
+			"gloss": "knot",
+			"count": 4,
+			"rank": 1464,
+			"sample": {
+				"loc": "113:4:5:2",
+				"form": "عُقَدِ"
+			}
+		},
+		{
+			"id": "hasada",
+			"arabic": "حَسَدَ",
+			"root": "حسد",
+			"pos": "verb",
+			"gloss": "to envy",
+			"count": 3,
+			"rank": 1800,
+			"sample": {
+				"loc": "113:5:5:1",
+				"form": "حَسَدَ"
+			}
+		},
+		{
+			"id": "inna",
+			"arabic": "إِنّ",
+			"pos": "particle",
+			"gloss": "indeed",
+			"count": 1682,
+			"rank": 5,
+			"sample": {
+				"loc": "108:1:1:1",
+				"form": "إِنَّ"
+			}
+		},
+		{
+			"id": "ata",
+			"arabic": "أَعْطَى",
+			"root": "عطو",
+			"pos": "verb",
+			"gloss": "to give",
+			"count": 8,
+			"rank": 990,
+			"sample": {
+				"loc": "108:1:2:1",
+				"form": "أَعْطَيْ"
+			}
+		},
+		{
+			"id": "kawthar",
+			"arabic": "كَوْثَر",
+			"root": "كثر",
+			"pos": "noun",
+			"gloss": "abundance",
+			"count": 1,
+			"rank": 4761,
+			"sample": {
+				"loc": "108:1:3:2",
+				"form": "كَوْثَرَ"
+			}
+		},
+		{
+			"id": "salla",
+			"arabic": "صَلَّى",
+			"root": "صلو",
+			"pos": "verb",
+			"gloss": "to pray",
+			"count": 12,
+			"rank": 709,
+			"sample": {
+				"loc": "108:2:1:2",
+				"form": "صَلِّ"
+			}
+		},
+		{
+			"id": "ayy",
+			"arabic": "أَيّ",
+			"root": "أيي",
+			"pos": "noun",
+			"gloss": "which, any",
+			"count": 215,
+			"rank": 52,
+			"sample": {
+				"loc": "109:1:2:2",
+				"form": "أَيُّ"
+			}
+		},
+		{
+			"id": "kafir",
+			"arabic": "كافِر",
+			"root": "كفر",
+			"pos": "noun",
+			"gloss": "disbeliever",
+			"count": 156,
+			"rank": 68,
+			"sample": {
+				"loc": "109:1:3:2",
+				"form": "كَٰفِرُونَ"
+			}
+		},
+		{
+			"id": "la",
+			"arabic": "لا",
+			"pos": "particle",
+			"gloss": "not, no",
+			"count": 1742,
+			"rank": 3,
+			"sample": {
+				"loc": "109:2:1:1",
+				"form": "لَآ"
+			}
+		},
+		{
+			"id": "jaa",
+			"arabic": "جاءَ",
+			"root": "جيأ",
+			"pos": "verb",
+			"gloss": "to come",
+			"count": 278,
+			"rank": 41,
+			"sample": {
+				"loc": "110:1:2:1",
+				"form": "جَآءَ"
+			}
+		},
+		{
+			"id": "nasr",
+			"arabic": "نَصْر",
+			"root": "نصر",
+			"pos": "noun",
+			"gloss": "help, victory",
+			"count": 22,
+			"rank": 452,
+			"sample": {
+				"loc": "110:1:3:1",
+				"form": "نَصْرُ"
+			}
+		},
+		{
+			"id": "fath",
+			"arabic": "فَتْح",
+			"root": "فتح",
+			"pos": "noun",
+			"gloss": "opening, conquest",
+			"count": 12,
+			"rank": 721,
+			"sample": {
+				"loc": "110:1:5:3",
+				"form": "فَتْحُ"
+			}
+		},
+		{
+			"id": "raa",
+			"arabic": "رَأَى",
+			"root": "رأي",
+			"pos": "verb",
+			"gloss": "to see",
+			"count": 271,
+			"rank": 44,
+			"sample": {
+				"loc": "110:2:1:2",
+				"form": "رَأَيْ"
+			}
+		},
+		{
+			"id": "dakhala",
+			"arabic": "دَخَلَ",
+			"root": "دخل",
+			"pos": "verb",
+			"gloss": "to enter",
+			"count": 76,
+			"rank": 139,
+			"sample": {
+				"loc": "110:2:3:1",
+				"form": "يَدْخُلُ"
+			}
+		},
+		{
+			"id": "fawj",
+			"arabic": "فَوْج",
+			"root": "فوج",
+			"pos": "noun",
+			"gloss": "crowd, group",
+			"count": 5,
+			"rank": 1421,
+			"sample": {
+				"loc": "110:2:7:1",
+				"form": "أَفْوَاجًا"
+			}
+		},
+		{
+			"id": "sabbaha",
+			"arabic": "سَبَّحَ",
+			"root": "سبح",
+			"pos": "verb",
+			"gloss": "to glorify",
+			"count": 42,
+			"rank": 259,
+			"sample": {
+				"loc": "110:3:1:2",
+				"form": "سَبِّحْ"
+			}
+		},
+		{
+			"id": "istaghfara",
+			"arabic": "اسْتَغْفَرَ",
+			"root": "غفر",
+			"pos": "verb",
+			"gloss": "to ask forgiveness",
+			"count": 40,
+			"rank": 280,
+			"sample": {
+				"loc": "110:3:4:2",
+				"form": "ٱسْتَغْفِرْ"
+			}
+		},
+		{
+			"id": "tawwab",
+			"arabic": "تَوّاب",
+			"root": "توب",
+			"pos": "noun",
+			"gloss": "one who accepts repentance",
+			"count": 12,
+			"rank": 690,
+			"sample": {
+				"loc": "110:3:7:1",
+				"form": "تَوَّابًۢا"
+			}
+		},
+		{
+			"id": "yad",
+			"arabic": "يَد",
+			"root": "يدي",
+			"pos": "noun",
+			"gloss": "hand",
+			"count": 120,
+			"rank": 93,
+			"sample": {
+				"loc": "111:1:2:1",
+				"form": "يَدَآ"
+			}
+		},
+		{
+			"id": "ab",
+			"arabic": "أَب",
+			"root": "أبو",
+			"pos": "noun",
+			"gloss": "father",
+			"count": 46,
+			"rank": 241,
+			"sample": {
+				"loc": "111:1:3:1",
+				"form": "أَبِى"
+			}
+		},
+		{
+			"id": "lahab",
+			"arabic": "لَهَب",
+			"root": "لهب",
+			"pos": "noun",
+			"gloss": "flame",
+			"count": 3,
+			"rank": 2082,
+			"sample": {
+				"loc": "111:1:4:1",
+				"form": "لَهَبٍ"
+			}
+		},
+		{
+			"id": "aghna",
+			"arabic": "أَغْنَى",
+			"root": "غني",
+			"pos": "verb",
+			"gloss": "to avail, to be of use",
+			"count": 15,
+			"rank": 622,
+			"sample": {
+				"loc": "111:2:2:1",
+				"form": "أَغْنَىٰ"
+			}
+		},
+		{
+			"id": "mal",
+			"arabic": "مال",
+			"root": "مول",
+			"pos": "noun",
+			"gloss": "wealth, property",
+			"count": 86,
+			"rank": 120,
+			"sample": {
+				"loc": "111:2:4:1",
+				"form": "مَالُ"
+			}
+		},
+		{
+			"id": "kasaba",
+			"arabic": "كَسَبَ",
+			"root": "كسب",
+			"pos": "verb",
+			"gloss": "to earn",
+			"count": 62,
+			"rank": 184,
+			"sample": {
+				"loc": "111:2:6:1",
+				"form": "كَسَبَ"
+			}
+		},
+		{
+			"id": "yasla",
+			"arabic": "يَصْلَى",
+			"root": "صلي",
+			"pos": "verb",
+			"gloss": "to burn in a fire",
+			"count": 13,
+			"rank": 675,
+			"sample": {
+				"loc": "111:3:1:2",
+				"form": "يَصْلَىٰ"
+			}
+		},
+		{
+			"id": "nar",
+			"arabic": "نار",
+			"root": "نور",
+			"pos": "noun",
+			"gloss": "fire",
+			"count": 145,
+			"rank": 75,
+			"sample": {
+				"loc": "111:3:2:1",
+				"form": "نَارًا"
+			}
+		},
+		{
+			"id": "dhu",
+			"arabic": "ذُو",
+			"pos": "noun",
+			"gloss": "owner of, having",
+			"count": 156,
+			"rank": 69,
+			"sample": {
+				"loc": "111:3:3:1",
+				"form": "ذَاتَ"
+			}
+		},
+		{
+			"id": "imraa",
+			"arabic": "امْرَأَت",
+			"root": "مرأ",
+			"pos": "noun",
+			"gloss": "woman, wife",
+			"count": 26,
+			"rank": 404,
+			"sample": {
+				"loc": "111:4:1:2",
+				"form": "ٱمْرَأَتُ"
+			}
+		},
+		{
+			"id": "habl",
+			"arabic": "حَبْل",
+			"root": "حبل",
+			"pos": "noun",
+			"gloss": "rope",
+			"count": 7,
+			"rank": 1049,
+			"sample": {
+				"loc": "111:5:3:1",
+				"form": "حَبْلٌ"
+			}
+		},
+		{
+			"id": "dha",
+			"arabic": "ذا",
+			"pos": "particle",
+			"gloss": "this, that",
+			"count": 1058,
+			"rank": 11,
+			"sample": {
+				"loc": "106:3:3:2",
+				"form": "ذَا"
+			}
+		},
+		{
+			"id": "bayt",
+			"arabic": "بَيْت",
+			"root": "بيت",
+			"pos": "noun",
+			"gloss": "house",
+			"count": 65,
+			"rank": 171,
+			"sample": {
+				"loc": "106:3:4:2",
+				"form": "بَيْتِ"
+			}
+		},
+		{
+			"id": "atama",
+			"arabic": "أَطْعَمَ",
+			"root": "طعم",
+			"pos": "verb",
+			"gloss": "to feed",
+			"count": 13,
+			"rank": 679,
+			"sample": {
+				"loc": "106:4:2:1",
+				"form": "أَطْعَمَ"
+			}
+		},
+		{
+			"id": "ju",
+			"arabic": "جُوع",
+			"root": "جوع",
+			"pos": "noun",
+			"gloss": "hunger",
+			"count": 4,
+			"rank": 1452,
+			"sample": {
+				"loc": "106:4:4:1",
+				"form": "جُوعٍ"
+			}
+		},
+		{
+			"id": "amana",
+			"arabic": "آمَنَ",
+			"root": "أمن",
+			"pos": "verb",
+			"gloss": "to believe; to make safe",
+			"count": 537,
+			"rank": 19,
+			"sample": {
+				"loc": "106:4:5:2",
+				"form": "ءَامَنَ"
+			}
+		},
+		{
+			"id": "khawf",
+			"arabic": "خَوْف",
+			"root": "خوف",
+			"pos": "noun",
+			"gloss": "fear",
+			"count": 26,
+			"rank": 396,
+			"sample": {
+				"loc": "106:4:7:1",
+				"form": "خَوْفٍۭ"
+			}
+		},
+		{
+			"id": "kadhdhaba",
+			"arabic": "كَذَّبَ",
+			"root": "كذب",
+			"pos": "verb",
+			"gloss": "to deny, to call false",
+			"count": 176,
+			"rank": 60,
+			"sample": {
+				"loc": "107:1:3:1",
+				"form": "يُكَذِّبُ"
+			}
+		},
+		{
+			"id": "yatim",
+			"arabic": "يَتِيم",
+			"root": "يتم",
+			"pos": "noun",
+			"gloss": "orphan",
+			"count": 23,
+			"rank": 438,
+			"sample": {
+				"loc": "107:2:4:2",
+				"form": "يَتِيمَ"
+			}
+		},
+		{
+			"id": "ala",
+			"arabic": "عَلَى",
+			"pos": "particle",
+			"gloss": "on, upon",
+			"count": 1444,
+			"rank": 9,
+			"sample": {
+				"loc": "107:3:3:1",
+				"form": "عَلَىٰ"
+			}
+		},
+		{
+			"id": "taam",
+			"arabic": "طَعام",
+			"root": "طعم",
+			"pos": "noun",
+			"gloss": "food",
+			"count": 24,
+			"rank": 421,
+			"sample": {
+				"loc": "107:3:4:1",
+				"form": "طَعَامِ"
+			}
+		},
+		{
+			"id": "miskin",
+			"arabic": "مِسْكِين",
+			"root": "سكن",
+			"pos": "noun",
+			"gloss": "needy person",
+			"count": 23,
+			"rank": 439,
+			"sample": {
+				"loc": "107:3:5:2",
+				"form": "مِسْكِينِ"
+			}
+		},
+		{
+			"id": "wayl",
+			"arabic": "وَيْل",
+			"pos": "noun",
+			"gloss": "woe",
+			"count": 40,
+			"rank": 276,
+			"sample": {
+				"loc": "107:4:1:2",
+				"form": "وَيْلٌ"
+			}
+		},
+		{
+			"id": "musalli",
+			"arabic": "مُصَلّي",
+			"root": "صلو",
+			"pos": "noun",
+			"gloss": "one who prays",
+			"count": 3,
+			"rank": 2080,
+			"sample": {
+				"loc": "107:4:2:3",
+				"form": "مُصَلِّينَ"
+			}
+		},
+		{
+			"id": "an",
+			"arabic": "عَن",
+			"pos": "particle",
+			"gloss": "from, about",
+			"count": 465,
+			"rank": 21,
+			"sample": {
+				"loc": "107:5:3:1",
+				"form": "عَن"
+			}
+		},
+		{
+			"id": "salat",
+			"arabic": "صَلاة",
+			"root": "صلو",
+			"pos": "noun",
+			"gloss": "prayer",
+			"count": 83,
+			"rank": 125,
+			"sample": {
+				"loc": "107:5:4:1",
+				"form": "صَلَاتِ"
+			}
+		},
+		{
+			"id": "manaa",
+			"arabic": "مَنَعَ",
+			"root": "منع",
+			"pos": "verb",
+			"gloss": "to withhold, to refuse",
+			"count": 12,
+			"rank": 696,
+			"sample": {
+				"loc": "107:7:1:2",
+				"form": "يَمْنَعُ"
+			}
+		},
+		{
+			"id": "kayfa",
+			"arabic": "كَيْف",
+			"root": "كيف",
+			"pos": "noun",
+			"gloss": "how",
+			"count": 83,
+			"rank": 126,
+			"sample": {
+				"loc": "105:1:3:1",
+				"form": "كَيْفَ"
+			}
+		},
+		{
+			"id": "faala",
+			"arabic": "فَعَلَ",
+			"root": "فعل",
+			"pos": "verb",
+			"gloss": "to do",
+			"count": 88,
+			"rank": 116,
+			"sample": {
+				"loc": "105:1:4:1",
+				"form": "فَعَلَ"
+			}
+		},
+		{
+			"id": "ashab",
+			"arabic": "أَصْحاب",
+			"root": "صحب",
+			"pos": "noun",
+			"gloss": "companions, people of",
+			"count": 78,
+			"rank": 133,
+			"sample": {
+				"loc": "105:1:6:2",
+				"form": "أَصْحَٰبِ"
+			}
+		},
+		{
+			"id": "jaala",
+			"arabic": "جَعَلَ",
+			"root": "جعل",
+			"pos": "verb",
+			"gloss": "to make, to place",
+			"count": 340,
+			"rank": 31,
+			"sample": {
+				"loc": "105:2:2:1",
+				"form": "يَجْعَلْ"
+			}
+		},
+		{
+			"id": "kayd",
+			"arabic": "كَيْد",
+			"root": "كيد",
+			"pos": "noun",
+			"gloss": "plot, scheme",
+			"count": 26,
+			"rank": 405,
+			"sample": {
+				"loc": "105:2:3:1",
+				"form": "كَيْدَ"
+			}
+		},
+		{
+			"id": "arsala",
+			"arabic": "أَرْسَلَ",
+			"root": "رسل",
+			"pos": "verb",
+			"gloss": "to send",
+			"count": 130,
+			"rank": 85,
+			"sample": {
+				"loc": "105:3:1:2",
+				"form": "أَرْسَلَ"
+			}
+		},
+		{
+			"id": "tayr",
+			"arabic": "طَيْر",
+			"root": "طير",
+			"pos": "noun",
+			"gloss": "birds",
+			"count": 19,
+			"rank": 508,
+			"sample": {
+				"loc": "105:3:3:1",
+				"form": "طَيْرًا"
+			}
+		},
+		{
+			"id": "rama",
+			"arabic": "رَمَى",
+			"root": "رمي",
+			"pos": "verb",
+			"gloss": "to throw, to pelt",
+			"count": 9,
+			"rank": 902,
+			"sample": {
+				"loc": "105:4:1:1",
+				"form": "تَرْمِي"
+			}
+		},
+		{
+			"id": "hijara",
+			"arabic": "حِجارَة",
+			"root": "حجر",
+			"pos": "noun",
+			"gloss": "stones",
+			"count": 10,
+			"rank": 793,
+			"sample": {
+				"loc": "105:4:2:2",
+				"form": "حِجَارَةٍ"
+			}
+		},
+		{
+			"id": "sijjil",
+			"arabic": "سِجِّيل",
+			"root": "سجل",
+			"pos": "noun",
+			"gloss": "baked clay",
+			"count": 3,
+			"rank": 1926,
+			"sample": {
+				"loc": "105:4:4:1",
+				"form": "سِجِّيلٍ"
+			}
+		},
+		{
+			"id": "asf",
+			"arabic": "عَصْف",
+			"root": "عصف",
+			"pos": "noun",
+			"gloss": "husks, chaff",
+			"count": 3,
+			"rank": 2073,
+			"sample": {
+				"loc": "105:5:2:2",
+				"form": "عَصْفٍ"
+			}
 		}
 	]
 }

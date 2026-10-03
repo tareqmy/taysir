@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { fatiha, lexemeById, lexicon, phraseWords } from '../data';
+import { lexemeById, lexicon, phraseWords, surahName, verse, verseData } from '../data';
 import { seeded } from '../random';
 import { letterById, letters } from './alphabet';
 import { parseCardId } from './cards';
@@ -32,14 +32,18 @@ function problemsWith(exercise: Exercise): string[] {
 	return problems;
 }
 
+const versesOf = (surah: number) => verseData.verses.filter((v) => v.surah === surah);
+
 describe('Al-Fatiha data', () => {
 	it('has seven verses with every word glossed', () => {
-		expect(fatiha.verses.map((v) => v.words.length)).toEqual([4, 4, 2, 3, 4, 3, 9]);
-		for (const v of fatiha.verses) for (const w of v.words) expect(w.gloss).not.toBe('');
+		expect(versesOf(1).map((v) => v.words.length)).toEqual([4, 4, 2, 3, 4, 3, 9]);
+		for (const v of versesOf(1)) for (const w of v.words) expect(w.gloss).not.toBe('');
 	});
 
 	it('links words to vocabulary cards', () => {
-		const linked = fatiha.verses.flatMap((v) => v.words).filter((w) => w.lexemeId);
+		const linked = versesOf(1)
+			.flatMap((v) => v.words)
+			.filter((w) => w.lexemeId);
 		expect(linked.length).toBeGreaterThan(15);
 		for (const w of linked) expect(() => lexemeById(w.lexemeId!)).not.toThrow();
 	});
@@ -48,6 +52,62 @@ describe('Al-Fatiha data', () => {
 		expect(lexemeById('allah').count).toBeGreaterThan(2000);
 		expect(lexemeById('rabb').count).toBeGreaterThan(900);
 		expect(lexicon.lexemes.every((l) => l.gloss.length > 0 && l.rank > 0)).toBe(true);
+	});
+});
+
+describe('short surah data', () => {
+	const verseCounts = {
+		105: 5,
+		106: 4,
+		107: 7,
+		108: 3,
+		109: 6,
+		110: 3,
+		111: 5,
+		112: 4,
+		113: 5,
+		114: 6
+	};
+
+	it('has every verse of surahs 105 to 114, each with a name', () => {
+		for (const [surah, count] of Object.entries(verseCounts)) {
+			const verses = versesOf(Number(surah));
+			expect(
+				verses.map((v) => v.ayah),
+				`surah ${surah}`
+			).toEqual(Array.from({ length: count }, (_, i) => i + 1));
+			expect(surahName(Number(surah))).not.toBe('');
+		}
+	});
+
+	it('glosses every word and numbers the words from 1', () => {
+		for (const v of verseData.verses) {
+			expect(
+				v.words.map((w) => w.n),
+				`${v.surah}:${v.ayah}`
+			).toEqual(v.words.map((_, i) => i + 1));
+			for (const w of v.words) expect(w.gloss, `${v.surah}:${v.ayah}:${w.n}`).not.toBe('');
+		}
+	});
+
+	it('links words to the vocabulary they teach', () => {
+		const text = (surah: number, ayah: number, n: number) =>
+			versesOf(surah)
+				.find((v) => v.ayah === ayah)!
+				.words.find((w) => w.n === n)!;
+		expect(text(112, 1, 3).lexemeId).toBe('allah');
+		expect(text(113, 2, 2).lexemeId).toBe('shar');
+		expect(text(109, 2, 2).lexemeId).toBe('abada');
+		expect(text(114, 1, 3).lexemeId).toBe('rabb');
+	});
+});
+
+describe('lexicon', () => {
+	it('gives every word its own meaning and its own spelling', () => {
+		const glosses = lexicon.lexemes.map((l) => l.gloss);
+		const arabic = lexicon.lexemes.map((l) => l.arabic);
+		expect(glosses.filter((g, i) => glosses.indexOf(g) !== i)).toEqual([]);
+		expect(arabic.filter((a, i) => arabic.indexOf(a) !== i)).toEqual([]);
 	});
 });
 
@@ -97,9 +157,22 @@ describe('course', () => {
 			for (const block of lesson.intro) {
 				if (block.type === 'letters') block.ids.forEach(letterById);
 				if (block.type === 'lexemes' || block.type === 'root') block.ids.forEach(lexemeById);
-				if (block.type === 'phrase') phraseWords(block.ayah, block.from, block.to);
+				if (block.type === 'verse') verse(block.surah, block.ayah);
+				if (block.type === 'phrase') phraseWords(block.surah, block.ayah, block.from, block.to);
 			}
 		}
+	});
+
+	it('shows a card for exactly the words a vocabulary lesson adds to review', () => {
+		for (const lesson of lessons.filter((l) => l.kind === 'vocabulary')) {
+			const shown = lesson.intro.flatMap((b) => (b.type === 'lexemes' ? b.ids : []));
+			expect(shown.map((id) => `lx:${id}`).sort(), lesson.id).toEqual([...lesson.cardIds].sort());
+		}
+	});
+
+	it('teaches each word once across the vocabulary lessons', () => {
+		const taught = lessons.filter((l) => l.kind === 'vocabulary').flatMap((l) => l.cardIds);
+		expect(taught.filter((id, i) => taught.indexOf(id) !== i)).toEqual([]);
 	});
 
 	it('teaches each root lesson’s words from the right root', () => {

@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { playAudio, wordAudioUrl } from '../audio';
-	import { phraseWords } from '../data';
+	import { phraseWords, surahName } from '../data';
 	import type { Segment } from '../data/types';
 
 	let {
+		surah,
 		ayah,
 		from,
 		to,
@@ -11,6 +12,7 @@
 		note,
 		split = false
 	}: {
+		surah: number;
 		ayah: number;
 		from: number;
 		to: number;
@@ -19,18 +21,19 @@
 		split?: boolean;
 	} = $props();
 
-	const words = $derived(phraseWords(ayah, from, to));
+	const words = $derived(phraseWords(surah, ayah, from, to));
+	const name = $derived(surahName(surah));
 	let offline = $state(false);
 
 	const isArticle = (s: Segment) => s.tags.includes('DET');
 
 	async function play(n: number) {
-		offline = !(await playAudio(wordAudioUrl(1, ayah, n)));
+		offline = !(await playAudio(wordAudioUrl(surah, ayah, n)));
 	}
 </script>
 
-<section class="phrase card" aria-label="Example from Al-Fatiha {ayah}:{from}">
-	<span class="pill">Al-Fatiha {ayah}:{from}{to > from ? `–${to}` : ''}</span>
+<section class="phrase card" aria-label="Example from {name} {surah}:{ayah}">
+	<span class="pill">{name} {surah}:{ayah}</span>
 
 	<ol class="words" dir="rtl" lang="ar">
 		{#each words as word (word.n)}

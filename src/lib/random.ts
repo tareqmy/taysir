@@ -21,6 +21,9 @@ export function hashString(text: string): number {
 	return h >>> 0;
 }
 
+/** A generator seeded from a string such as a lesson id, so each lesson's exercises are stable. */
+export const rngFor = (key: string): Rng => seeded(hashString(key));
+
 /** Fisher–Yates shuffle returning a new array. */
 export function shuffle<T>(items: readonly T[], rng: Rng): T[] {
 	const out = [...items];
