@@ -29,7 +29,8 @@
 	<header>
 		<h1>Review</h1>
 		<p class="muted">
-			Short practice on what you have learned, timed to when you are about to forget it.
+			Short practice on what you have learned, timed to when you are about to forget it. A quick
+			right answer waits longer before it returns, and a slow one comes back sooner.
 		</p>
 	</header>
 
@@ -62,8 +63,8 @@
 	{:else}
 		<ExerciseRunner
 			{exercises}
-			onanswer={(exercise, correct, first) =>
-				app.answer(first ? exercise.cardId : undefined, correct)}
+			onanswer={(exercise, correct, first, elapsedMs) =>
+				app.answer(first ? exercise.cardId : undefined, correct, elapsedMs)}
 			onfinish={(result) => (summary = result)}
 		/>
 	{/if}

@@ -14,8 +14,17 @@
 		onfinish
 	}: {
 		exercises: Exercise[];
-		/** Called once per answer. `firstAttempt` is false when the exercise is a retry. */
-		onanswer?: (exercise: Exercise, correct: boolean, firstAttempt: boolean) => void;
+		/**
+		 * Called once per answer. `firstAttempt` is false when the exercise is a retry.
+		 * `elapsedMs` is how long the question was on screen, or undefined if the learner left the
+		 * page meanwhile and the time means nothing.
+		 */
+		onanswer?: (
+			exercise: Exercise,
+			correct: boolean,
+			firstAttempt: boolean,
+			elapsedMs?: number
+		) => void;
 		onfinish: (summary: RunSummary) => void;
 	} = $props();
 
@@ -30,6 +39,14 @@
 	let index = $state(0);
 	let feedback = $state<{ correct: boolean } | null>(null);
 	const firstTry = new SvelteMap<string, boolean>();
+
+	// Plain variables: they are read only when an answer comes in, so nothing needs to re-render.
+	let shownAt = performance.now();
+	let awayDuringQuestion = false;
+
+	function onvisibilitychange() {
+		if (document.hidden) awayDuringQuestion = true;
+	}
 
 	const current = $derived(queue[index]);
 	const showAudioNow = $derived(
@@ -46,11 +63,18 @@
 			firstTry.set(item.exercise.id, correct);
 			if (!correct) queue.push({ exercise: item.exercise, retry: true });
 		}
-		onanswer?.(item.exercise, correct, !item.retry);
+		onanswer?.(
+			item.exercise,
+			correct,
+			!item.retry,
+			awayDuringQuestion ? undefined : performance.now() - shownAt
+		);
 	}
 
 	function next() {
 		feedback = null;
+		shownAt = performance.now();
+		awayDuringQuestion = false;
 		index++;
 		if (index >= queue.length) onfinish(summarize(exercises, firstTry));
 	}
@@ -59,6 +83,8 @@
 		node.focus();
 	}
 </script>
+
+<svelte:document {onvisibilitychange} />
 
 {#if current}
 	<div class="runner">

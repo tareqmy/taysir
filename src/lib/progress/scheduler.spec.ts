@@ -12,21 +12,41 @@ describe('scheduler', () => {
 	});
 
 	it('schedules a correct answer into the future', () => {
-		const card = reviewCard(newCard('lx:rabb', now), true, now);
+		const card = reviewCard(newCard('lx:rabb', now), 'good', now);
 		expect(card.reps).toBe(1);
 		expect(isDue(card, now)).toBe(false);
 	});
 
 	it('brings a wrong answer back sooner than a correct one', () => {
 		const start = newCard('lx:rabb', now);
-		const good = reviewCard(start, true, now);
-		const again = reviewCard(start, false, now);
+		const good = reviewCard(start, 'good', now);
+		const again = reviewCard(start, 'again', now);
 		expect(new Date(again.due).getTime()).toBeLessThan(new Date(good.due).getTime());
 	});
 
+	it('spaces a mature card further the more easily it was answered', () => {
+		const day = 24 * 60 * 60_000;
+		const mature = {
+			...newCard('lx:rabb', now),
+			state: 2, // Review
+			stability: 30,
+			difficulty: 5,
+			reps: 6,
+			elapsed_days: 30,
+			scheduled_days: 30,
+			last_review: new Date(now.getTime() - 30 * day).toISOString(),
+			due: now.toISOString()
+		};
+		const due = (grade: 'again' | 'hard' | 'good' | 'easy') =>
+			new Date(reviewCard(mature, grade, now).due).getTime();
+		expect(due('again')).toBeLessThan(due('hard'));
+		expect(due('hard')).toBeLessThan(due('good'));
+		expect(due('good')).toBeLessThan(due('easy'));
+	});
+
 	it('survives being saved and reloaded as plain data', () => {
-		const saved = JSON.parse(JSON.stringify(reviewCard(newCard('lt:ba', now), true, now)));
-		const next = reviewCard(saved, true, later(60));
+		const saved = JSON.parse(JSON.stringify(reviewCard(newCard('lt:ba', now), 'good', now)));
+		const next = reviewCard(saved, 'good', later(60));
 		expect(next.reps).toBe(2);
 	});
 

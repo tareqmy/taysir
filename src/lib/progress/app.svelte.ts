@@ -1,5 +1,6 @@
 import { lessons, readerSkippedLessonIds } from '../content/course';
 import type { Lesson } from '../content/types';
+import { gradeAnswer } from './grading';
 import { dueCards, newCard, reviewCard, type StoredCard } from './scheduler';
 import { computeStreak, dayKey, type DayKey, type StreakResult } from './streak';
 import { defaultMeta, type Meta, type Placement, type ProgressStore } from './store';
@@ -93,7 +94,9 @@ export class AppState {
 		const fresh = lesson.cardIds
 			.filter((id) => !this.cards.some((card) => card.id === id))
 			.map((id) =>
-				id in results ? reviewCard(newCard(id, now), results[id], now) : newCard(id, now)
+				id in results
+					? reviewCard(newCard(id, now), results[id] ? 'good' : 'again', now)
+					: newCard(id, now)
 			);
 		this.cards.push(...fresh);
 
@@ -101,14 +104,21 @@ export class AppState {
 		await Promise.all([this.persistMeta(), this.store.saveCards($state.snapshot(fresh))]);
 	}
 
-	/** Records one answered exercise, and grades its card if it has one. */
-	async answer(cardId: string | undefined, correct: boolean) {
+	/**
+	 * Records one answered exercise, and grades its card if it has one. A right answer is graded
+	 * by `elapsedMs`, how long the question took (see `gradeAnswer`).
+	 */
+	async answer(cardId: string | undefined, correct: boolean, elapsedMs?: number) {
 		const now = this.clock();
 		const saved: StoredCard[] = [];
 		if (cardId) {
 			const index = this.cards.findIndex((c) => c.id === cardId);
 			if (index >= 0) {
-				this.cards[index] = reviewCard($state.snapshot(this.cards[index]), correct, now);
+				this.cards[index] = reviewCard(
+					$state.snapshot(this.cards[index]),
+					gradeAnswer(correct, elapsedMs),
+					now
+				);
 				saved.push($state.snapshot(this.cards[index]));
 			}
 		}

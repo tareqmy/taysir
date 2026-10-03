@@ -1,4 +1,5 @@
 import { createEmptyCard, fsrs, generatorParameters, Rating, type Card, type State } from 'ts-fsrs';
+import type { Grade } from './grading';
 
 /** A review card in a form that can be saved: dates are ISO strings. */
 export interface StoredCard {
@@ -49,9 +50,16 @@ export function newCard(id: string, now: Date): StoredCard {
 	return fromCard(id, createEmptyCard(now));
 }
 
-/** Grades a card: a correct answer is “Good”, a wrong one is “Again”. */
-export function reviewCard(card: StoredCard, correct: boolean, now: Date): StoredCard {
-	const { card: next } = scheduler.next(toCard(card), now, correct ? Rating.Good : Rating.Again);
+const RATINGS = {
+	again: Rating.Again,
+	hard: Rating.Hard,
+	good: Rating.Good,
+	easy: Rating.Easy
+} as const;
+
+/** Schedules a card's next review from how the answer went. */
+export function reviewCard(card: StoredCard, grade: Grade, now: Date): StoredCard {
+	const { card: next } = scheduler.next(toCard(card), now, RATINGS[grade]);
 	return fromCard(card.id, next);
 }
 

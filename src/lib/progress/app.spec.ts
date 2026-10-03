@@ -88,6 +88,28 @@ describe('practice', () => {
 		expect(app.dueCards.find((c) => c.id === 'lt:ba')).toBeUndefined();
 	});
 
+	it('brings a slow answer back sooner than a quick one', async () => {
+		const app = await create();
+		await app.setPlacement('beginner', 10);
+		await app.completeLesson('letters-1', { 'lt:ba': true, 'lt:ta': true });
+		now = new Date(2026, 9, 20, 9, 0, 0);
+		await app.answer('lt:ba', true, 2000);
+		await app.answer('lt:ta', true, 15000);
+		const due = (id: string) => app.cards.find((c) => c.id === id)!.due;
+		expect(due('lt:ba') > due('lt:ta')).toBe(true);
+	});
+
+	it('grades a right answer as Good when its time is unknown', async () => {
+		const app = await create();
+		await app.setPlacement('beginner', 10);
+		await app.completeLesson('letters-1', { 'lt:ba': true, 'lt:ta': true });
+		now = new Date(2026, 9, 20, 9, 0, 0);
+		await app.answer('lt:ba', true);
+		await app.answer('lt:ta', true, 5000);
+		const due = (id: string) => app.cards.find((c) => c.id === id)!.due;
+		expect(due('lt:ba')).toBe(due('lt:ta'));
+	});
+
 	it('meets the daily goal and starts a streak', async () => {
 		const app = await create();
 		await app.setPlacement('beginner', 2);
