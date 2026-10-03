@@ -61,6 +61,10 @@ src/lib/components/ lesson and exercise views
 src/routes/         home, welcome, lesson, review, settings, about
 ```
 
+## Continuous integration
+
+`.github/workflows/ci.yml` runs on every push to `master` and on pull requests: it rebuilds the generated data and fails if the committed files differ, then runs the type-check, lint, unit tests and the production build. Nothing is deployed yet; hosting waits until the English has been reviewed.
+
 ## Teacher review
 
 All the English (word glosses, card meanings, lesson text) is a draft that needs a qualified teacher. To get it checked:
