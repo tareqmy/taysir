@@ -22,6 +22,7 @@ npm run dev        # http://localhost:5173
 | `npm run check`      | Type-check Svelte and TypeScript                           |
 | `npm run lint`       | Prettier and ESLint                                        |
 | `npm run data:build` | Rebuild the Quran data from the corpus (see below)         |
+| `npm run icons`      | Regenerate the PNG icons in `static/` (mirrors `icon.svg`) |
 
 ## How it works
 
@@ -63,7 +64,6 @@ src/routes/         home, welcome, lesson, review, settings, about
 - Covered so far: Al-Fatiha and all of Juz Amma (78–114). Everything beyond Juz Amma is still to do.
 - Glosses and notes for surahs 78–104 were drafted in bulk. `data/juz-amma/REVIEW.md` lists the entries to check first with a teacher.
 - No audio for the alphabet letters yet.
-- The PWA icon is an SVG only. Some browsers want 192 and 512 px PNGs before offering “install”.
 - Review grading is binary (right or wrong); speed-based Hard/Easy grading would improve scheduling.
 
 ## License and credits
