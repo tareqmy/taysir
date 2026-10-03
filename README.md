@@ -68,7 +68,7 @@ src/routes/         home, welcome, lesson, review, settings, about
 
 ## License and credits
 
-Taysir is released under the **GNU General Public License v3** (see `package.json`; add the full text as `LICENSE`).
+Taysir is released under the **GNU General Public License v3**. See [`LICENSE`](LICENSE) for the full text.
 
 - Quran text, morphology and frequencies: [Quranic Arabic Corpus](https://corpus.quran.com) v0.4 by Kais Dukes (GNU GPL), via the corrected fork at [mustafa0x/quran-morphology](https://github.com/mustafa0x/quran-morphology). See `data/source/SOURCE.md`.
 - Recitation audio: Mishary Rashid Alafasy via [EveryAyah](https://everyayah.com); word audio from the [Quran.com](https://quran.com) CDN.

@@ -35,7 +35,6 @@ Web app that teaches the Arabic of the Quran (vocabulary + grammar, from real ve
 
 ## Open items
 
-- Add the full GPL-3.0 text as `LICENSE`.
 - PNG icons (192 and 512 px) so browsers offer "install".
 - Audio for the alphabet letters.
 - More content: all of Juz Amma (78–114) is done. Surahs 105–114 are the `short-surahs` unit; 78–104 are `juz-amma-1` to `juz-amma-7` (data in `data/juz-amma/N.ts`, lesson specs in `src/lib/content/juz-amma/unit-N.ts`). The next step would be a later juz; add each surah to `SURAHS` in the build script.
