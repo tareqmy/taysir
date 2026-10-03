@@ -15,7 +15,7 @@ Web app that teaches the Arabic of the Quran (vocabulary + grammar, from real ve
 
 ## Rules
 
-- **Never type Quranic Arabic by hand.** Take it from the corpus data. Lesson data points at corpus locations (`surah:ayah:word:segment`) in `data/lexicon-seeds.ts`, `data/fatiha-glosses.ts` and `data/juz-amma-glosses.ts`, then `npm run data:build` regenerates `src/lib/data/generated/`. Arabic inside lesson prose comes from `wordText(surah, ayah, n)`.
+- **Never type Quranic Arabic by hand.** Take it from the corpus data. Lesson data points at corpus locations (`surah:ayah:word:segment`) in `data/lexicon-seeds.ts`, `data/fatiha-glosses.ts`, `data/juz-amma-glosses.ts` and `data/juz-amma/N.ts`, then `npm run data:build` regenerates `src/lib/data/generated/`. Arabic inside lesson prose comes from `wordText(surah, ayah, n)`.
 - English glosses and grammar explanations are **drafts needing review by a qualified teacher**. Keep explanations conservative; avoid claims you cannot stand behind (an earlier draft wrongly said a bare noun is always indefinite).
 - Lesson content is validated by `src/lib/content/course.spec.ts`. Every new lesson or exercise must pass it (answer is among choices, no duplicate choices, ids exist).
 - Inside `src/lib`, use relative imports. Routes use the `#lib/*` alias (mapped in `package.json` `imports` and `tsconfig.json` `paths`).
@@ -38,6 +38,6 @@ Web app that teaches the Arabic of the Quran (vocabulary + grammar, from real ve
 - Add the full GPL-3.0 text as `LICENSE`.
 - PNG icons (192 and 512 px) so browsers offer "install".
 - Audio for the alphabet letters.
-- More content: surahs 105–114 are done (unit `short-surahs`). The rest of Juz Amma (78–104) is next; add each to `SURAHS` in the build script.
+- More content: all of Juz Amma (78–114) is done. Surahs 105–114 are the `short-surahs` unit; 78–104 are `juz-amma-1` to `juz-amma-7` (data in `data/juz-amma/N.ts`, lesson specs in `src/lib/content/juz-amma/unit-N.ts`). The next step would be a later juz; add each surah to `SURAHS` in the build script.
 - Speed-based grading (Hard/Easy) for better review scheduling.
 - No git remote yet (local `master` branch only).

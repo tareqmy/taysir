@@ -48,6 +48,35 @@ describe('meaningChoice', () => {
 	});
 });
 
+describe('words spelled the same', () => {
+	// ما is both “what” and “not”; إِذا is both “when” and “behold”.
+	const pairs = [
+		['ma', 'manafiya'],
+		['idha', 'idhasudden']
+	];
+
+	it('never offers one spelling’s meaning as a wrong answer for the other', () => {
+		for (const [a, b] of pairs) {
+			for (const seed of [1, 2, 3, 4, 5, 6, 7, 8]) {
+				const exercise = meaningChoice(lexemeById(a), lexicon.lexemes, seeded(seed));
+				const texts = exercise.choices.map((c) => c.chunk.text);
+				expect(texts, `${a} seed ${seed}`).not.toContain(lexemeById(b).gloss);
+			}
+		}
+	});
+
+	it('never shows the same Arabic twice among the choices', () => {
+		for (const lexeme of lexicon.lexemes) {
+			for (const seed of [1, 2, 3]) {
+				const texts = arabicChoice(lexeme, lexicon.lexemes, seeded(seed)).choices.map(
+					(c) => c.chunk.text
+				);
+				expect(new Set(texts).size, `${lexeme.id} seed ${seed}`).toBe(texts.length);
+			}
+		}
+	});
+});
+
 describe('arabicChoice', () => {
 	it('asks for the Arabic word given the meaning', () => {
 		const exercise = arabicChoice(lexemeById('yawm'), lexicon.lexemes, seeded(2));

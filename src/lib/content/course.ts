@@ -10,6 +10,7 @@ import {
 	rootExercises,
 	vocabularyExercises
 } from './exercises';
+import { juzAmmaUnits } from './juz-amma';
 import { shortSurahsUnit } from './short-surahs';
 import type { Block, Lesson, Unit } from './types';
 
@@ -471,7 +472,14 @@ const grammarUnit: Unit = {
 
 // --- Whole course -----------------------------------------------------------
 
-export const units: Unit[] = [lettersUnit, fatihaUnit, rootsUnit, grammarUnit, shortSurahsUnit];
+export const units: Unit[] = [
+	lettersUnit,
+	fatihaUnit,
+	rootsUnit,
+	grammarUnit,
+	shortSurahsUnit,
+	...juzAmmaUnits
+];
 
 export const lessons: Lesson[] = units.flatMap((u) => u.lessons);
 

@@ -33,13 +33,25 @@ function distractors<T extends { id: string }>(
 	return [...preferred, ...rest].slice(0, n);
 }
 
+/** Keeps the first item for each key, so a list of choices never repeats the same text. */
+function uniqueBy<T>(items: readonly T[], key: (item: T) => string): T[] {
+	const seen = new Set<string>();
+	return items.filter((item) => {
+		const k = key(item);
+		if (seen.has(k)) return false;
+		seen.add(k);
+		return true;
+	});
+}
+
 // --- Vocabulary -------------------------------------------------------------
 
 /** Arabic word → English meaning. */
 export function meaningChoice(lexeme: Lexeme, pool: readonly Lexeme[], rng: Rng): ChooseExercise {
 	const wrong = distractors(
 		lexeme,
-		pool.filter((l) => l.gloss !== lexeme.gloss),
+		// A word spelled the same as this one (such as the two uses of ما) would be a right answer too.
+		pool.filter((l) => l.gloss !== lexeme.gloss && l.arabic !== lexeme.arabic),
 		3,
 		rng,
 		(l) => l.pos === lexeme.pos
@@ -61,7 +73,10 @@ export function meaningChoice(lexeme: Lexeme, pool: readonly Lexeme[], rng: Rng)
 export function arabicChoice(lexeme: Lexeme, pool: readonly Lexeme[], rng: Rng): ChooseExercise {
 	const wrong = distractors(
 		lexeme,
-		pool.filter((l) => l.arabic !== lexeme.arabic),
+		uniqueBy(
+			pool.filter((l) => l.arabic !== lexeme.arabic),
+			(l) => l.arabic
+		),
 		3,
 		rng,
 		(l) => l.pos === lexeme.pos

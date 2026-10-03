@@ -2,7 +2,7 @@
 
 Learn to understand the Arabic of the Quran. Words and grammar are taught from real verses, and a spaced-repetition review brings each item back just before it is forgotten.
 
-**Status:** a working vertical slice. It has a placement choice, the alphabet, vocabulary and root lessons from Al-Fatiha, two grammar lessons, vocabulary lessons for the ten short surahs from Al-Fil (105) to An-Nas (114), a review queue, and streaks with a daily goal. The English glosses and grammar explanations are **drafts that still need review by a qualified teacher** before any public release.
+**Status:** a working vertical slice. It has a placement choice, the alphabet, vocabulary and root lessons from Al-Fatiha, two grammar lessons, vocabulary lessons for all of Juz Amma (surahs 78 to 114), a review queue, and streaks with a daily goal. The English glosses and grammar explanations are **drafts that still need review by a qualified teacher** before any public release.
 
 ## Run it
 
@@ -39,6 +39,7 @@ data/source/quran-morphology.txt   corpus, unchanged (GPL)
 data/lexicon-seeds.ts              English meanings, keyed by corpus location
 data/fatiha-glosses.ts             word-by-word glosses for Al-Fatiha
 data/juz-amma-glosses.ts           word-by-word glosses for surahs 105–114
+data/juz-amma/N.ts                 glosses and meanings for surahs 104 down to 78, one file per unit
         │  npm run data:build  (scripts/build-corpus.ts)
         ▼
 src/lib/data/generated/*.json      what the app loads (verses.json, lexicon.json)
@@ -46,7 +47,7 @@ src/lib/data/generated/*.json      what the app loads (verses.json, lexicon.json
 
 To add a vocabulary word, add a seed with the `surah:ayah:word:segment` location of one occurrence and a short meaning, then run `npm run data:build`. The build fails loudly if a location is wrong.
 
-To add a surah, add it to `SURAHS` in `scripts/build-corpus.ts`, gloss every word in a glosses file (the build fails on a missing or stale gloss), and add its name to `src/lib/data/surahs.ts`. Only words that recur in the Quran (plus a few that carry a famous surah) get vocabulary cards; rarer words are glossed under the verse.
+To add a surah, add it to `SURAHS` in `scripts/build-corpus.ts`, gloss every word in a glosses file (the build fails on a missing or stale gloss), and add its name to `src/lib/data/surahs.ts`. Lessons for surahs 78–104 are plain data in `src/lib/content/juz-amma/unit-N.ts`, built by `surah-lessons.ts`; prose there never contains hand-typed Arabic, only `{surah:ayah:word}` placeholders. Only words that recur in the Quran (plus a few that carry a famous surah) get vocabulary cards; rarer words are glossed under the verse.
 
 ## Layout
 
@@ -59,7 +60,8 @@ src/routes/         home, welcome, lesson, review, settings, about
 
 ## Known gaps
 
-- Covered so far: Al-Fatiha and surahs 105–114. The rest of Juz Amma (78–104) is next.
+- Covered so far: Al-Fatiha and all of Juz Amma (78–114). Everything beyond Juz Amma is still to do.
+- Glosses and notes for surahs 78–104 were drafted in bulk. `data/juz-amma/REVIEW.md` lists the entries to check first with a teacher.
 - No audio for the alphabet letters yet.
 - The PWA icon is an SVG only. Some browsers want 192 and 512 px PNGs before offering “install”.
 - Review grading is binary (right or wrong); speed-based Hard/Easy grading would improve scheduling.

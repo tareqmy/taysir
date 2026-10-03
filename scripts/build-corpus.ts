@@ -7,6 +7,7 @@
  *         data/lexicon-seeds.ts               (authored meanings, by corpus location)
  *         data/fatiha-glosses.ts              (authored word glosses, Al-Fatiha)
  *         data/juz-amma-glosses.ts            (authored word glosses, surahs 105–114)
+ *         data/juz-amma/*.ts                  (authored glosses and meanings, surahs 78–104)
  * Output: src/lib/data/generated/verses.json
  *         src/lib/data/generated/lexicon.json
  *
@@ -15,8 +16,9 @@
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { fatihaWordGlosses } from '../data/fatiha-glosses.ts';
+import { juzAmmaUnits } from '../data/juz-amma/index.ts';
 import { juzAmmaWordGlosses } from '../data/juz-amma-glosses.ts';
-import { lexemeSeeds } from '../data/lexicon-seeds.ts';
+import { lexemeSeeds as baseSeeds } from '../data/lexicon-seeds.ts';
 import type {
 	CorpusPos,
 	Lexeme,
@@ -27,13 +29,21 @@ import type {
 	Word
 } from '../src/lib/data/types.ts';
 
-/** Surahs the app teaches from: Al-Fatiha, then Al-Fil to An-Nas. */
-const SURAHS = [1, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114];
+/** Surahs the app teaches from: Al-Fatiha, then all of Juz Amma (78–114). */
+const SURAHS = [1, ...Array.from({ length: 37 }, (_, i) => 78 + i)];
 
-const wordGlosses: Record<string, string> = { ...fatihaWordGlosses };
-for (const [loc, gloss] of Object.entries(juzAmmaWordGlosses)) {
-	if (loc in wordGlosses) throw new Error(`Word ${loc} is glossed in two files`);
-	wordGlosses[loc] = gloss;
+const lexemeSeeds = [...baseSeeds, ...juzAmmaUnits.flatMap((unit) => unit.seeds)];
+
+const wordGlosses: Record<string, string> = {};
+for (const glosses of [
+	fatihaWordGlosses,
+	juzAmmaWordGlosses,
+	...juzAmmaUnits.map((u) => u.glosses)
+]) {
+	for (const [loc, gloss] of Object.entries(glosses)) {
+		if (loc in wordGlosses) throw new Error(`Word ${loc} is glossed in two files`);
+		wordGlosses[loc] = gloss;
+	}
 }
 
 const SOURCE =

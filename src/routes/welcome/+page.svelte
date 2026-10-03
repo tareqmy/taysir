@@ -37,7 +37,7 @@
 			<button type="button" class="choice card" onclick={() => (placement = 'beginner')}>
 				<strong>I am new to Arabic letters</strong>
 				<span class="muted"
-					>Start with the alphabet and its sounds, then move into Al-Fatiha and the short surahs.</span
+					>Start with the alphabet and its sounds, then move into Al-Fatiha and Juz Amma.</span
 				>
 			</button>
 			<button type="button" class="choice card" onclick={() => (placement = 'reader')}>

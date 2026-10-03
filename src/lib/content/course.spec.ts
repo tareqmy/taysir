@@ -55,8 +55,35 @@ describe('Al-Fatiha data', () => {
 	});
 });
 
-describe('short surah data', () => {
-	const verseCounts = {
+describe('Juz Amma data', () => {
+	const verseCounts: Record<number, number> = {
+		78: 40,
+		79: 46,
+		80: 42,
+		81: 29,
+		82: 19,
+		83: 36,
+		84: 25,
+		85: 22,
+		86: 17,
+		87: 19,
+		88: 26,
+		89: 30,
+		90: 20,
+		91: 15,
+		92: 21,
+		93: 11,
+		94: 8,
+		95: 8,
+		96: 19,
+		97: 5,
+		98: 8,
+		99: 8,
+		100: 11,
+		101: 11,
+		102: 8,
+		103: 3,
+		104: 9,
 		105: 5,
 		106: 4,
 		107: 7,
@@ -69,7 +96,7 @@ describe('short surah data', () => {
 		114: 6
 	};
 
-	it('has every verse of surahs 105 to 114, each with a name', () => {
+	it('has every verse of surahs 78 to 114, each with a name', () => {
 		for (const [surah, count] of Object.entries(verseCounts)) {
 			const verses = versesOf(Number(surah));
 			expect(
@@ -103,11 +130,14 @@ describe('short surah data', () => {
 });
 
 describe('lexicon', () => {
-	it('gives every word its own meaning and its own spelling', () => {
+	it('teaches every word in the lexicon in some lesson', () => {
+		const taught = new Set(lessons.flatMap((l) => l.cardIds.map((id) => parseCardId(id).id)));
+		expect(lexicon.lexemes.filter((l) => !taught.has(l.id)).map((l) => l.id)).toEqual([]);
+	});
+
+	it('gives every word its own meaning', () => {
 		const glosses = lexicon.lexemes.map((l) => l.gloss);
-		const arabic = lexicon.lexemes.map((l) => l.arabic);
 		expect(glosses.filter((g, i) => glosses.indexOf(g) !== i)).toEqual([]);
-		expect(arabic.filter((a, i) => arabic.indexOf(a) !== i)).toEqual([]);
 	});
 });
 
