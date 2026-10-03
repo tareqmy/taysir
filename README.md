@@ -13,16 +13,18 @@ npm install
 npm run dev        # http://localhost:5173
 ```
 
-| Command              | What it does                                               |
-| -------------------- | ---------------------------------------------------------- |
-| `npm run dev`        | Dev server with hot reload                                 |
-| `npm run build`      | Static single-page build into `build/`                     |
-| `npm run preview`    | Serve the production build (service worker is active here) |
-| `npm test`           | Unit tests (Vitest)                                        |
-| `npm run check`      | Type-check Svelte and TypeScript                           |
-| `npm run lint`       | Prettier and ESLint                                        |
-| `npm run data:build` | Rebuild the Quran data from the corpus (see below)         |
-| `npm run icons`      | Regenerate the PNG icons in `static/` (mirrors `icon.svg`) |
+| Command                 | What it does                                                    |
+| ----------------------- | --------------------------------------------------------------- |
+| `npm run dev`           | Dev server with hot reload                                      |
+| `npm run build`         | Static single-page build into `build/`                          |
+| `npm run preview`       | Serve the production build (service worker is active here)      |
+| `npm test`              | Unit tests (Vitest)                                             |
+| `npm run check`         | Type-check Svelte and TypeScript                                |
+| `npm run lint`          | Prettier and ESLint                                             |
+| `npm run data:build`    | Rebuild the Quran data from the corpus (see below)              |
+| `npm run icons`         | Regenerate the PNG icons in `static/` (mirrors `icon.svg`)      |
+| `npm run review:export` | Write the teacher-review spreadsheet to `review/` (see below)   |
+| `npm run review:apply`  | Apply a reviewer's returned spreadsheet to the data (see below) |
 
 ## How it works
 
@@ -58,6 +60,14 @@ src/lib/progress/   scheduler, streaks, storage (IndexedDB + in-memory), reactiv
 src/lib/components/ lesson and exercise views
 src/routes/         home, welcome, lesson, review, settings, about
 ```
+
+## Teacher review
+
+All the English (word glosses, card meanings, lesson text) is a draft that needs a qualified teacher. To get it checked:
+
+1. `npm run review:export` writes `review/Taysir-review.xlsx` (not committed). It has a sheet each for verses, words, vocabulary cards, lesson text and grammar exercises, with instructions on the first sheet. Entries the authors were least sure of are marked Flagged and shaded.
+2. The reviewer marks each row OK, Change or Unsure, types replacements in Correction, and adds comments.
+3. `npm run review:apply -- returned.xlsx` (add `--dry` to preview) writes their corrections for words and cards into `data/`, and puts everything else (comments, Unsure rows, corrections it could not apply) in `review/feedback.md` for a person to act on. Then run `npm run data:build` and `npm test`.
 
 ## Known gaps
 
