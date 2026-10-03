@@ -1,10 +1,16 @@
 <script lang="ts">
-	import { letterById, letterForms } from '../content/alphabet';
+	import { letterById, letterExample, letterForms } from '../content/alphabet';
+	import AudioButton from './AudioButton.svelte';
 
 	let { id }: { id: string } = $props();
 
 	const letter = $derived(letterById(id));
 	const forms = $derived(letterForms(letter));
+	const example = $derived(letterExample(letter));
+	/** The word's first letter with its vowel marks, and the rest, so the letter can be highlighted. */
+	const exampleParts = $derived(
+		/^(\P{M}\p{M}*)([\s\S]*)$/u.exec(example.text)?.slice(1) ?? [example.text, '']
+	);
 	const shapes = $derived(
 		[
 			['alone', forms.isolated],
@@ -20,6 +26,17 @@
 	<div class="info">
 		<h3>{letter.name}</h3>
 		<p class="muted">{letter.sound}</p>
+		<div class="example">
+			<AudioButton
+				url={example.audioUrl}
+				label="Hear {letter.name} in the word {example.text}"
+				small
+			/>
+			<span class="word ar" lang="ar" dir="rtl"
+				><span class="first">{exampleParts[0]}</span>{exampleParts[1]}</span
+			>
+			<span class="muted gloss">“{example.gloss}”</span>
+		</div>
 		<ul class="forms" aria-label="Shapes of {letter.name}">
 			{#each shapes as [label, shape] (label)}
 				<li>
@@ -52,6 +69,22 @@
 	}
 	.info p {
 		margin: 0 0 0.5rem;
+	}
+	.example {
+		display: flex;
+		align-items: center;
+		gap: 0.6rem;
+		margin-bottom: 0.75rem;
+	}
+	.word {
+		font-size: 1.7rem;
+		line-height: 1.6;
+	}
+	.first {
+		color: var(--accent);
+	}
+	.gloss {
+		font-size: 0.9rem;
 	}
 	.forms {
 		display: flex;

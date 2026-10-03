@@ -102,4 +102,9 @@ export interface Letter {
 	sound: string;
 	/** Whether the letter joins to the letter after it. */
 	joins: boolean;
+	/**
+	 * A common Quran word that starts with the letter, as a corpus location `surah:ayah:word`.
+	 * Its recitation is the letter's audio, so the sound is heard in a real word.
+	 */
+	example: string;
 }

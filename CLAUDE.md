@@ -35,7 +35,7 @@ Web app that teaches the Arabic of the Quran (vocabulary + grammar, from real ve
 
 ## Open items
 
-- Audio for the alphabet letters.
+- Recordings of the letter names themselves. Letter cards play a Quran word that starts with the letter (`example` in `alphabet.ts`), since no open-licensed per-letter recordings were found (the GitHub set `bubblesinarabic/alphabets-audio` has no license; Wikimedia Commons has only one public-domain run-through of the alphabet, which could not be verified by ear).
 - More content: all of Juz Amma (78–114) is done. Surahs 105–114 are the `short-surahs` unit; 78–104 are `juz-amma-1` to `juz-amma-7` (data in `data/juz-amma/N.ts`, lesson specs in `src/lib/content/juz-amma/unit-N.ts`). The next step would be a later juz; add each surah to `SURAHS` in the build script.
 - Speed-based grading (Hard/Easy) for better review scheduling.
 - No git remote yet (local `master` branch only).

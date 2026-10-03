@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { lexemeById, lexicon, phraseWords, surahName, verse, verseData } from '../data';
 import { seeded } from '../random';
-import { letterById, letters } from './alphabet';
+import { letterById, letterExample, letters } from './alphabet';
 import { parseCardId } from './cards';
 import { lessons, readerSkippedLessonIds, units } from './course';
 import { reviewExercise } from './exercises';
@@ -145,6 +145,21 @@ describe('alphabet', () => {
 	it('has 28 distinct letters', () => {
 		expect(letters).toHaveLength(28);
 		expect(new Set(letters.map((l) => l.glyph)).size).toBe(28);
+	});
+
+	it('gives every letter a distinct Quran word that starts with it, with audio', () => {
+		const alifs = ['ا', 'أ', 'إ', 'آ', 'ٱ'];
+		for (const letter of letters) {
+			const example = letterExample(letter);
+			const first = example.text[0];
+			const starts = letter.id === 'alif' ? alifs.includes(first) : first === letter.glyph;
+			expect(starts, `${letter.id}: ${example.text}`).toBe(true);
+			expect(example.audioUrl).toMatch(
+				/^https:\/\/audio\.qurancdn\.com\/wbw\/\d{3}_\d{3}_\d{3}\.mp3$/
+			);
+		}
+		const locations = letters.map((l) => l.example);
+		expect(new Set(locations).size).toBe(locations.length);
 	});
 
 	it('teaches every letter exactly once', () => {
