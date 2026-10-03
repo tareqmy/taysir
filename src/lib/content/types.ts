@@ -64,6 +64,8 @@ export type Block =
 			note?: string;
 			/** Show each word split into its parts (prefix, stem, suffix). */
 			split?: boolean;
+			/** Colour the prefixes and endings that are joined onto each word. */
+			highlight?: 'affixes';
 	  };
 
 // --- Course structure -------------------------------------------------------

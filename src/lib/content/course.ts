@@ -11,6 +11,7 @@ import {
 	vocabularyExercises
 } from './exercises';
 import { juzAmmaUnits } from './juz-amma';
+import { grammarPatternsUnit } from './grammar-patterns';
 import { shortSurahsUnit } from './short-surahs';
 import type { Block, Lesson, Unit } from './types';
 
@@ -478,6 +479,7 @@ export const units: Unit[] = [
 	rootsUnit,
 	grammarUnit,
 	shortSurahsUnit,
+	grammarPatternsUnit,
 	...juzAmmaUnits
 ];
 

@@ -44,6 +44,7 @@
 		translation={block.translation}
 		note={block.note}
 		split={block.split}
+		highlight={block.highlight}
 	/>
 {/if}
 

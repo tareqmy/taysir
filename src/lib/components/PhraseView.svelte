@@ -10,7 +10,8 @@
 		to,
 		translation,
 		note,
-		split = false
+		split = false,
+		highlight
 	}: {
 		surah: number;
 		ayah: number;
@@ -19,6 +20,7 @@
 		translation: string;
 		note?: string;
 		split?: boolean;
+		highlight?: 'affixes';
 	} = $props();
 
 	const words = $derived(phraseWords(surah, ayah, from, to));
@@ -26,6 +28,9 @@
 	let offline = $state(false);
 
 	const isArticle = (s: Segment) => s.tags.includes('DET');
+	/** Prefixes and joined endings, including a pronoun that is not marked as an ending. */
+	const isAffix = (s: Segment, i: number) =>
+		s.tags.includes('PREF') || s.tags.includes('SUFF') || (i > 0 && s.tags.includes('PRON'));
 
 	async function play(n: number) {
 		offline = !(await playAudio(wordAudioUrl(surah, ayah, n)));
@@ -44,7 +49,14 @@
 					onclick={() => play(word.n)}
 					aria-label="{word.text}: {word.gloss}. Tap to hear."
 				>
-					{#if split}
+					{#if highlight === 'affixes'}
+						<span class="parts ar ar-lg">
+							{#each word.segments as segment, i (i)}
+								<span class="part" class:article={isAffix(segment, i)}>{segment.text}</span>
+							{/each}
+						</span>
+						<span class="gloss" lang="en" dir="ltr">{word.gloss}</span>
+					{:else if split}
 						<span class="parts ar ar-lg">
 							{#each word.segments as segment, i (i)}
 								<span class="part" class:article={isArticle(segment)}>{segment.text}</span>

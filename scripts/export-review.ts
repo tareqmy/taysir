@@ -347,6 +347,17 @@ for (const lesson of course.lessons.filter((l) => l.kind === 'grammar')) {
 				'',
 				''
 			]);
+		} else if (ex.kind === 'match') {
+			exerciseRows.push([
+				lesson.title,
+				ex.question,
+				'',
+				ex.pairs.map((p) => `${p.left.text} = ${p.right.text}`).join('\n'),
+				'',
+				ex.explanation ?? '',
+				'',
+				''
+			]);
 		} else if (ex.kind === 'build') {
 			exerciseRows.push([
 				lesson.title,

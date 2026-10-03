@@ -2,7 +2,7 @@
 
 Learn to understand the Arabic of the Quran. Words and grammar are taught from real verses, and a spaced-repetition review brings each item back just before it is forgotten.
 
-**Status:** a working vertical slice. It has a placement choice, the alphabet, vocabulary and root lessons from Al-Fatiha, two grammar lessons, vocabulary lessons for all of Juz Amma (surahs 78 to 114), a review queue, and streaks with a daily goal. The English glosses and grammar explanations are **drafts that still need review by a qualified teacher** before any public release.
+**Status:** a working vertical slice. It has a placement choice, the alphabet, vocabulary and root lessons from Al-Fatiha, six grammar lessons, vocabulary lessons for all of Juz Amma (surahs 78 to 114), a review queue, and streaks with a daily goal. The English glosses and grammar explanations are **drafts that still need review by a qualified teacher** before any public release.
 
 ## Run it
 

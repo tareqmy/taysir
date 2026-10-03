@@ -254,6 +254,26 @@ export function handChoice(
 	};
 }
 
+/** Match Arabic words with their English meanings, written by hand. */
+export function handMatch(
+	id: string,
+	question: string,
+	pairs: { arabic: string; english: string }[],
+	explanation: string,
+	rng: Rng
+): MatchExercise {
+	return {
+		kind: 'match',
+		id,
+		question,
+		pairs: shuffle(
+			pairs.map((p, i) => ({ id: `p${i}`, left: ar(p.arabic), right: en(p.english) })),
+			rng
+		),
+		explanation
+	};
+}
+
 /** Arrange Arabic words into a phrase that matches an English meaning. */
 export function buildPhrase(
 	id: string,
