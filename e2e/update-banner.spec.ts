@@ -1,27 +1,14 @@
 import type { Page } from '@playwright/test';
 import { audit } from './support/axe';
 import { startAsReader } from './support/learner';
-import { startSite, type Site } from './support/site';
-import { expect, test as base } from './support/test';
+import { expect, test } from './support/served';
+import type { Site } from './support/site';
 
 /**
  * The offer to update the app, with the real service worker taking the real steps: a first install,
  * a redeploy at the same address, the new version downloading in the background, and the learner
  * choosing to switch. The app is served from `support/site.ts`, which can publish a new version.
  */
-
-const test = base.extend<{ site: Site }>({
-	// Playwright reads a fixture's needs from its first argument, so it must be written as a pattern.
-	// eslint-disable-next-line no-empty-pattern
-	site: async ({}, use) => {
-		const site = await startSite();
-		await use(site);
-		await site.close();
-	},
-	baseURL: async ({ site }, use) => {
-		await use(site.origin);
-	}
-});
 
 // These tests are about the worker, which every other test keeps out of the way.
 test.use({ serviceWorkers: 'allow' });

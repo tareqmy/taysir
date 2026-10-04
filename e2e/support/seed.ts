@@ -1,3 +1,4 @@
+import { parseCardId } from '../../src/lib/content/cards';
 import { lessons } from '../../src/lib/content/course';
 import { createBackup, type Backup } from '../../src/lib/progress/backup';
 import { newCard, reviewCard, type StoredCard } from '../../src/lib/progress/scheduler';
@@ -17,15 +18,24 @@ export interface Seed {
  * A learner part-way through the course, built with the app's own scheduler so the saved progress
  * is what the app itself would have written. Their words are spread across the review schedule
  * (learning, familiar, well known), they have six weeks of practice behind them, and `due` of
- * their cards are due for review right now; the rest are not due for at least ten minutes.
+ * their cards are due for review right now; the rest are not due for at least ten minutes. The
+ * cards that are due are the first ones learned, which are letters. `dueWords` makes the most
+ * recently learned words due as well, for a review that is to ask about words.
  */
-export function seededLearner({ lessonsDone = 40, due = 0, now = new Date() } = {}): Seed {
+export function seededLearner({
+	lessonsDone = 40,
+	due = 0,
+	dueWords = 0,
+	now = new Date()
+} = {}): Seed {
 	const done = lessons.slice(0, lessonsDone);
 	const iso = (offsetMs: number) => new Date(now.getTime() + offsetMs).toISOString();
 	const cardIds = [...new Set(done.flatMap((lesson) => lesson.cardIds))];
+	const wordIds = cardIds.filter((id) => parseCardId(id).type === 'lexeme');
+	const dueIds = new Set([...cardIds.slice(0, due), ...wordIds.slice(wordIds.length - dueWords)]);
 
 	const cards: StoredCard[] = cardIds.map((id, i) => {
-		if (i < due) return { ...reviewCard(newCard(id, now), 'good', now), due: iso(-HOUR) };
+		if (dueIds.has(id)) return { ...reviewCard(newCard(id, now), 'good', now), due: iso(-HOUR) };
 		switch (i % 3) {
 			case 0: // still learning
 				return reviewCard(newCard(id, now), 'good', now);

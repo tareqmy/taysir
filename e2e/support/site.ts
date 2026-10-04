@@ -34,6 +34,10 @@ export interface Site {
 	version: string;
 	/** Publish a new version at the same address, and say what it is. */
 	deploy(): Promise<string>;
+	/** Stop answering, as a server that cannot be reached does. The address is kept. */
+	down(): Promise<void>;
+	/** Start answering again at the same address. */
+	up(): Promise<void>;
 	close(): Promise<void>;
 }
 
@@ -87,7 +91,7 @@ export async function startSite(): Promise<Site> {
 	await new Promise<void>((resolve) => server.listen(0, resolve));
 	const { port } = server.address() as { port: number };
 
-	return {
+	const site: Site = {
 		origin: `http://localhost:${port}`,
 		get version() {
 			return version;
@@ -97,10 +101,18 @@ export async function startSite(): Promise<Site> {
 			root = await publish(version);
 			return version;
 		},
-		async close() {
+		async down() {
+			// Connections the browser keeps open would go on answering, so end them too.
 			server.closeAllConnections();
 			await new Promise((resolve) => server.close(resolve));
+		},
+		async up() {
+			await new Promise<void>((resolve) => server.listen(port, resolve));
+		},
+		async close() {
+			await site.down();
 			await rm(scratch, { recursive: true, force: true });
 		}
 	};
+	return site;
 }
