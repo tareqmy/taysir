@@ -13,7 +13,7 @@ npm install
 npm run dev        # http://localhost:5173
 ```
 
-There is also a `Makefile` with the same commands as short targets. `make help` lists them: `make dev`, `make preview` (builds, then serves the production build with its service worker on http://localhost:4173), `make test`, `make e2e`, `make check`, `make lint`, and `make ci`, which runs every step the CI workflow runs, in the same order. Ports can be changed, for example `make dev PORT=3000`.
+There is also a `Makefile` with the same commands as short targets. `make help` lists them: `make dev`, `make preview` (builds, then serves the production build with its service worker on http://localhost:4173), `make tunnel` (the same build at a temporary https address, to try on a phone: see “Trying it on a phone”), `make test`, `make e2e`, `make check`, `make lint`, and `make ci`, which runs every step the CI workflow runs, in the same order. Ports can be changed, for example `make dev PORT=3000`.
 
 | Command                 | What it does                                                    |
 | ----------------------- | --------------------------------------------------------------- |
@@ -29,6 +29,21 @@ There is also a `Makefile` with the same commands as short targets. `make help` 
 | `npm run icons`         | Regenerate the PNG icons in `static/` (mirrors `icon.svg`)      |
 | `npm run review:export` | Write the teacher-review spreadsheet to `review/` (see below)   |
 | `npm run review:apply`  | Apply a reviewer's returned spreadsheet to the data (see below) |
+
+## Trying it on a phone
+
+A phone cannot use the offline worker (so it cannot try offline lessons or the update prompt) over plain `http` on your network: a service worker needs `https`. `make tunnel` builds the app, serves it, and opens a temporary `https` address to it, which you open on the phone.
+
+```bash
+brew install cloudflared   # once; Cloudflare's quick tunnel needs no account
+make tunnel                # prints an https://….trycloudflare.com address; Ctrl-C stops it
+```
+
+To use another tool, set `TUNNEL` to its command, for example one that gives a fixed address. What to know:
+
+- **The address changes each run,** and a phone's saved progress, and an app added to its home screen, belong to one address. A quick tunnel is good for checking layout, touch, audio, text sizes and a one-session try of offline use. It cannot try the update prompt, which needs the same address before and after a new version, or an app left installed for days. For those, use a tool that gives a fixed address.
+- **Anyone with the address can open the app while the tunnel runs.** It serves only the app, not your progress, which stays on the phone, but the English in it is still an unreviewed draft. Keep the address to yourself and stop the tunnel when you are done.
+- **The preview server lists the tunnel domains it will answer to** (`preview.allowedHosts` in `vite.config.ts`); it refuses any other host name. A test (`e2e/tunnel-host.spec.ts`) checks that.
 
 ## How it works
 
@@ -87,6 +102,7 @@ e2e/                browser tests (Playwright), with their helpers in e2e/suppor
 - **`learner-journey.spec.ts`:** a new learner chooses a starting point, reads and finishes a lesson, and sees it on the lesson list, the progress page and the verses page, and after a reload.
 - **`practice-and-review.spec.ts`:** a review reschedules what was due and leaves the rest alone, and extra practice counts toward the day without touching the schedule.
 - **`restore.spec.ts`:** saved progress restores through Settings and shows up everywhere, a file that is not a backup is refused, and a downloaded backup holds the progress.
+- **`tunnel-host.spec.ts`:** the preview server answers under a tunnel's host name (for `make tunnel`) and still refuses a stranger's.
 - **`update-banner.spec.ts`:** the offer to update, with the real service worker. The app is served from a copy of the build (`e2e/support/site.ts`) that can be redeployed at the same address as a new version. A first visit is quiet; a redeploy is found and offered without disturbing the open page, whose offline files stay until the switch; “Update now” reloads onto the new version and clears the old files; “Later” puts the offer away until the next visit; and updating in one tab leaves another tab alone, which can still switch. It is checked in both colour schemes.
 - **`arabic-size.spec.ts`:** the Arabic text size changes Arabic and not English, is kept on the device and untouched by a backup, and at the Largest size on a phone nothing overflows or breaks a word, at normal and 200% text, across the lessons that show the course's widest words.
 - **`accessibility.spec.ts`:** axe-core on every screen, in a phone and a desktop window, in light and dark mode. Nothing is allowed to fail.

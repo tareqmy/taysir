@@ -14,6 +14,11 @@ export default defineConfig({
 			adapter: adapter({ fallback: 'index.html' })
 		})
 	],
+	preview: {
+		// The preview server refuses host names it does not know. These let the app be opened through
+		// a tunnel (`make tunnel`), to try it on a phone: Cloudflare's quick tunnels and ngrok's.
+		allowedHosts: ['.trycloudflare.com', '.ngrok-free.app', '.ngrok-free.dev']
+	},
 	test: {
 		expect: { requireAssertions: true },
 		projects: [

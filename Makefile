@@ -8,11 +8,15 @@
 PORT ?= 5173
 PREVIEW_PORT ?= 4173
 HOST ?= localhost
+# What opens a tunnel to the preview server. Cloudflare's quick tunnel needs no account
+# (`brew install cloudflared`). Any tool that forwards an HTTPS address to a local port will do:
+# set TUNNEL to its command, for example to one that gives a fixed address.
+TUNNEL ?= cloudflared tunnel --url http://localhost:$(PREVIEW_PORT)
 
 .DEFAULT_GOAL := help
 # `ci` runs its steps in order and they share .svelte-kit, so never run targets in parallel.
 .NOTPARALLEL:
-.PHONY: help install dev preview build test test-watch e2e e2e-install check lint format data data-check ci clean distclean
+.PHONY: help install dev preview tunnel tunnel-check build test test-watch e2e e2e-install check lint format data data-check ci clean distclean
 
 help: ## List the targets
 	@awk -F ':.*## ' '/^[a-zA-Z_-]+:.*## / { printf "  make %-11s %s\n", $$1, $$2 }' $(MAKEFILE_LIST)
@@ -29,6 +33,22 @@ dev: node_modules ## Dev server with hot reload (http://localhost:5173)
 
 preview: node_modules build ## Build, then serve the production build with its service worker (http://localhost:4173)
 	npm run preview -- --host $(HOST) --port $(PREVIEW_PORT) --strictPort
+
+# Checked before the build, so a missing tool costs no wait.
+tunnel-check:
+	@command -v $(firstword $(TUNNEL)) >/dev/null || { \
+		echo "$(firstword $(TUNNEL)) is not installed. For the default tunnel, run: brew install cloudflared"; \
+		exit 1; }
+
+# Serves the fresh build and opens a tunnel to it, because a phone cannot use the service worker (so
+# cannot try offline use or the update prompt) over plain http on the local network: it needs https.
+# The tunnel's address changes each time, and a phone's saved progress belongs to one address.
+tunnel: node_modules tunnel-check build ## Serve the build at a temporary https address, to try it on a phone
+	@./node_modules/.bin/vite preview --host localhost --port $(PREVIEW_PORT) --strictPort & server=$$!; \
+	trap 'kill $$server 2>/dev/null' EXIT INT TERM; \
+	for i in $$(seq 1 50); do curl -sf -o /dev/null http://localhost:$(PREVIEW_PORT)/ && break; sleep 0.2; done; \
+	echo "Serving the build. Open the https address below on your phone. Press Ctrl-C to stop."; \
+	$(TUNNEL)
 
 build: node_modules ## Static build into build/
 	npm run build
