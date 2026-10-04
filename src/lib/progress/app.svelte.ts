@@ -4,13 +4,18 @@ import { createBackup, type Backup, type KnownIds } from './backup';
 import { gradeAnswer } from './grading';
 import { dueCards, newCard, reviewCard, type StoredCard } from './scheduler';
 import { computeStreak, dayKey, type DayKey, type StreakResult } from './streak';
-import { defaultMeta, type Meta, type Placement, type ProgressStore } from './store';
+import { defaultMeta, MemoryStore, type Meta, type Placement, type ProgressStore } from './store';
 
 export type LessonStatus = 'done' | 'skipped' | 'next' | 'locked';
 
 /** Everything the interface needs to know about the learner, persisted after every change. */
 export class AppState {
 	ready = $state(false);
+	/**
+	 * The browser would not let progress be saved, so it will be lost when the page closes. Some
+	 * private and locked-down windows refuse storage; a full disk can also refuse a write.
+	 */
+	storageProblem = $state(false);
 	meta = $state<Meta>(defaultMeta());
 	cards = $state<StoredCard[]>([]);
 	/** Bumped after each change so time-based values (due cards, today) recompute. */
@@ -26,7 +31,14 @@ export class AppState {
 	}
 
 	async init() {
-		[this.meta, this.cards] = await Promise.all([this.store.loadMeta(), this.store.loadCards()]);
+		try {
+			[this.meta, this.cards] = await Promise.all([this.store.loadMeta(), this.store.loadCards()]);
+		} catch {
+			// The browser will not let the app keep anything. Carry on with progress held in memory
+			// for this visit, rather than leave the learner on a loading screen, and say so.
+			this.store = new MemoryStore();
+			this.storageProblem = true;
+		}
 		this.ready = true;
 	}
 
@@ -102,7 +114,10 @@ export class AppState {
 		this.cards.push(...fresh);
 
 		this.tick++;
-		await Promise.all([this.persistMeta(), this.store.saveCards($state.snapshot(fresh))]);
+		await Promise.all([
+			this.persistMeta(),
+			this.save(() => this.store.saveCards($state.snapshot(fresh)))
+		]);
 	}
 
 	/**
@@ -130,7 +145,7 @@ export class AppState {
 			this.meta.metDays.push(key);
 		}
 		this.tick++;
-		await Promise.all([this.persistMeta(), this.store.saveCards(saved)]);
+		await Promise.all([this.persistMeta(), this.save(() => this.store.saveCards(saved))]);
 	}
 
 	/** The lessons and cards this version of the app has, for checking a backup against. */
@@ -155,13 +170,25 @@ export class AppState {
 	}
 
 	async reset() {
-		await this.store.clear();
+		await this.save(() => this.store.clear());
 		this.meta = defaultMeta();
 		this.cards = [];
 		this.tick++;
 	}
 
 	private persistMeta() {
-		return this.store.saveMeta($state.snapshot(this.meta));
+		return this.save(() => this.store.saveMeta($state.snapshot(this.meta)));
+	}
+
+	/**
+	 * Saves, and notes it when the browser will not take the data. A learner's answer must never
+	 * fail because it could not be stored: the progress is still in memory, and they are told.
+	 */
+	private async save(work: () => Promise<unknown>) {
+		try {
+			await work();
+		} catch {
+			this.storageProblem = true;
+		}
 	}
 }

@@ -6,6 +6,7 @@
 	import { page } from '$app/state';
 	import { onMount } from 'svelte';
 	import { arabicSize } from '#lib/arabic-size.svelte';
+	import StorageNotice from '#lib/components/StorageNotice.svelte';
 	import UpdateBanner from '#lib/components/UpdateBanner.svelte';
 	import { app } from '#lib/progress/instance';
 	import { appUpdate } from '#lib/update.svelte';
@@ -60,6 +61,8 @@
 		<a href={resolve('/settings')}>Settings</a>
 	</nav>
 </header>
+
+<StorageNotice />
 
 {#if app.ready}
 	{@render children()}

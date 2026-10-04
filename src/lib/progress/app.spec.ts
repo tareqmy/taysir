@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import { lessonById } from '../content/course';
 import { AppState } from './app.svelte';
 import { parseBackup } from './backup';
-import { MemoryStore } from './store';
+import { defaultMeta, MemoryStore, type ProgressStore } from './store';
 
 let now: Date;
 let store: MemoryStore;
@@ -230,5 +230,108 @@ describe('persistence', () => {
 		expect(app.needsPlacement).toBe(true);
 		expect(app.cards).toEqual([]);
 		expect((await create()).needsPlacement).toBe(true);
+	});
+});
+
+/** What a browser that will not keep data does when the app asks it to. */
+const refused = () => new DOMException('The operation is insecure.', 'SecurityError');
+
+/** A store whose browser refuses: everything when `loads` is false, otherwise every save. */
+class RefusingStore implements ProgressStore {
+	loads: boolean;
+	constructor(loads: boolean) {
+		this.loads = loads;
+	}
+	async loadCards() {
+		if (!this.loads) throw refused();
+		return [];
+	}
+	async loadMeta() {
+		if (!this.loads) throw refused();
+		return defaultMeta();
+	}
+	async saveCards() {
+		throw refused();
+	}
+	async saveMeta() {
+		throw refused();
+	}
+	async replaceAll() {
+		throw refused();
+	}
+	async clear() {
+		throw refused();
+	}
+}
+
+/** A backup of a learner who has finished the first lesson, made on another device. */
+async function someBackup() {
+	const source = await create();
+	await source.setPlacement('beginner', 10);
+	await source.completeLesson('letters-1');
+	const parsed = parseBackup(JSON.stringify(source.exportBackup()), source.knownIds);
+	if (!parsed.ok) throw new Error(parsed.error);
+	return parsed.backup;
+}
+
+describe('when the browser will not keep anything', () => {
+	it('says nothing is wrong when it will', async () => {
+		const app = await create();
+		await app.setPlacement('beginner', 10);
+		await app.completeLesson('letters-1');
+		await app.answer(undefined, true);
+		expect(app.storageProblem).toBe(false);
+	});
+
+	it('still starts, with an empty page of progress and a warning, when nothing can be loaded', async () => {
+		const app = new AppState(new RefusingStore(false), () => now);
+		await app.init();
+		expect(app.ready).toBe(true);
+		expect(app.storageProblem).toBe(true);
+		expect(app.needsPlacement).toBe(true);
+	});
+
+	it('keeps what the learner does for the visit, and lets them download it', async () => {
+		const app = new AppState(new RefusingStore(false), () => now);
+		await app.init();
+		await app.setPlacement('beginner', 10);
+		await app.completeLesson('letters-1');
+		await app.answer(undefined, true);
+
+		expect(app.lessonStatus('letters-1')).toBe('done');
+		expect(app.nextLesson?.id).toBe('letters-2');
+		expect(app.todayCount).toBe(1);
+		const parsed = parseBackup(JSON.stringify(app.exportBackup()), app.knownIds);
+		if (!parsed.ok) throw new Error(parsed.error);
+		expect(parsed.backup.meta.completedLessons).toEqual(['letters-1']);
+	});
+
+	it('does not fail an answer or a lesson because a save was refused, and says so', async () => {
+		const app = new AppState(new RefusingStore(true), () => now);
+		await app.init();
+		expect(app.storageProblem).toBe(false);
+
+		await expect(app.setPlacement('beginner', 10)).resolves.toBeUndefined();
+		expect(app.storageProblem).toBe(true);
+		await expect(app.completeLesson('letters-1')).resolves.toBeUndefined();
+		await expect(app.answer(undefined, true)).resolves.toBeUndefined();
+		expect(app.lessonStatus('letters-1')).toBe('done');
+		expect(app.todayCount).toBe(1);
+	});
+
+	it('can still restore a backup, into memory, after falling back', async () => {
+		const backup = await someBackup();
+		const app = new AppState(new RefusingStore(false), () => now);
+		await app.init();
+		await app.restore(backup);
+		expect(app.meta.completedLessons).toEqual(['letters-1']);
+	});
+
+	it('refuses a restore the browser will not store, and changes nothing', async () => {
+		const backup = await someBackup();
+		const app = new AppState(new RefusingStore(true), () => now);
+		await app.init();
+		await expect(app.restore(backup)).rejects.toThrow();
+		expect(app.meta.completedLessons).toEqual([]);
 	});
 });
