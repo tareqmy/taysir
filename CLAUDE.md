@@ -11,6 +11,7 @@ Web app that teaches the Arabic of the Quran (vocabulary + grammar, from real ve
 - **Audio:** streamed from public CDNs (EveryAyah verses, Quran.com word audio). Never synthetic voice for Quran text.
 - **v1 features:** spaced repetition (FSRS) and streaks with a daily goal. Not XP or badges.
 - **Progress page:** its own page at `/progress`, linked from the home streak card rather than the top bar (a fourth link wraps on narrow phones). Sections: words by how well they are known, Quran coverage, a 12-week practice calendar, and lessons per unit with streak records. Every number comes from `src/lib/progress/stats.ts`, which works from saved cards and `Meta`, so adding a statistic never needs a migration.
+- **Extra practice and verses you know:** `/practice` drills the weakest words first and deliberately does not change the review schedule (it still counts toward the goal and streak), so answer it with `app.answer(undefined, …)`, never with a card id. `/verses` lists verses whose vocabulary words are all learned, from its own page linked from the progress page; a verse also needs at least half its words to be vocabulary words (`MIN_VOCABULARY_SHARE`), because 16 verses have no vocabulary words and 37 are mostly non-card words.
 - **Look:** calm and respectful (warm neutrals, green and gold accents, Amiri Quran font, automatic dark mode).
 - **Working style:** the user wants to pick from options for product decisions. Offer options rather than assuming.
 

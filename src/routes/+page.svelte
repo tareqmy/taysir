@@ -57,11 +57,18 @@
 		{:else}
 			<p class="card">You have finished every lesson so far. More are on the way.</p>
 		{/if}
-		<a class="btn btn-quiet" href={resolve('/review')}>
-			{dueCount === 0
-				? 'Nothing to review'
-				: `Review ${dueCount} ${dueCount === 1 ? 'item' : 'items'}`}
-		</a>
+		{#if dueCount > 0}
+			<a class="btn btn-quiet" href={resolve('/review')}>
+				Review {dueCount}
+				{dueCount === 1 ? 'item' : 'items'}
+			</a>
+		{:else if app.cards.length > 0}
+			<a class="btn btn-quiet" href={resolve('/practice')}
+				>Nothing due: practise your weakest words</a
+			>
+		{:else}
+			<a class="btn btn-quiet" href={resolve('/review')}>Nothing to review</a>
+		{/if}
 	</div>
 
 	{#each units as unit (unit.id)}

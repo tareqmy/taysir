@@ -53,7 +53,12 @@
 			{:else}
 				<p>Finish a lesson and the words and letters you learn will appear here.</p>
 			{/if}
-			<a class="btn" href={resolve('/')}>Back to lessons</a>
+			<div class="buttons">
+				<a class="btn btn-quiet" href={resolve('/')}>Back to lessons</a>
+				{#if app.cards.length > 0}
+					<a class="btn" href={resolve('/practice')}>Practise your weakest words</a>
+				{/if}
+			</div>
 		</section>
 	{:else if summary}
 		<section class="card stack" aria-live="polite">
@@ -68,6 +73,8 @@
 				<a class="btn btn-quiet" href={resolve('/')}>Back to lessons</a>
 				{#if remaining > 0}
 					<a class="btn" href={resolve('/review')} data-sveltekit-reload>Keep going</a>
+				{:else}
+					<a class="btn" href={resolve('/practice')}>Practise more</a>
 				{/if}
 			</div>
 		</section>

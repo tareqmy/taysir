@@ -44,14 +44,19 @@ export interface WordKnowledge {
 	wellKnown: number;
 }
 
+export type Strength = keyof WordKnowledge;
+
+/** How well a card is known, by where the review schedule has got to with it. */
+export function strengthOf(card: StoredCard): Strength {
+	if (card.state !== REVIEW_STATE) return 'learning';
+	return card.scheduled_days >= WELL_KNOWN_DAYS ? 'wellKnown' : 'familiar';
+}
+
 /** How well the learner knows the vocabulary cards they have been given, by the review schedule. */
 export function wordKnowledge(cards: readonly StoredCard[]): WordKnowledge {
 	const result: WordKnowledge = { learning: 0, familiar: 0, wellKnown: 0 };
 	for (const card of cards) {
-		if (parsed(card.id)?.type !== 'lexeme') continue;
-		if (card.state !== REVIEW_STATE) result.learning++;
-		else if (card.scheduled_days >= WELL_KNOWN_DAYS) result.wellKnown++;
-		else result.familiar++;
+		if (parsed(card.id)?.type === 'lexeme') result[strengthOf(card)]++;
 	}
 	return result;
 }
@@ -64,6 +69,16 @@ export function lettersLearned(cards: readonly StoredCard[]): number {
 }
 
 // --- The Quran ----------------------------------------------------------------------------------
+
+/** The ids of the vocabulary words the learner has been given. */
+export function learnedLexemes(cards: readonly StoredCard[]): Set<string> {
+	return new Set(
+		cards.flatMap((card) => {
+			const found = parsed(card.id);
+			return found?.type === 'lexeme' ? [found.id] : [];
+		})
+	);
+}
 
 export interface SurahCoverage {
 	surah: number;
@@ -93,12 +108,7 @@ export function coverage(
 	cards: readonly StoredCard[],
 	verses: readonly Verse[] = verseData.verses
 ): Coverage {
-	const learned = new Set(
-		cards.flatMap((card) => {
-			const found = parsed(card.id);
-			return found?.type === 'lexeme' ? [found.id] : [];
-		})
-	);
+	const learned = learnedLexemes(cards);
 	const bySurah = new Map<number, SurahCoverage>();
 	for (const verse of verses) {
 		const entry = bySurah.get(verse.surah) ?? {
@@ -121,6 +131,62 @@ export function coverage(
 		known: sum((s) => s.known),
 		withCard: sum((s) => s.withCard),
 		words: sum((s) => s.words),
+		surahs
+	};
+}
+
+/**
+ * A verse needs at least this share of vocabulary words before it can count as known. Without it a
+ * verse of six words, five of them not vocabulary cards yet, would count once its one card was
+ * learned, and a verse with no vocabulary words at all would count before anything was learned.
+ */
+export const MIN_VOCABULARY_SHARE = 0.5;
+
+/**
+ * Whether the learner has the words for a verse: every vocabulary word in it is learned. Words
+ * that are not vocabulary cards yet, such as a noun with a pronoun ending, do not stand in the way;
+ * the verse shows their English meaning.
+ */
+export function isKnownVerse(verse: Verse, learned: ReadonlySet<string>): boolean {
+	const vocabulary = verse.words.filter((word) => word.lexemeId !== undefined);
+	if (vocabulary.length === 0 || vocabulary.length < verse.words.length * MIN_VOCABULARY_SHARE) {
+		return false;
+	}
+	return vocabulary.every((word) => learned.has(word.lexemeId!));
+}
+
+export interface SurahVerses {
+	surah: number;
+	/** Every verse in the surah. */
+	total: number;
+	/** The verses the learner has the words for, in order. */
+	known: Verse[];
+}
+
+export interface VerseCoverage {
+	known: number;
+	total: number;
+	/** In the order of the Quran. */
+	surahs: SurahVerses[];
+}
+
+/** The verses the learner has the words for, surah by surah. */
+export function verseCoverage(
+	cards: readonly StoredCard[],
+	verses: readonly Verse[] = verseData.verses
+): VerseCoverage {
+	const learned = learnedLexemes(cards);
+	const bySurah = new Map<number, SurahVerses>();
+	for (const verse of verses) {
+		const entry = bySurah.get(verse.surah) ?? { surah: verse.surah, total: 0, known: [] };
+		entry.total++;
+		if (isKnownVerse(verse, learned)) entry.known.push(verse);
+		bySurah.set(verse.surah, entry);
+	}
+	const surahs = [...bySurah.values()];
+	return {
+		known: surahs.reduce((n, s) => n + s.known.length, 0),
+		total: surahs.reduce((n, s) => n + s.total, 0),
 		surahs
 	};
 }

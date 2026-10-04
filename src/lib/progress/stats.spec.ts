@@ -9,9 +9,12 @@ import {
 	activityWeeks,
 	courseProgress,
 	coverage,
+	isKnownVerse,
+	learnedLexemes,
 	lettersLearned,
 	percent,
 	unitProgress,
+	verseCoverage,
 	WELL_KNOWN_DAYS,
 	wordKnowledge,
 	wordsLearned
@@ -125,6 +128,94 @@ describe('coverage', () => {
 		expect(all.words).toBe(verseData.verses.reduce((n, v) => n + v.words.length, 0));
 		expect(all.withCard).toBeGreaterThan(0);
 		expect(all.withCard).toBeLessThanOrEqual(all.words);
+	});
+});
+
+describe('verses the learner has the words for', () => {
+	const word = (n: number, lexemeId?: string) => ({ n, text: `w${n}`, gloss: `g${n}`, lexemeId });
+	const verse = (surah: number, ayah: number, ...words: (string | undefined)[]): Verse => ({
+		surah,
+		ayah,
+		words: words.map((id, i) => word(i + 1, id))
+	});
+	const learned = (...ids: string[]) => new Set(ids);
+
+	it('needs every vocabulary word in the verse to be learned', () => {
+		const v = verse(1, 1, 'rabb', 'hamd');
+		expect(isKnownVerse(v, learned('rabb', 'hamd'))).toBe(true);
+		expect(isKnownVerse(v, learned('rabb'))).toBe(false);
+		expect(isKnownVerse(v, learned())).toBe(false);
+	});
+
+	it('does not let words that are not vocabulary cards stand in the way', () => {
+		const v = verse(1, 2, 'rabb', undefined); // half the words are vocabulary
+		expect(isKnownVerse(v, learned('rabb'))).toBe(true);
+	});
+
+	it('does not count a verse that is mostly words that are not cards yet', () => {
+		const v = verse(1, 3, 'rabb', undefined, undefined);
+		expect(isKnownVerse(v, learned('rabb'))).toBe(false);
+	});
+
+	it('never counts a verse with no vocabulary words, even before anything is learned', () => {
+		const v = verse(1, 4, undefined, undefined);
+		expect(isKnownVerse(v, learned())).toBe(false);
+		expect(isKnownVerse(v, learned('rabb'))).toBe(false);
+	});
+
+	it('counts a verse once, however often a word occurs in it', () => {
+		expect(isKnownVerse(verse(1, 5, 'rabb', 'rabb', 'rabb'), learned('rabb'))).toBe(true);
+	});
+
+	it('finds the learned ids from the cards, ignoring letters and ids it does not know', () => {
+		expect(learnedLexemes([card('lx:a'), card('lt:alif'), card('zz:1'), card('lx:b')])).toEqual(
+			new Set(['a', 'b'])
+		);
+	});
+
+	describe('verseCoverage', () => {
+		const verses = [
+			verse(1, 1, 'rabb', 'hamd'),
+			verse(1, 2, 'rabb'),
+			verse(78, 1, 'naba', undefined, undefined),
+			verse(78, 2, 'naba')
+		];
+
+		it('lists each surah in order with its known verses and its total', () => {
+			const result = verseCoverage([card('lx:rabb'), card('lx:naba')], verses);
+			expect(result.surahs.map((s) => [s.surah, s.total, s.known.map((v) => v.ayah)])).toEqual([
+				[1, 2, [2]],
+				[78, 2, [2]]
+			]);
+			expect(result).toMatchObject({ known: 2, total: 4 });
+		});
+
+		it('adds a verse as soon as its last word is learned', () => {
+			expect(verseCoverage([card('lx:rabb')], verses).known).toBe(1);
+			expect(verseCoverage([card('lx:rabb'), card('lx:hamd')], verses).known).toBe(2);
+		});
+
+		it('is empty before anything is learned', () => {
+			expect(verseCoverage([], verses)).toMatchObject({ known: 0, total: 4 });
+			expect(verseCoverage([], [])).toEqual({ known: 0, total: 0, surahs: [] });
+		});
+
+		it('on the real course, nothing is known at first and nearly everything once it is all learned', () => {
+			expect(verseCoverage([]).known).toBe(0);
+			const all = verseCoverage([...cardIds].map((id) => card(id)));
+			const learnedAll = learnedLexemes([...cardIds].map((id) => card(id)));
+			// Whatever is left out is left out by the vocabulary share rule alone.
+			const short = verseData.verses.filter((v) => !isKnownVerse(v, learnedAll));
+			for (const v of short) {
+				const vocabulary = v.words.filter((w) => w.lexemeId !== undefined).length;
+				expect(vocabulary < v.words.length * 0.5 || vocabulary === 0, `${v.surah}:${v.ayah}`).toBe(
+					true
+				);
+			}
+			expect(all.known + short.length).toBe(all.total);
+			expect(all.known).toBeGreaterThan(all.total * 0.8);
+			expect(all.total).toBe(verseData.verses.length);
+		});
 	});
 });
 

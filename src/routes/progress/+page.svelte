@@ -13,6 +13,7 @@
 		lettersLearned,
 		percent,
 		unitProgress,
+		verseCoverage,
 		wordKnowledge,
 		wordsLearned
 	} from '#lib/progress/stats';
@@ -28,6 +29,7 @@
 	const learned = $derived(wordsLearned(knowledge));
 	const letters = $derived(lettersLearned(app.cards));
 	const quran = $derived(coverage(app.cards));
+	const verses = $derived(verseCoverage(app.cards));
 	const rows = $derived(unitProgress(units, app.meta));
 	const course = $derived(courseProgress(rows));
 	const weeks = $derived(activityWeeks(app.meta, app.today));
@@ -115,11 +117,16 @@
 		{#if showLetters}
 			<p class="muted">Letters: {letters} of {totalLetters} learned.</p>
 		{/if}
-		{#if due > 0}
-			<a class="btn btn-quiet" href={resolve('/review')}>
-				Review {plural(due, 'item', 'items')} due now
-			</a>
-		{/if}
+		<div class="buttons">
+			{#if due > 0}
+				<a class="btn btn-quiet" href={resolve('/review')}>
+					Review {plural(due, 'item', 'items')} due now
+				</a>
+			{/if}
+			{#if app.cards.length > 0}
+				<a class="btn btn-quiet" href={resolve('/practice')}>Practise your weakest words</a>
+			{/if}
+		</div>
 	</section>
 
 	<section class="card stack" aria-labelledby="quran">
@@ -137,6 +144,9 @@
 			{(quran.words - quran.withCard).toLocaleString()}, such as a noun with a pronoun ending, are
 			not cards yet, so this cannot reach 100%.
 		</p>
+		<a class="btn btn-quiet" href={resolve('/verses')}>
+			Verses you know: {verses.known.toLocaleString()} of {verses.total.toLocaleString()}
+		</a>
 		<details>
 			<summary>Surah by surah</summary>
 			<ul class="rows">
@@ -256,6 +266,11 @@
 		flex-wrap: wrap;
 		justify-content: space-between;
 		gap: 0 1rem;
+	}
+	.buttons {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.75rem;
 	}
 	summary {
 		display: flex;
