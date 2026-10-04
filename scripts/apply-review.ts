@@ -5,7 +5,7 @@
  *
  * Rows marked Change with a Correction update the word glosses (sheet “Words”) and the vocabulary
  * meanings (sheet “Vocabulary”) in `data/`. Everything else the reviewer wrote (comments, rows
- * marked Unsure, corrections that could not be applied) goes into review/feedback.md for a person
+ * marked Unsure, corrections that could not be applied) goes into review/feedback-<file name>.md for a person
  * to act on. With --dry nothing is changed and only the report is written.
  *
  * Afterwards run `npm run data:build` and `npm test`.
@@ -13,6 +13,7 @@
 import ExcelJS from 'exceljs';
 import { execFileSync } from 'node:child_process';
 import { mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { COLUMNS, SHEETS } from './review-sheets.ts';
 
@@ -297,11 +298,12 @@ const report = [
 	''
 ].join('\n');
 mkdirSync(`${projectRoot}review`, { recursive: true });
-writeFileSync(`${projectRoot}review/feedback.md`, report);
+const reportPath = `review/feedback-${basename(file, '.xlsx')}.md`;
+writeFileSync(`${projectRoot}${reportPath}`, report);
 
 console.log(
 	`${dry ? 'Would apply' : 'Applied'} ${applied.length} corrections, ${skipped.length} could not be applied, ` +
 		`${needsFollowUp.length} need a person, ${feedback.length} other comments.\n` +
-		`Report: review/feedback.md` +
+		`Report: ${reportPath}` +
 		(!dry && touched.size > 0 ? '\nNext: npm run data:build && npm test' : '')
 );

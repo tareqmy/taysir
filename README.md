@@ -81,11 +81,11 @@ The app was audited with axe-core on every screen type (light and dark, 375 px p
 
 ## Teacher review
 
-All the English (word glosses, card meanings, lesson text) is a draft that needs a qualified teacher. To get it checked:
+All the English (word glosses, card meanings, lesson text) is a draft that needs a qualified teacher. The whole course is about 16 hours of review by my rough estimate, so it is offered in five parts a reviewer can take one at a time, in the order learners meet them (parts 1 and 2 matter most). The parts are listed in `scripts/review-sheets.ts`, and a test checks they cover every course unit exactly once.
 
-1. `npm run review:export` writes `review/Taysir-review.xlsx` (not committed). It has a sheet each for verses, words, vocabulary cards, lesson text and grammar exercises, with instructions on the first sheet. Entries the authors were least sure of are marked Flagged and shaded.
+1. `npm run review:export` writes everything to `review/` (not committed): one spreadsheet per part (`Taysir-review-part-N-….xlsx`), `Taysir-review.xlsx` with everything, and `Message-to-reviewer.md`, a draft message with a table of what each part holds and a rough time for it. Use `-- --part=2` to rebuild just one part. Each spreadsheet has a sheet each for verses, words, vocabulary cards, lesson text and grammar exercises, with instructions on the first sheet. Entries the authors were least sure of are marked Flagged and shaded.
 2. The reviewer marks each row OK, Change or Unsure, types replacements in Correction, and adds comments.
-3. `npm run review:apply -- returned.xlsx` (add `--dry` to preview) writes their corrections for words and cards into `data/`, and puts everything else (comments, Unsure rows, corrections it could not apply) in `review/feedback.md` for a person to act on. Then run `npm run data:build` and `npm test`.
+3. `npm run review:apply -- returned.xlsx` (add `--dry` to preview) writes their corrections for words and cards into `data/`, and puts everything else (comments, Unsure rows, corrections it could not apply) in `review/feedback-<file name>.md` for a person to act on. Parts can come back one at a time. Then run `npm run data:build` and `npm test`.
 
 ## Known gaps
 
