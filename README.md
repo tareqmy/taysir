@@ -87,12 +87,13 @@ e2e/                browser tests (Playwright), with their helpers in e2e/suppor
 - **`learner-journey.spec.ts`:** a new learner chooses a starting point, reads and finishes a lesson, and sees it on the lesson list, the progress page and the verses page, and after a reload.
 - **`practice-and-review.spec.ts`:** a review reschedules what was due and leaves the rest alone, and extra practice counts toward the day without touching the schedule.
 - **`restore.spec.ts`:** saved progress restores through Settings and shows up everywhere, a file that is not a backup is refused, and a downloaded backup holds the progress.
+- **`update-banner.spec.ts`:** the offer to update, with the real service worker. The app is served from a copy of the build (`e2e/support/site.ts`) that can be redeployed at the same address as a new version. A first visit is quiet; a redeploy is found and offered without disturbing the open page, whose offline files stay until the switch; “Update now” reloads onto the new version and clears the old files; “Later” puts the offer away until the next visit; and updating in one tab leaves another tab alone, which can still switch. It is checked in both colour schemes.
 - **`arabic-size.spec.ts`:** the Arabic text size changes Arabic and not English, is kept on the device and untouched by a backup, and at the Largest size on a phone nothing overflows or breaks a word, at normal and 200% text, across the lessons that show the course's widest words.
 - **`accessibility.spec.ts`:** axe-core on every screen, in a phone and a desktop window, in light and dark mode. Nothing is allowed to fail.
 
 The tests need no hooks in the app. To start a learner part-way through the course they build one with the app's own scheduler (`e2e/support/seed.ts`) and load it through Settings, the way a learner restores a backup. They know the right answer to a lesson question from the course data, which they import directly. A question made on the spot, as in a review, is answered by picking the first choice, so those tests check what the app does with the answers, not whether they were right.
 
-Not covered yet: phone-width and large-text layout outside the Arabic screens, offline behaviour, and the update banner.
+Not covered yet: phone-width and large-text layout outside the Arabic screens, and offline behaviour.
 
 ## Accessibility
 

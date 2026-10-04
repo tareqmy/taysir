@@ -1,6 +1,5 @@
-import AxeBuilder from '@axe-core/playwright';
-import type { Page } from '@playwright/test';
 import { lessons } from '../src/lib/content/course';
+import { audit } from './support/axe';
 import {
 	answerAll,
 	answerExercise,
@@ -24,21 +23,6 @@ const modes = [
 	{ name: 'desktop, light', viewport: { width: 1280, height: 800 }, colorScheme: 'light' },
 	{ name: 'desktop, dark', viewport: { width: 1280, height: 800 }, colorScheme: 'dark' }
 ] as const;
-
-const TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa', 'best-practice'];
-
-async function audit(page: Page, screen: string) {
-	const { violations } = await new AxeBuilder({ page }).withTags(TAGS).analyze();
-	expect
-		.soft(
-			violations.map(
-				(v) =>
-					`${v.id} (${v.impact}): ${v.help}. ${v.nodes.length} place(s), first at ${v.nodes[0].target.join(' ')}`
-			),
-			`${screen}: accessibility problems`
-		)
-		.toEqual([]);
-}
 
 // A grammar lesson that uses every kind of reading block (rule, text, phrase and verse) and a
 // word-building question, so those screens are checked too.
