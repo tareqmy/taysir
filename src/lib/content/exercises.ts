@@ -10,7 +10,8 @@ import type {
 	Chunk,
 	Exercise,
 	Letter,
-	MatchExercise
+	MatchExercise,
+	TapExercise
 } from './types';
 
 export const ar = (text: string): Chunk => ({ text, lang: 'ar' });
@@ -313,10 +314,10 @@ export function reviewExercise(cardId: string, allLexemes: readonly Lexeme[], rn
 
 /** Whether a response to a single-answer exercise is right. */
 export function isCorrect(
-	exercise: ChooseExercise | BuildExercise,
+	exercise: ChooseExercise | BuildExercise | TapExercise,
 	response: string | string[]
 ): boolean {
-	if (exercise.kind === 'choose') return response === exercise.answerId;
+	if (exercise.kind === 'choose' || exercise.kind === 'tap') return response === exercise.answerId;
 	return (
 		Array.isArray(response) &&
 		response.length === exercise.answer.length &&

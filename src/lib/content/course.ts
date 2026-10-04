@@ -13,6 +13,7 @@ import {
 import { juzAmmaUnits } from './juz-amma';
 import { grammarPatternsUnit } from './grammar-patterns';
 import { shortSurahsUnit } from './short-surahs';
+import { withVerseExercises } from './verse-exercises';
 import type { Block, Lesson, Unit } from './types';
 
 /** Text of word `n` in a verse of Al-Fatiha, straight from the corpus data. */
@@ -473,6 +474,11 @@ const grammarUnit: Unit = {
 
 // --- Whole course -----------------------------------------------------------
 
+const withVerses = (unit: Unit): Unit => ({
+	...unit,
+	lessons: unit.lessons.map(withVerseExercises)
+});
+
 export const units: Unit[] = [
 	lettersUnit,
 	fatihaUnit,
@@ -481,7 +487,7 @@ export const units: Unit[] = [
 	shortSurahsUnit,
 	grammarPatternsUnit,
 	...juzAmmaUnits
-];
+].map(withVerses);
 
 export const lessons: Lesson[] = units.flatMap((u) => u.lessons);
 

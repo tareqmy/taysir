@@ -6,6 +6,7 @@
 	import BuildView from './BuildView.svelte';
 	import ChooseView from './ChooseView.svelte';
 	import MatchView from './MatchView.svelte';
+	import TapView from './TapView.svelte';
 	import RichText from './RichText.svelte';
 
 	let {
@@ -111,6 +112,8 @@
 				<ChooseView exercise={current.exercise} onresult={result} />
 			{:else if current.exercise.kind === 'match'}
 				<MatchView exercise={current.exercise} onresult={result} />
+			{:else if current.exercise.kind === 'tap'}
+				<TapView exercise={current.exercise} onresult={result} />
 			{:else}
 				<BuildView exercise={current.exercise} onresult={result} />
 			{/if}

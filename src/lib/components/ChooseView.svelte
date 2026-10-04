@@ -8,6 +8,11 @@
 
 	let picked = $state<string>();
 
+	/** Long choices, such as whole verses, need the full width to stay readable. */
+	const wide = $derived(
+		exercise.choices.some((c) => c.chunk.text.length > (c.chunk.lang === 'ar' ? 26 : 38))
+	);
+
 	function pick(id: string) {
 		if (picked !== undefined) return;
 		picked = id;
@@ -19,10 +24,11 @@
 	{#if exercise.prompt}
 		<div class="prompt card">
 			<ChunkText chunk={exercise.prompt} size="xl" />
+			{#if exercise.hint}<p class="hint muted" lang="en">{exercise.hint}</p>{/if}
 		</div>
 	{/if}
 
-	<div class="choices" role="group" aria-label="Choices">
+	<div class="choices" class:wide role="group" aria-label="Choices">
 		{#each exercise.choices as choice (choice.id)}
 			{@const answered = picked !== undefined}
 			<button
@@ -44,10 +50,17 @@
 		text-align: center;
 		padding: 1rem;
 	}
+	.hint {
+		margin: 0.5rem 0 0;
+		font-size: 1rem;
+	}
 	.choices {
 		display: grid;
 		grid-template-columns: repeat(2, 1fr);
 		gap: 0.75rem;
+	}
+	.choices.wide {
+		grid-template-columns: 1fr;
 	}
 	.choice {
 		min-height: 4rem;

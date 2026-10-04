@@ -24,6 +24,8 @@ export interface ChooseExercise extends ExerciseBase {
 	kind: 'choose';
 	/** The thing being asked about; omitted when the question line says it all. */
 	prompt?: Chunk;
+	/** An English clue shown under the prompt, such as the meaning of the whole verse. */
+	hint?: string;
 	choices: { id: string; chunk: Chunk }[];
 	answerId: string;
 }
@@ -43,7 +45,16 @@ export interface BuildExercise extends ExerciseBase {
 	extras: { id: string; chunk: Chunk }[];
 }
 
-export type Exercise = ChooseExercise | MatchExercise | BuildExercise;
+/** Tap one word of a verse. */
+export interface TapExercise extends ExerciseBase {
+	kind: 'tap';
+	/** The words of the verse, in reading order. */
+	words: { id: string; text: string }[];
+	/** The word the question asks for. */
+	answerId: string;
+}
+
+export type Exercise = ChooseExercise | MatchExercise | BuildExercise | TapExercise;
 
 // --- Teaching blocks --------------------------------------------------------
 

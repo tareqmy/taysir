@@ -130,7 +130,7 @@ const instructions: [string, boolean][] = [
 	['', false],
 	['How to review', true],
 	[
-		'1. “Verses”: read each verse with its word-by-word English. If something reads wrongly, say so in Comment.',
+		'1. “Verses”: read each verse with its word-by-word English. If something reads wrongly, say so in Comment. Learners also see that English joined into one line, as the meaning of the whole verse, in questions such as “What does this verse say?”, so it should be understandable as a line.',
 		false
 	],
 	[

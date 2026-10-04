@@ -23,6 +23,11 @@ function problemsWith(exercise: Exercise): string[] {
 		if (exercise.pairs.length < 2) problems.push('fewer than two pairs');
 		if (new Set(left).size !== left.length) problems.push('duplicate left side');
 		if (new Set(right).size !== right.length) problems.push('duplicate right side');
+	} else if (exercise.kind === 'tap') {
+		const ids = exercise.words.map((w) => w.id);
+		if (!ids.includes(exercise.answerId)) problems.push('answer is not among the words');
+		if (new Set(ids).size !== ids.length) problems.push('duplicate word ids');
+		if (exercise.words.length < 3) problems.push('fewer than three words');
 	} else {
 		const answer = exercise.answer.map((t) => t.chunk.text);
 		const clash = exercise.extras.some((t) => answer.includes(t.chunk.text));
