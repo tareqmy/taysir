@@ -62,6 +62,12 @@
 		margin: 0;
 		padding-left: 1.2rem;
 		display: grid;
+		/* Without this the column grows to fit the longest unbreakable word, and the page with it. */
+		grid-template-columns: minmax(0, 1fr);
 		gap: 0.75rem;
+	}
+	/* A long web address breaks rather than running off a narrow screen. */
+	li {
+		overflow-wrap: anywhere;
 	}
 </style>

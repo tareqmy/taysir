@@ -93,11 +93,14 @@
 	}
 	.goals {
 		display: grid;
+		/* Without this the column grows to fit the widest card, and the page with it. */
+		grid-template-columns: minmax(0, 1fr);
 		gap: 0.75rem;
 	}
 	.goal {
 		display: grid;
-		grid-template-columns: auto 1fr;
+		grid-template-columns: auto minmax(0, 1fr);
+		overflow-wrap: anywhere;
 		grid-template-rows: auto auto;
 		column-gap: 0.75rem;
 		align-items: center;
