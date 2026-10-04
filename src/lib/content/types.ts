@@ -16,6 +16,8 @@ interface ExerciseBase {
 	cardId?: string;
 	/** Audio played alongside the prompt. */
 	audioUrl?: string;
+	/** What the audio button is called for a screen reader. Without one it is “Hear the word”. */
+	audioLabel?: string;
 	/**
 	 * The question has to be heard to be answered. Audio is streamed, so the runner leaves these
 	 * out when the device is offline, and always lets the learner skip one without a penalty.

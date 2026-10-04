@@ -23,6 +23,11 @@ const MAX_PER_LESSON = 3;
 const GAP = String.fromCodePoint(0x640).repeat(4);
 
 const refOf = (v: Verse) => `${v.surah}:${v.ayah}`;
+/** A verse's recitation, and what its button is called: these questions play a verse, not a word. */
+const verseAudio = (v: Verse) => ({
+	audioUrl: verseAudioUrl(v.surah, v.ayah),
+	audioLabel: 'Hear the verse'
+});
 const englishLine = (v: Verse) => v.words.map((w) => w.gloss).join(' ');
 const arabicLine = (v: Verse) => v.words.map((w) => w.text).join(' ');
 const sameText = (a: string, b: string) => a.trim().toLowerCase() === b.trim().toLowerCase();
@@ -94,7 +99,7 @@ function build(v: Verse, ctx: Context): BuildExercise | undefined {
 		answer: v.words.map((w, i) => ({ id: `w${i}`, chunk: ar(w.text) })),
 		extras: extras.slice(0, 2).map((text, i) => ({ id: `x${i}`, chunk: ar(text) })),
 		explanation: `${arabicLine(v)} says “${englishLine(v)}”.`,
-		audioUrl: verseAudioUrl(v.surah, v.ayah)
+		...verseAudio(v)
 	};
 }
 
@@ -148,7 +153,7 @@ function which(v: Verse, ctx: Context): ChooseExercise | undefined {
 		choices,
 		answerId: `v:${refOf(v)}`,
 		explanation: `${text} says “${line}”.`,
-		audioUrl: verseAudioUrl(v.surah, v.ayah)
+		...verseAudio(v)
 	};
 }
 
@@ -167,7 +172,7 @@ function listen(v: Verse, ctx: Context): ChooseExercise | undefined {
 		})),
 		answerId: `v:${refOf(v)}`,
 		explanation: `${arabicLine(v)} says “${englishLine(v)}”.`,
-		audioUrl: verseAudioUrl(v.surah, v.ayah),
+		...verseAudio(v),
 		listening: true
 	};
 }
@@ -225,7 +230,7 @@ function tap(v: Verse, ctx: Context): TapExercise | undefined {
 		words: v.words.map((w, i) => ({ id: `t${i}`, text: w.text })),
 		answerId: `t${v.words.indexOf(target)}`,
 		explanation: `${target.text} means “${target.gloss}”: ${arabicLine(v)}.`,
-		audioUrl: verseAudioUrl(v.surah, v.ayah)
+		...verseAudio(v)
 	};
 }
 

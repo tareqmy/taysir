@@ -139,7 +139,10 @@
 				<RichText text={current.exercise.question} />
 			</h2>
 			{#if showAudioNow}
-				<AudioButton url={current.exercise.audioUrl!} label="Hear the word" />
+				<AudioButton
+					url={current.exercise.audioUrl!}
+					label={current.exercise.audioLabel ?? 'Hear the word'}
+				/>
 			{/if}
 		</div>
 

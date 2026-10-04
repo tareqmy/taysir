@@ -261,6 +261,26 @@ describe('course', () => {
 	});
 });
 
+describe('audio buttons', () => {
+	it('name what they play: a verse for recitation, a word for anything else', () => {
+		let withAudio = 0;
+		for (const lesson of lessons) {
+			for (const exercise of lesson.exercises) {
+				if (!exercise.audioUrl) {
+					expect(exercise.audioLabel, `${lesson.id} / ${exercise.id}`).toBeUndefined();
+					continue;
+				}
+				withAudio++;
+				const isVerse = exercise.audioUrl.includes('everyayah.com');
+				expect(exercise.audioLabel, `${lesson.id} / ${exercise.id}`).toBe(
+					isVerse ? 'Hear the verse' : undefined
+				);
+			}
+		}
+		expect(withAudio).toBeGreaterThan(0);
+	});
+});
+
 describe('word listening', () => {
 	it('gives every vocabulary lesson one question about a word it teaches', () => {
 		for (const lesson of lessons.filter((l) => l.kind === 'vocabulary')) {
