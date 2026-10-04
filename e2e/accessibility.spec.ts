@@ -40,6 +40,11 @@ async function audit(page: Page, screen: string) {
 		.toEqual([]);
 }
 
+// A grammar lesson that uses every kind of reading block (rule, text, phrase and verse) and a
+// word-building question, so those screens are checked too.
+const grammar = lessons.find((l) => l.id === 'grammar-when-o')!;
+const buildAt = grammar.exercises.findIndex((e) => e.kind === 'build');
+
 // A lesson with a listening question, so that screen is checked too.
 const lesson = lessons.find((l) =>
 	l.exercises.some((e) => e.listening && e.id.startsWith('listen:'))
@@ -107,6 +112,24 @@ for (const mode of modes) {
 				await answerAll(page, lesson.exercises.slice(listenAt + 1));
 				await expect(page.getByRole('heading', { name: 'Lesson complete' })).toBeVisible();
 				await audit(page, 'lesson: complete');
+			});
+
+			await test.step('a grammar lesson: every kind of reading block, and a word-building question', async () => {
+				await page.goto(`/lesson/${grammar.id}`);
+				for (let step = 0; step < grammar.intro.length; step++) {
+					await expect(page.getByText(`Step ${step + 1} of ${grammar.intro.length}`)).toBeVisible();
+					await audit(
+						page,
+						`grammar lesson: reading step ${step + 1} (${grammar.intro[step].type})`
+					);
+					if (step < grammar.intro.length - 1) {
+						await page.getByRole('button', { name: 'Continue' }).click();
+					}
+				}
+				await page.getByRole('button', { name: 'Start practice' }).click();
+				await answerAll(page, grammar.exercises.slice(0, buildAt));
+				await expect(page.getByRole('group', { name: 'Word bank' })).toBeVisible();
+				await audit(page, 'grammar lesson: word-building question');
 			});
 
 			await test.step('review, from a question to the summary', async () => {

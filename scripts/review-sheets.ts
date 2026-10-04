@@ -47,7 +47,7 @@ export const PARTS: Part[] = [
 		n: 2,
 		slug: 'short-surahs',
 		title: 'The short surahs (105 to 114) and grammar from them',
-		unitIds: ['short-surahs', 'grammar-patterns']
+		unitIds: ['short-surahs', 'grammar-patterns', 'grammar-structure']
 	},
 	{ n: 3, slug: 'juz-amma-a', unitIds: ['juz-amma-1', 'juz-amma-2'] },
 	{ n: 4, slug: 'juz-amma-b', unitIds: ['juz-amma-3', 'juz-amma-4'] },

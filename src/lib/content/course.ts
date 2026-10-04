@@ -12,6 +12,7 @@ import {
 } from './exercises';
 import { juzAmmaUnits } from './juz-amma';
 import { grammarPatternsUnit } from './grammar-patterns';
+import { grammarStructureUnit } from './grammar-structure';
 import { withWordListening } from './listening';
 import { shortSurahsUnit } from './short-surahs';
 import { withVerseExercises } from './verse-exercises';
@@ -488,6 +489,7 @@ export const units: Unit[] = [
 	grammarUnit,
 	shortSurahsUnit,
 	grammarPatternsUnit,
+	grammarStructureUnit,
 	...juzAmmaUnits
 ].map(withVerses);
 

@@ -2,7 +2,7 @@
 
 Learn to understand the Arabic of the Quran. Words and grammar are taught from real verses, and a spaced-repetition review brings each item back just before it is forgotten.
 
-**Status:** a working vertical slice. It has a placement choice, the alphabet, vocabulary and root lessons from Al-Fatiha, six grammar lessons, vocabulary lessons for all of Juz Amma (surahs 78 to 114), a review queue, streaks with a daily goal, and a progress page. The English glosses and grammar explanations are **drafts that still need review by a qualified teacher** before any public release.
+**Status:** a working vertical slice. It has a placement choice, the alphabet, vocabulary and root lessons from Al-Fatiha, ten grammar lessons, vocabulary lessons for all of Juz Amma (surahs 78 to 114), a review queue, streaks with a daily goal, and a progress page. The English glosses and grammar explanations are **drafts that still need review by a qualified teacher** before any public release.
 
 ## Run it
 
@@ -106,7 +106,7 @@ The app was audited with axe-core on every screen (light and dark, a phone and a
 
 ## Teacher review
 
-All the English (word glosses, card meanings, lesson text) is a draft that needs a qualified teacher. The whole course is about 16 hours of review by my rough estimate, so it is offered in five parts a reviewer can take one at a time, in the order learners meet them (parts 1 and 2 matter most). The parts are listed in `scripts/review-sheets.ts`, and a test checks they cover every course unit exactly once.
+All the English (word glosses, card meanings, lesson text) is a draft that needs a qualified teacher. The whole course is about 17 hours of review by my rough estimate, so it is offered in five parts a reviewer can take one at a time, in the order learners meet them (parts 1 and 2 matter most). The parts are listed in `scripts/review-sheets.ts`, and a test checks they cover every course unit exactly once.
 
 1. `npm run review:export` writes everything to `review/` (not committed): one spreadsheet per part (`Taysir-review-part-N-….xlsx`), `Taysir-review.xlsx` with everything, and `Message-to-reviewer.md`, a draft message with a table of what each part holds and a rough time for it. Use `-- --part=2` to rebuild just one part. Each spreadsheet has a sheet each for verses, words, vocabulary cards, lesson text and grammar exercises, with instructions on the first sheet. Entries the authors were least sure of are marked Flagged and shaded.
 2. The reviewer marks each row OK, Change or Unsure, types replacements in Correction, and adds comments.
