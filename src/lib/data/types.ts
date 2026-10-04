@@ -2,12 +2,12 @@
 
 export type CorpusPos = 'N' | 'V' | 'P';
 
+/**
+ * One piece of a word: a prefix, the stem or an ending. Only what the app displays is kept, to
+ * keep the download small: the text and the tags `DET` (the article), `PREF`, `SUFF` and `PRON`.
+ */
 export interface Segment {
 	text: string;
-	pos: CorpusPos;
-	lemma?: string;
-	root?: string;
-	/** Raw corpus feature tags, e.g. `DET`, `PREF`, `GEN`, `ACT_PCPL`. */
 	tags: string[];
 }
 
@@ -18,7 +18,8 @@ export interface Word {
 	gloss: string;
 	/** Set when the word is an inflected form of a vocabulary card. */
 	lexemeId?: string;
-	segments: Segment[];
+	/** The word's pieces. Left out for a word that is a single piece; use `segmentsOf`. */
+	segments?: Segment[];
 }
 
 export interface Verse {

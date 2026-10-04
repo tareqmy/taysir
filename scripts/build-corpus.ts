@@ -30,6 +30,9 @@ import type {
 } from '../src/lib/data/types.ts';
 
 /** Surahs the app teaches from: Al-Fatiha, then all of Juz Amma (78–114). */
+/** The corpus tags the app uses when it shows a word's pieces. Everything else is left out. */
+const SEGMENT_TAGS = ['DET', 'PREF', 'SUFF', 'PRON'];
+
 const SURAHS = [1, ...Array.from({ length: 37 }, (_, i) => 78 + i)];
 
 const lexemeSeeds = [...baseSeeds, ...juzAmmaUnits.flatMap((unit) => unit.seeds)];
@@ -165,10 +168,7 @@ function buildVerses(rows: Row[], lexicon: LexiconData): VerseData {
 				if (!gloss) throw new Error(`Missing gloss for word ${key}:${n}`);
 				const segments: Segment[] = segs.map((s) => ({
 					text: s.text,
-					pos: s.pos,
-					lemma: s.lemma,
-					root: s.root,
-					tags: s.tags
+					tags: s.tags.filter((tag) => SEGMENT_TAGS.includes(tag))
 				}));
 				const content = segs.find((s) => !s.isAffix && s.lemma);
 				return {
@@ -176,7 +176,8 @@ function buildVerses(rows: Row[], lexicon: LexiconData): VerseData {
 					text: segs.map((s) => s.text).join(''),
 					gloss,
 					lexemeId: content ? byLemmaKey.get(lemmaKey(content)) : undefined,
-					segments
+					// A word of one piece needs no list of pieces.
+					...(segments.length > 1 ? { segments } : {})
 				};
 			})
 		};

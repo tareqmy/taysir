@@ -54,6 +54,8 @@ To add a vocabulary word, add a seed with the `surah:ayah:word:segment` location
 
 To add a surah, add it to `SURAHS` in `scripts/build-corpus.ts`, gloss every word in a glosses file (the build fails on a missing or stale gloss), and add its name to `src/lib/data/surahs.ts`. Lessons for surahs 78–104 are plain data in `src/lib/content/juz-amma/unit-N.ts`, built by `surah-lessons.ts`; prose there never contains hand-typed Arabic, only `{surah:ayah:word}` placeholders. Only words that recur in the Quran (plus a few that carry a famous surah) get vocabulary cards; rarer words are glossed under the verse.
 
+The generated verse data is deliberately compact, because it ships in the app: for each word it keeps the text, the gloss and the vocabulary link, and only lists the word's pieces (prefix, stem, ending) when there are several, with just the four tags the app reads (`DET`, `PREF`, `SUFF`, `PRON`). A test caps its size. The whole app is about 158 kB gzipped.
+
 ## Layout
 
 ```

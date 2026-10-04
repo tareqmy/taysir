@@ -18,6 +18,7 @@ Web app that teaches the Arabic of the Quran (vocabulary + grammar, from real ve
 - **Never type Quranic Arabic by hand.** Take it from the corpus data. Lesson data points at corpus locations (`surah:ayah:word:segment`) in `data/lexicon-seeds.ts`, `data/fatiha-glosses.ts`, `data/juz-amma-glosses.ts` and `data/juz-amma/N.ts`, then `npm run data:build` regenerates `src/lib/data/generated/`. Arabic inside lesson prose comes from `wordText(surah, ayah, n)`.
 - English glosses and grammar explanations are **drafts needing review by a qualified teacher**. Keep explanations conservative; avoid claims you cannot stand behind (an earlier draft wrongly said a bare noun is always indefinite).
 - Lesson content is validated by `src/lib/content/course.spec.ts`. Every new lesson or exercise must pass it (answer is among choices, no duplicate choices, ids exist).
+- Generated verse data ships in the app, so keep it small: words keep only text, gloss and `lexemeId`, plus `segments` (text and the tags `DET`, `PREF`, `SUFF`, `PRON`) only for words of several pieces. Read pieces through `segmentsOf(word)`. `course.spec.ts` caps its size; raise a field's cost only if the app reads it.
 - Inside `src/lib`, use relative imports. Routes use the `#lib/*` alias (mapped in `package.json` `imports` and `tsconfig.json` `paths`).
 - Rune-based state lives in `*.svelte.ts` files. Avoid TypeScript parameter properties there.
 

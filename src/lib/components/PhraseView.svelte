@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { playAudio, wordAudioUrl } from '../audio';
-	import { phraseWords, surahName } from '../data';
+	import { phraseWords, segmentsOf, surahName } from '../data';
 	import type { Segment } from '../data/types';
 
 	let {
@@ -51,23 +51,23 @@
 				>
 					{#if highlight === 'affixes'}
 						<span class="parts ar ar-lg">
-							{#each word.segments as segment, i (i)}
+							{#each segmentsOf(word) as segment, i (i)}
 								<span class="part" class:article={isAffix(segment, i)}>{segment.text}</span>
 							{/each}
 						</span>
 						<span class="gloss" lang="en" dir="ltr">{word.gloss}</span>
 					{:else if split}
 						<span class="parts ar ar-lg">
-							{#each word.segments as segment, i (i)}
+							{#each segmentsOf(word) as segment, i (i)}
 								<span class="part" class:article={isArticle(segment)}>{segment.text}</span>
 							{/each}
 						</span>
 						<span class="legend" lang="en" dir="ltr">
-							{#each word.segments as segment, i (i)}
+							{#each segmentsOf(word) as segment, i (i)}
 								<span class:article={isArticle(segment)}>
 									{isArticle(segment)
 										? 'the'
-										: i === word.segments.length - 1
+										: i === segmentsOf(word).length - 1
 											? word.gloss.replace(/^the /i, '')
 											: '·'}
 								</span>

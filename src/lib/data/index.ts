@@ -1,6 +1,6 @@
 import lexiconJson from './generated/lexicon.json';
 import versesJson from './generated/verses.json';
-import type { Lexeme, LexiconData, Verse, VerseData, Word } from './types';
+import type { Lexeme, LexiconData, Segment, Verse, VerseData, Word } from './types';
 
 export const verseData = versesJson as unknown as VerseData;
 export const lexicon = lexiconJson as unknown as LexiconData;
@@ -28,6 +28,11 @@ export function phraseWords(surah: number, ayah: number, from: number, to: numbe
 		throw new Error(`Bad phrase range ${surah}:${ayah}:${from}-${to}`);
 	}
 	return words;
+}
+
+/** The pieces a word is made of: one piece, its whole text, when the data lists none. */
+export function segmentsOf(word: Word): Segment[] {
+	return word.segments ?? [{ text: word.text, tags: [] }];
 }
 
 /** The Arabic text of one word, straight from the corpus, for use inside lesson prose. */

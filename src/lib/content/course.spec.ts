@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { lexemeById, lexicon, phraseWords, surahName, verse, verseData } from '../data';
+import { lexemeById, lexicon, phraseWords, segmentsOf, surahName, verse, verseData } from '../data';
 import { seeded } from '../random';
 import { letterById, letterExample, letters } from './alphabet';
 import { parseCardId } from './cards';
@@ -131,6 +131,32 @@ describe('Juz Amma data', () => {
 		expect(text(113, 2, 2).lexemeId).toBe('shar');
 		expect(text(109, 2, 2).lexemeId).toBe('abada');
 		expect(text(114, 1, 3).lexemeId).toBe('rabb');
+	});
+});
+
+describe('verse data size', () => {
+	it('lists a word’s pieces only when it has several, and they join to the word', () => {
+		for (const v of verseData.verses) {
+			for (const w of v.words) {
+				if (w.segments) expect(w.segments.length, `${v.surah}:${v.ayah}:${w.n}`).toBeGreaterThan(1);
+				expect(
+					segmentsOf(w)
+						.map((s) => s.text)
+						.join(''),
+					`${v.surah}:${v.ayah}:${w.n}`
+				).toBe(w.text);
+			}
+		}
+	});
+
+	it('keeps only the tags the app reads, so the download stays small', () => {
+		const allowed = new Set(['DET', 'PREF', 'SUFF', 'PRON']);
+		const used = new Set(
+			verseData.verses.flatMap((v) => v.words.flatMap((w) => segmentsOf(w).flatMap((s) => s.tags)))
+		);
+		expect([...used].filter((tag) => !allowed.has(tag))).toEqual([]);
+		// The whole verse data, minified, was 515 kB before it was slimmed down.
+		expect(JSON.stringify(verseData).length).toBeLessThan(300_000);
 	});
 });
 
