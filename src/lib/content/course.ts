@@ -485,6 +485,10 @@ export const units: Unit[] = [
 
 export const lessons: Lesson[] = units.flatMap((u) => u.lessons);
 
+/** Every lesson id and every review-card id in the course, for checking saved data against. */
+export const lessonIds: ReadonlySet<string> = new Set(lessons.map((l) => l.id));
+export const cardIds: ReadonlySet<string> = new Set(lessons.flatMap((l) => l.cardIds));
+
 const lessonMap = new Map(lessons.map((l) => [l.id, l]));
 
 export function lessonById(id: string): Lesson | undefined {

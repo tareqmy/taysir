@@ -32,6 +32,8 @@ export interface ProgressStore {
 	saveCards(cards: readonly StoredCard[]): Promise<void>;
 	loadMeta(): Promise<Meta>;
 	saveMeta(meta: Meta): Promise<void>;
+	/** Replaces everything at once, so a failure part-way cannot leave half of the old progress. */
+	replaceAll(meta: Meta, cards: readonly StoredCard[]): Promise<void>;
 	clear(): Promise<void>;
 }
 
@@ -49,6 +51,10 @@ export class MemoryStore implements ProgressStore {
 		return structuredClone(this.meta);
 	}
 	async saveMeta(meta: Meta) {
+		this.meta = structuredClone(meta);
+	}
+	async replaceAll(meta: Meta, cards: readonly StoredCard[]) {
+		this.cards = new Map(cards.map((card) => [card.id, structuredClone(card)]));
 		this.meta = structuredClone(meta);
 	}
 	async clear() {
@@ -94,6 +100,16 @@ export class IndexedDbStore implements ProgressStore {
 	}
 	async saveMeta(meta: Meta) {
 		await (await this.open()).put('meta', meta, META_KEY);
+	}
+	async replaceAll(meta: Meta, cards: readonly StoredCard[]) {
+		const tx = (await this.open()).transaction(['cards', 'meta'], 'readwrite');
+		const store = tx.objectStore('cards');
+		await store.clear();
+		await Promise.all([
+			...cards.map((card) => store.put(card)),
+			tx.objectStore('meta').put(meta, META_KEY),
+			tx.done
+		]);
 	}
 	async clear() {
 		const db = await this.open();

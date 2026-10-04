@@ -1,5 +1,6 @@
-import { lessons, readerSkippedLessonIds } from '../content/course';
+import { cardIds, lessonIds, lessons, readerSkippedLessonIds } from '../content/course';
 import type { Lesson } from '../content/types';
+import { createBackup, type Backup, type KnownIds } from './backup';
 import { gradeAnswer } from './grading';
 import { dueCards, newCard, reviewCard, type StoredCard } from './scheduler';
 import { computeStreak, dayKey, type DayKey, type StreakResult } from './streak';
@@ -130,6 +131,27 @@ export class AppState {
 		}
 		this.tick++;
 		await Promise.all([this.persistMeta(), this.store.saveCards(saved)]);
+	}
+
+	/** The lessons and cards this version of the app has, for checking a backup against. */
+	get knownIds(): KnownIds {
+		return { lessonIds, cardIds };
+	}
+
+	/** Everything needed to restore this learner's progress later. */
+	exportBackup(): Backup {
+		return createBackup($state.snapshot(this.meta), $state.snapshot(this.cards), this.clock());
+	}
+
+	/** Replaces all progress on this device with a backup that `parseBackup` has accepted. */
+	async restore(backup: Backup) {
+		// A backup held in component state is a reactive proxy, which IndexedDB cannot store. A backup
+		// is plain JSON by definition, so a round trip through JSON strips any proxy.
+		const { meta, cards } = JSON.parse(JSON.stringify(backup)) as Backup;
+		await this.store.replaceAll(meta, cards);
+		this.meta = meta;
+		this.cards = cards;
+		this.tick++;
 	}
 
 	async reset() {

@@ -31,6 +31,7 @@ Web app that teaches the Arabic of the Quran (vocabulary + grammar, from real ve
 ## Environment gotchas
 
 - In the Claude Code sandbox, npm cannot write `~/.npm`. Use `export npm_config_cache="$TMPDIR/npm-cache"` and allow `registry.npmjs.org`.
+- `$state.snapshot` does nothing in the unit tests (Svelte compiles it for the server there), so a reactive proxy handed to IndexedDB or `structuredClone` only fails in a real browser (`DataCloneError`). Keep component data that is stored or cloned in `$state.raw`, and strip proxies in `AppState` before it reaches a store.
 - Verify UI changes in a browser, not just tests. A useful trick in dev: from the page, `await import('/src/lib/content/course.ts')` gives the real exercise data, so a small script can answer every exercise correctly and confirm each lesson scores 100%. That caught a real bug (split words in the grammar view did not join).
 
 ## Open items

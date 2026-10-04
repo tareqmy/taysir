@@ -40,6 +40,16 @@ describe.each(stores)('%s', (_name, create) => {
 		expect(cards.find((c) => c.id === 'lx:rabb')?.reps).toBe(5);
 	});
 
+	it('replaces everything at once', async () => {
+		const store = create();
+		await store.saveCards([newCard('lx:rabb', now), newCard('lt:ba', now)]);
+		await store.saveMeta({ ...defaultMeta(), dailyGoal: 20, completedLessons: ['letters-1'] });
+		const meta = { ...defaultMeta(), dailyGoal: 5, completedLessons: ['fatiha-1'] };
+		await store.replaceAll(meta, [newCard('lt:ta', now)]);
+		expect((await store.loadCards()).map((c) => c.id)).toEqual(['lt:ta']);
+		expect(await store.loadMeta()).toEqual(meta);
+	});
+
 	it('clears everything', async () => {
 		const store = create();
 		await store.saveCards([newCard('lx:rabb', now)]);

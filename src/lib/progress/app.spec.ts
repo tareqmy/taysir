@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { lessonById } from '../content/course';
 import { AppState } from './app.svelte';
+import { parseBackup } from './backup';
 import { MemoryStore } from './store';
 
 let now: Date;
@@ -137,6 +138,74 @@ describe('practice', () => {
 		await app.answer('lt:ba', true);
 		now = new Date(2026, 9, 20, 9, 0, 0);
 		expect(app.dueCards.map((c) => c.id)).toContain('lt:ba');
+	});
+});
+
+describe('backup', () => {
+	it('moves progress to another device', async () => {
+		const first = await create();
+		await first.setPlacement('reader', 3);
+		await first.completeLesson('fatiha-1', { 'lx:allah': true, 'lx:rabb': false });
+		await first.answer('lx:allah', true, 1500);
+		await first.answer(undefined, true);
+		await first.answer(undefined, true);
+		const file = JSON.stringify(first.exportBackup());
+
+		const otherStore = new MemoryStore();
+		const second = new AppState(otherStore, () => now);
+		await second.init();
+		expect(second.needsPlacement).toBe(true);
+		const parsed = parseBackup(file, second.knownIds);
+		if (!parsed.ok) throw new Error(parsed.error);
+		expect(parsed.skipped).toEqual({ lessons: 0, cards: 0 });
+		await second.restore(parsed.backup);
+
+		expect(second.meta.completedLessons).toEqual(first.meta.completedLessons);
+		expect(second.cards).toEqual(first.cards);
+		expect(second.streak.current).toBe(first.streak.current);
+		expect(second.todayCount).toBe(3);
+
+		const reopened = new AppState(otherStore, () => now);
+		await reopened.init();
+		expect(reopened.cards).toEqual(first.cards);
+		expect(reopened.meta.placement).toBe('reader');
+	});
+
+	it('restores a backup that is wrapped in reactive proxies', async () => {
+		// Svelte state wraps objects in proxies that structuredClone and IndexedDB refuse to store.
+		const wrap = <T>(value: T): T =>
+			typeof value === 'object' && value !== null
+				? new Proxy(value, {
+						get: (target, key) => wrap(Reflect.get(target, key)),
+						getPrototypeOf: (target) => Reflect.getPrototypeOf(target)
+					})
+				: value;
+
+		const first = await create();
+		await first.setPlacement('reader', 3);
+		await first.completeLesson('fatiha-1');
+		const backup = first.exportBackup();
+
+		const second = new AppState(new MemoryStore(), () => now);
+		await second.init();
+		await second.restore(wrap(backup));
+		expect(second.cards).toEqual(first.cards);
+		expect(second.meta).toEqual(first.meta);
+	});
+
+	it('replaces what was on the device', async () => {
+		const app = await create();
+		await app.setPlacement('beginner', 10);
+		await app.completeLesson('letters-1');
+		const fresh = new AppState(new MemoryStore(), () => now);
+		await fresh.init();
+		await fresh.setPlacement('reader', 5);
+		const parsed = parseBackup(JSON.stringify(fresh.exportBackup()), app.knownIds);
+		if (!parsed.ok) throw new Error(parsed.error);
+		await app.restore(parsed.backup);
+		expect(app.cards).toEqual([]);
+		expect(app.meta.completedLessons).toEqual([]);
+		expect(app.meta.placement).toBe('reader');
 	});
 });
 
