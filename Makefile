@@ -12,7 +12,7 @@ HOST ?= localhost
 .DEFAULT_GOAL := help
 # `ci` runs its steps in order and they share .svelte-kit, so never run targets in parallel.
 .NOTPARALLEL:
-.PHONY: help install dev preview build test test-watch check lint format data data-check ci clean distclean
+.PHONY: help install dev preview build test test-watch e2e e2e-install check lint format data data-check ci clean distclean
 
 help: ## List the targets
 	@awk -F ':.*## ' '/^[a-zA-Z_-]+:.*## / { printf "  make %-11s %s\n", $$1, $$2 }' $(MAKEFILE_LIST)
@@ -39,6 +39,14 @@ test: node_modules ## Run the unit tests once
 test-watch: node_modules ## Run the unit tests again on every change
 	npm run test:unit
 
+# Builds the app and serves the build itself. Add E2E_CHANNEL=chrome to use the Chrome you already
+# have instead of the downloaded Chromium. A failed run leaves a report: npx playwright show-report.
+e2e: node_modules ## Browser tests: build, serve the build, drive it with Playwright
+	npm run e2e
+
+e2e-install: node_modules ## Download the Chromium the browser tests use (needed once)
+	npm run e2e:install
+
 check: node_modules ## Type-check Svelte and TypeScript
 	npm run check
 
@@ -55,7 +63,7 @@ data: node_modules ## Rebuild the Quran data in src/lib/data/generated
 data-check: data ## Fail if the generated data is not what the build script produces
 	git diff --exit-code -- src/lib/data/generated
 
-ci: node_modules data-check check lint test build ## Everything the CI workflow runs, in the same order
+ci: node_modules data-check check lint test build e2e ## Everything the CI workflow runs, in the same order
 	@echo "All CI steps passed."
 
 clean: ## Remove build output (build/ and .svelte-kit/)

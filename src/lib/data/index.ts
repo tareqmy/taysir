@@ -1,5 +1,5 @@
-import lexiconJson from './generated/lexicon.json';
-import versesJson from './generated/verses.json';
+import lexiconJson from './generated/lexicon.json' with { type: 'json' };
+import versesJson from './generated/verses.json' with { type: 'json' };
 import type { Lexeme, LexiconData, Segment, Verse, VerseData, Word } from './types';
 
 export const verseData = versesJson as unknown as VerseData;

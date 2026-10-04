@@ -13,7 +13,7 @@ npm install
 npm run dev        # http://localhost:5173
 ```
 
-There is also a `Makefile` with the same commands as short targets. `make help` lists them: `make dev`, `make preview` (builds, then serves the production build with its service worker on http://localhost:4173), `make test`, `make check`, `make lint`, and `make ci`, which runs every step the CI workflow runs, in the same order. Ports can be changed, for example `make dev PORT=3000`.
+There is also a `Makefile` with the same commands as short targets. `make help` lists them: `make dev`, `make preview` (builds, then serves the production build with its service worker on http://localhost:4173), `make test`, `make e2e`, `make check`, `make lint`, and `make ci`, which runs every step the CI workflow runs, in the same order. Ports can be changed, for example `make dev PORT=3000`.
 
 | Command                 | What it does                                                    |
 | ----------------------- | --------------------------------------------------------------- |
@@ -21,6 +21,8 @@ There is also a `Makefile` with the same commands as short targets. `make help` 
 | `npm run build`         | Static single-page build into `build/`                          |
 | `npm run preview`       | Serve the production build (service worker is active here)      |
 | `npm test`              | Unit tests (Vitest)                                             |
+| `npm run e2e`           | Browser tests: builds, serves the build, runs it in Chromium    |
+| `npm run e2e:install`   | Download the Chromium the browser tests use (needed once)       |
 | `npm run check`         | Type-check Svelte and TypeScript                                |
 | `npm run lint`          | Prettier and ESLint                                             |
 | `npm run data:build`    | Rebuild the Quran data from the corpus (see below)              |
@@ -69,16 +71,30 @@ The generated verse data is deliberately compact, because it ships in the app: f
 src/lib/content/    course schema, alphabet, exercise builders, the lessons themselves
 src/lib/progress/   scheduler, streaks, storage (IndexedDB + in-memory), reactive app state
 src/lib/components/ lesson and exercise views
-src/routes/         home, welcome, lesson, review, settings, about
+src/routes/         home, welcome, lesson, review, practice, progress, verses, settings, about
+e2e/                browser tests (Playwright), with their helpers in e2e/support/
 ```
 
 ## Continuous integration
 
-`.github/workflows/ci.yml` runs on every push to `master` and on pull requests: it rebuilds the generated data and fails if the committed files differ, then runs the type-check, lint, unit tests and the production build. Nothing is deployed yet; hosting waits until the English has been reviewed.
+`.github/workflows/ci.yml` runs on every push to `master` and on pull requests: it rebuilds the generated data and fails if the committed files differ, then runs the type-check, lint, unit tests and the production build. A second job, alongside it, runs the browser tests in Chromium and keeps the report if one fails. Nothing is deployed yet; hosting waits until the English has been reviewed.
+
+## Browser tests
+
+`e2e/` holds Playwright tests that drive the production build in Chromium, the way a learner would. Run them with `make e2e` (or `npm run e2e`), once `make e2e-install` has downloaded Chromium. To use the Chrome you already have, add `E2E_CHANNEL=chrome`. A failed run leaves a report: `npx playwright show-report`.
+
+- **`learner-journey.spec.ts`:** a new learner chooses a starting point, reads and finishes a lesson, and sees it on the lesson list, the progress page and the verses page, and after a reload.
+- **`practice-and-review.spec.ts`:** a review reschedules what was due and leaves the rest alone, and extra practice counts toward the day without touching the schedule.
+- **`restore.spec.ts`:** saved progress restores through Settings and shows up everywhere, a file that is not a backup is refused, and a downloaded backup holds the progress.
+- **`accessibility.spec.ts`:** axe-core on every screen, in a phone and a desktop window, in light and dark mode. Nothing is allowed to fail.
+
+The tests need no hooks in the app. To start a learner part-way through the course they build one with the app's own scheduler (`e2e/support/seed.ts`) and load it through Settings, the way a learner restores a backup. They know the right answer to a lesson question from the course data, which they import directly. A question made on the spot, as in a review, is answered by picking the first choice, so those tests check what the app does with the answers, not whether they were right.
+
+Not covered yet: phone-width and large-text layout (the overflow checks), offline behaviour, and the update banner.
 
 ## Accessibility
 
-The app was audited with axe-core on every screen type (light and dark, 375 px phone width), by keyboard, and with text scaled to 200%. To keep it that way:
+The app was audited with axe-core on every screen (light and dark, a phone and a desktop window), by keyboard, and with text scaled to 200%. The axe part is now automated by `e2e/accessibility.spec.ts`, and a new screen belongs in it. To keep it that way:
 
 - Text colours are checked against the 4.5:1 contrast rule by `src/lib/colors.spec.ts`. Use `--accent-ink`, not `--accent`, for gold text.
 - Every route sets its own page title, has one `h1`, and the layout has a skip link to `#main`.
