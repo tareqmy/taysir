@@ -114,16 +114,18 @@ a {
 	font-weight: 400;
 }
 
-/* Arabic words cannot be broken across lines, so with very large text the sizes stop growing once a
-   long word would no longer fit a phone screen. At normal text size the caps change nothing. */
+/* Arabic words cannot be broken across lines, so the sizes stop growing once a long word would no
+   longer fit a phone screen: the vw limits do that, for very large text and for a large Arabic size
+   chosen in Settings. --ar-scale (set from that choice, 1 when none) multiplies each size before
+   its limit. At the standard size and normal text the limits change nothing. */
 .ar-xl {
-	font-size: min(3.2rem, 20vw);
+	font-size: min(calc(3.2rem * var(--ar-scale, 1)), 22vw);
 }
 .ar-lg {
-	font-size: min(2.3rem, 14vw);
+	font-size: min(calc(2.3rem * var(--ar-scale, 1)), 15vw);
 }
 .ar-md {
-	font-size: min(1.7rem, 11vw);
+	font-size: min(calc(1.7rem * var(--ar-scale, 1)), 12vw);
 }
 
 /* Layout */

@@ -60,12 +60,12 @@
 		align-items: center;
 	}
 	.glyph {
-		flex: 0 0 6rem;
+		flex: 0 0 calc(6rem * var(--ar-scale, 1));
 		max-width: 100%;
 		display: grid;
 		place-items: center;
-		min-height: 7rem;
-		font-size: 4.5rem;
+		min-height: calc(7rem * var(--ar-scale, 1));
+		font-size: calc(4.5rem * var(--ar-scale, 1));
 		line-height: 1.7;
 		background: var(--primary-soft);
 		border-radius: var(--radius);
@@ -89,7 +89,7 @@
 		margin-bottom: 0.75rem;
 	}
 	.word {
-		font-size: 1.7rem;
+		font-size: calc(1.7rem * var(--ar-scale, 1));
 		line-height: 1.6;
 	}
 	.first {
@@ -109,10 +109,10 @@
 	.forms li {
 		display: grid;
 		justify-items: center;
-		min-width: 3rem;
+		min-width: calc(3rem * var(--ar-scale, 1));
 	}
 	.shape {
-		font-size: 2rem;
+		font-size: calc(2rem * var(--ar-scale, 1));
 		line-height: 2;
 	}
 	.label {

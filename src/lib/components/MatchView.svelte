@@ -77,10 +77,14 @@
 </div>
 
 <style>
-	/* Two columns when there is room, one when large text leaves no room for two. */
+	/* Two columns when there is room, one when large text or a large Arabic size leaves no room for
+	   two: each column is wide enough for the widest Arabic word at the chosen size. */
 	.match {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(min(100%, 9rem), 1fr));
+		grid-template-columns: repeat(
+			auto-fit,
+			minmax(min(100%, max(9rem, calc(8rem * var(--ar-scale, 1) + 1.5rem))), 1fr)
+		);
 		gap: 1rem;
 	}
 	.col {

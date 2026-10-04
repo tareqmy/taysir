@@ -1,6 +1,9 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
+	import { ARABIC_SIZES } from '#lib/arabic-size';
+	import { arabicSize } from '#lib/arabic-size.svelte';
+	import VerseView from '#lib/components/VerseView.svelte';
 	import { downloadText } from '#lib/download';
 	import { backupFileName, parseBackup, summarize, type ParsedBackup } from '#lib/progress/backup';
 	import { app } from '#lib/progress/instance';
@@ -100,6 +103,31 @@
 			{/each}
 		</div>
 		<p class="muted">Meeting your goal each day builds your streak.</p>
+	</section>
+
+	<section class="card stack" aria-labelledby="arabic-size">
+		<h2 id="arabic-size">Arabic text size</h2>
+		<div class="options" role="radiogroup" aria-labelledby="arabic-size">
+			{#each ARABIC_SIZES as size (size.id)}
+				<label class:chosen={arabicSize.current === size.id}>
+					<input
+						type="radio"
+						name="arabic-size"
+						value={size.id}
+						checked={arabicSize.current === size.id}
+						onchange={() => arabicSize.set(size.id)}
+					/>
+					{size.label}
+					<span class="muted">{Math.round(size.scale * 100)}%</span>
+				</label>
+			{/each}
+		</div>
+		<VerseView surah={1} ayah={1} note="This is how the Arabic will look." />
+		<p class="muted">
+			This is kept on this device only, so a phone and a laptop can differ, and restoring a backup
+			does not change it. On a narrow screen the biggest sizes stop growing where the longest words
+			would no longer fit.
+		</p>
 	</section>
 
 	<section class="card stack" aria-labelledby="backup">

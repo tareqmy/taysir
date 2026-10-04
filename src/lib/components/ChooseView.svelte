@@ -8,6 +8,8 @@
 
 	let picked = $state<string>();
 
+	const hasArabic = $derived(exercise.choices.some((c) => c.chunk.lang === 'ar'));
+
 	/** Long choices, such as whole verses, need the full width to stay readable. */
 	const wide = $derived(
 		exercise.choices.some((c) => c.chunk.text.length > (c.chunk.lang === 'ar' ? 26 : 38))
@@ -28,7 +30,7 @@
 		</div>
 	{/if}
 
-	<div class="choices" class:wide role="group" aria-label="Choices">
+	<div class="choices" class:arabic={hasArabic} class:wide role="group" aria-label="Choices">
 		{#each exercise.choices as choice (choice.id)}
 			{@const answered = picked !== undefined}
 			<button
@@ -64,6 +66,15 @@
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(min(100%, 10rem), 1fr));
 		gap: 0.75rem;
+	}
+	/* An Arabic word does not wrap, so the columns are wide enough for the widest word (about three
+	   and a half times the font size) at the chosen Arabic size, plus the button's padding. At the
+	   standard size that is the 10rem above. */
+	.choices.arabic {
+		grid-template-columns: repeat(
+			auto-fit,
+			minmax(min(100%, max(10rem, calc(8rem * var(--ar-scale, 1) + 2rem))), 1fr)
+		);
 	}
 	.choices.wide {
 		grid-template-columns: 1fr;

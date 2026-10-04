@@ -170,6 +170,19 @@ for (const mode of modes) {
 				await expect(page.getByRole('region', { name: /verse \d+$/ }).first()).toBeVisible();
 				await audit(page, 'verses: a surah open');
 			});
+
+			await test.step('settings and verses at the largest Arabic size', async () => {
+				await page.goto('/settings');
+				await page.getByRole('radio', { name: /^Largest\b/ }).check();
+				await audit(page, 'settings: largest Arabic size');
+				await page.goto('/verses');
+				await expect(
+					page.getByRole('heading', { level: 1, name: 'Verses you know' })
+				).toBeVisible();
+				await page.locator('.surahs summary').first().click();
+				await expect(page.getByRole('region', { name: /verse \d+$/ }).first()).toBeVisible();
+				await audit(page, 'verses: largest Arabic size');
+			});
 		});
 	});
 }

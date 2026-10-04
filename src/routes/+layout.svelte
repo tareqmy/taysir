@@ -5,11 +5,15 @@
 	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
 	import { onMount } from 'svelte';
+	import { arabicSize } from '#lib/arabic-size.svelte';
 	import UpdateBanner from '#lib/components/UpdateBanner.svelte';
 	import { app } from '#lib/progress/instance';
 	import { appUpdate } from '#lib/update.svelte';
 
 	let { children } = $props();
+
+	// Before anything is drawn, so the Arabic never shows at one size and then jumps to another.
+	arabicSize.init();
 
 	/** Pages a brand-new learner may open before choosing a starting point. */
 	const openPaths = ['/welcome', '/about'];
