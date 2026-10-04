@@ -1,9 +1,13 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
+	import InstallOffer from '#lib/components/InstallOffer.svelte';
 	import { units } from '#lib/content/course';
+	import { appInstall } from '#lib/install.svelte';
 	import { app } from '#lib/progress/instance';
 
 	const next = $derived(app.nextLesson);
+	/** Not before a first lesson is done: until then the learner has not yet seen what is worth keeping. */
+	const offerInstall = $derived(appInstall.offerOnHome && app.meta.completedLessons.length > 0);
 	const dueCount = $derived(app.dueCards.length);
 	const goal = $derived(app.meta.dailyGoal);
 	const percent = $derived(Math.min(100, Math.round((app.todayCount / goal) * 100)));
@@ -70,6 +74,18 @@
 			<a class="btn btn-quiet" href={resolve('/review')}>Nothing to review</a>
 		{/if}
 	</div>
+
+	{#if offerInstall}
+		<section class="card stack" aria-labelledby="install">
+			<h2 id="install">Keep Taysir at hand</h2>
+			<InstallOffer here="home" />
+			<div>
+				<button type="button" class="btn btn-quiet" onclick={() => appInstall.dismissHint()}>
+					Not now
+				</button>
+			</div>
+		</section>
+	{/if}
 
 	{#each units as unit (unit.id)}
 		<section aria-labelledby="unit-{unit.id}">

@@ -3,6 +3,7 @@
 	import { resolve } from '$app/paths';
 	import { ARABIC_SIZES } from '#lib/arabic-size';
 	import { arabicSize } from '#lib/arabic-size.svelte';
+	import InstallOffer from '#lib/components/InstallOffer.svelte';
 	import VerseView from '#lib/components/VerseView.svelte';
 	import { downloadText } from '#lib/download';
 	import { backupFileName, parseBackup, summarize, type ParsedBackup } from '#lib/progress/backup';
@@ -128,6 +129,11 @@
 			does not change it. On a narrow screen the biggest sizes stop growing where the longest words
 			would no longer fit.
 		</p>
+	</section>
+
+	<section class="card stack" aria-labelledby="install">
+		<h2 id="install">Install Taysir</h2>
+		<InstallOffer here="settings" />
 	</section>
 
 	<section class="card stack" aria-labelledby="backup">

@@ -8,6 +8,7 @@
 	import { arabicSize } from '#lib/arabic-size.svelte';
 	import StorageNotice from '#lib/components/StorageNotice.svelte';
 	import UpdateBanner from '#lib/components/UpdateBanner.svelte';
+	import { appInstall } from '#lib/install.svelte';
 	import { app } from '#lib/progress/instance';
 	import { appUpdate } from '#lib/update.svelte';
 
@@ -15,6 +16,8 @@
 
 	// Before anything is drawn, so the Arabic never shows at one size and then jumps to another.
 	arabicSize.init();
+	// Before the page has finished loading, which is when the browser may offer to install the app.
+	appInstall.start();
 
 	/** Pages a brand-new learner may open before choosing a starting point. */
 	const openPaths = ['/welcome', '/about'];
