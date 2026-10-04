@@ -22,7 +22,11 @@
 	}
 </script>
 
-<main class="page stack">
+<svelte:head>
+	<title>Welcome · Taysir</title>
+</svelte:head>
+
+<main id="main" class="page stack">
 	<header>
 		<h1>Understand the Arabic of the Quran</h1>
 		<p class="lead muted">

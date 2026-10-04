@@ -24,7 +24,7 @@
 <article class="letter card">
 	<div class="glyph ar" lang="ar" aria-hidden="true">{letter.glyph}</div>
 	<div class="info">
-		<h3>{letter.name}</h3>
+		<h2>{letter.name}</h2>
 		<p class="muted">{letter.sound}</p>
 		<div class="example">
 			<AudioButton
@@ -52,13 +52,16 @@
 </article>
 
 <style>
+	/* Glyph beside the details when there is room; stacked when large text leaves none. */
 	.letter {
-		display: grid;
-		grid-template-columns: 6rem 1fr;
+		display: flex;
+		flex-wrap: wrap;
 		gap: 1rem;
 		align-items: center;
 	}
 	.glyph {
+		flex: 0 0 6rem;
+		max-width: 100%;
 		display: grid;
 		place-items: center;
 		min-height: 7rem;
@@ -67,11 +70,20 @@
 		background: var(--primary-soft);
 		border-radius: var(--radius);
 	}
+	.info {
+		flex: 1 1 10rem;
+		/* Lets the column shrink to the card instead of pushing the page sideways. */
+		min-width: 0;
+	}
+	.info h2 {
+		font-size: 1.1rem;
+	}
 	.info p {
 		margin: 0 0 0.5rem;
 	}
 	.example {
 		display: flex;
+		flex-wrap: wrap;
 		align-items: center;
 		gap: 0.6rem;
 		margin-bottom: 0.75rem;
@@ -81,14 +93,15 @@
 		line-height: 1.6;
 	}
 	.first {
-		color: var(--accent);
+		color: var(--accent-ink);
 	}
 	.gloss {
 		font-size: 0.9rem;
 	}
 	.forms {
 		display: flex;
-		gap: 0.75rem;
+		flex-wrap: wrap;
+		gap: 0.25rem 0.75rem;
 		list-style: none;
 		margin: 0;
 		padding: 0;
@@ -110,6 +123,6 @@
 	.note {
 		margin: 0.5rem 0 0;
 		font-size: 0.9rem;
-		color: var(--accent);
+		color: var(--accent-ink);
 	}
 </style>

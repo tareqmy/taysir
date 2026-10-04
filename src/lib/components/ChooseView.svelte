@@ -40,6 +40,11 @@
 				onclick={() => pick(choice.id)}
 			>
 				<ChunkText chunk={choice.chunk} size="lg" />
+				{#if answered && choice.id === exercise.answerId}
+					<span class="visually-hidden">, correct answer</span>
+				{:else if answered && choice.id === picked}
+					<span class="visually-hidden">, your answer, not correct</span>
+				{/if}
 			</button>
 		{/each}
 	</div>
@@ -54,15 +59,18 @@
 		margin: 0.5rem 0 0;
 		font-size: 1rem;
 	}
+	/* Two columns when there is room, one when large text leaves no room for two. */
 	.choices {
 		display: grid;
-		grid-template-columns: repeat(2, 1fr);
+		grid-template-columns: repeat(auto-fit, minmax(min(100%, 10rem), 1fr));
 		gap: 0.75rem;
 	}
 	.choices.wide {
 		grid-template-columns: 1fr;
 	}
 	.choice {
+		min-width: 0;
+		overflow-wrap: anywhere;
 		min-height: 4rem;
 		padding: 0.6rem 1rem;
 		border: 2px solid var(--line);
@@ -90,5 +98,14 @@
 	.choice.wrong {
 		border-color: var(--bad);
 		background: var(--bad-soft);
+	}
+	/* Forced colours drop the colours above, so the borders carry the difference. */
+	@media (forced-colors: active) {
+		.choice.right {
+			border-width: 5px;
+		}
+		.choice.wrong {
+			border-style: dashed;
+		}
 	}
 </style>

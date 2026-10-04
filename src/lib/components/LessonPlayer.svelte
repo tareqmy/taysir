@@ -37,6 +37,11 @@
 		attempt++;
 		phase = 'practice';
 	}
+
+	/** Moves focus to an element when it appears, so keyboard users land on the new content. */
+	function focusOnMount(node: HTMLElement) {
+		node.focus();
+	}
 </script>
 
 <div class="stack">
@@ -69,7 +74,7 @@
 		{/key}
 	{:else if summary}
 		<section class="card done stack" aria-live="polite">
-			<h2>Lesson complete</h2>
+			<h2 tabindex="-1" use:focusOnMount>Lesson complete</h2>
 			<p class="score">
 				<span class="num">{percent}%</span>
 				<span class="muted">right first time ({summary.firstTryCorrect} of {summary.total})</span>
@@ -105,6 +110,9 @@
 		margin-top: 0.25rem;
 	}
 	.back {
+		display: inline-flex;
+		align-items: center;
+		min-height: 2.75rem;
 		font-size: 0.9rem;
 		text-decoration: none;
 	}
@@ -129,7 +137,8 @@
 	}
 	.num {
 		font-family: var(--font-display);
-		font-size: 2.5rem;
+		/* Stops growing with very large text once it would no longer fit a phone screen. */
+		font-size: min(2.5rem, 16vw);
 		color: var(--primary);
 	}
 </style>

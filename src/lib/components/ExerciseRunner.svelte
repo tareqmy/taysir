@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { tick } from 'svelte';
 	import { SvelteMap } from 'svelte/reactivity';
 	import { summarize, type RunSummary } from '../content/session';
 	import type { Exercise } from '../content/types';
@@ -72,12 +73,20 @@
 		);
 	}
 
-	function next() {
+	/** The question heading, which gets focus for each new question so keyboard users start there. */
+	let heading = $state<HTMLElement>();
+
+	async function next() {
 		feedback = null;
 		shownAt = performance.now();
 		awayDuringQuestion = false;
 		index++;
-		if (index >= queue.length) onfinish(summarize(exercises, firstTry));
+		if (index >= queue.length) {
+			onfinish(summarize(exercises, firstTry));
+			return;
+		}
+		await tick();
+		heading?.focus();
 	}
 
 	function focusOnMount(node: HTMLElement) {
@@ -101,7 +110,9 @@
 		</div>
 
 		<div class="question">
-			<h2><RichText text={current.exercise.question} /></h2>
+			<h2 tabindex="-1" bind:this={heading} use:focusOnMount>
+				<RichText text={current.exercise.question} />
+			</h2>
 			{#if showAudioNow}
 				<AudioButton url={current.exercise.audioUrl!} label="Hear the word" />
 			{/if}
@@ -172,6 +183,7 @@
 		right: 0;
 		bottom: 0;
 		display: flex;
+		flex-wrap: wrap;
 		align-items: center;
 		justify-content: space-between;
 		gap: 1rem;
@@ -193,6 +205,7 @@
 		font-size: 0.95rem;
 	}
 	.feedback .text {
-		flex: 1;
+		flex: 1 1 10rem;
+		min-width: 0;
 	}
 </style>

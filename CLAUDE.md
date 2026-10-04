@@ -19,6 +19,7 @@ Web app that teaches the Arabic of the Quran (vocabulary + grammar, from real ve
 - English glosses and grammar explanations are **drafts needing review by a qualified teacher**. Keep explanations conservative; avoid claims you cannot stand behind (an earlier draft wrongly said a bare noun is always indefinite).
 - Lesson content is validated by `src/lib/content/course.spec.ts`. Every new lesson or exercise must pass it (answer is among choices, no duplicate choices, ids exist).
 - Generated verse data ships in the app, so keep it small: words keep only text, gloss and `lexemeId`, plus `segments` (text and the tags `DET`, `PREF`, `SUFF`, `PRON`) only for words of several pieces. Read pieces through `segmentsOf(word)`. `course.spec.ts` caps its size; raise a field's cost only if the app reads it.
+- Accessibility conventions are in the README (“Accessibility”). When checking layout in the browser, compare against a fixed width, not `innerWidth`: in phone emulation the viewport grows with overflowing content and hides the overflow.
 - Inside `src/lib`, use relative imports. Routes use the `#lib/*` alias (mapped in `package.json` `imports` and `tsconfig.json` `paths`).
 - Rune-based state lives in `*.svelte.ts` files. Avoid TypeScript parameter properties there.
 

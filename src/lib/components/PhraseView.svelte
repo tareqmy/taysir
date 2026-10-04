@@ -117,7 +117,7 @@
 		direction: rtl;
 	}
 	.part.article {
-		color: var(--accent);
+		color: var(--accent-ink);
 	}
 	.legend {
 		margin-top: 0.5rem;
@@ -129,7 +129,7 @@
 		color: var(--ink-soft);
 	}
 	.legend .article {
-		color: var(--accent);
+		color: var(--accent-ink);
 		font-weight: 600;
 	}
 	.gloss {

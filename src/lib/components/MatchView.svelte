@@ -12,6 +12,13 @@
 	let selected = $state<string>();
 	let mistakes = $state(0);
 	let flash = $state<string>();
+	/** Spoken by screen readers, since the colours alone say nothing to them. */
+	let announcement = $state('');
+
+	function announce(message: string) {
+		announcement = '';
+		setTimeout(() => (announcement = message), 50);
+	}
 
 	function chooseLeft(id: string) {
 		if (matched.includes(id)) return;
@@ -23,9 +30,11 @@
 		if (selected === id) {
 			matched = [...matched, id];
 			selected = undefined;
+			announce(`Matched, ${matched.length} of ${exercise.pairs.length}`);
 			if (matched.length === exercise.pairs.length) onresult(mistakes === 0);
 		} else {
 			mistakes++;
+			announce('Not a match, try again');
 			flash = id;
 			setTimeout(() => (flash = undefined), 450);
 		}
@@ -40,10 +49,12 @@
 				class="tile"
 				class:selected={selected === pair.id}
 				class:done={matched.includes(pair.id)}
+				aria-pressed={selected === pair.id}
 				disabled={matched.includes(pair.id)}
 				onclick={() => chooseLeft(pair.id)}
 			>
 				<ChunkText chunk={pair.left} size="lg" />
+				{#if matched.includes(pair.id)}<span class="visually-hidden">, matched</span>{/if}
 			</button>
 		{/each}
 	</div>
@@ -58,15 +69,18 @@
 				onclick={() => chooseRight(pair.id)}
 			>
 				<ChunkText chunk={pair.right} />
+				{#if matched.includes(pair.id)}<span class="visually-hidden">, matched</span>{/if}
 			</button>
 		{/each}
 	</div>
+	<p class="visually-hidden" role="status">{announcement}</p>
 </div>
 
 <style>
+	/* Two columns when there is room, one when large text leaves no room for two. */
 	.match {
 		display: grid;
-		grid-template-columns: 1fr 1fr;
+		grid-template-columns: repeat(auto-fit, minmax(min(100%, 9rem), 1fr));
 		gap: 1rem;
 	}
 	.col {
@@ -75,6 +89,8 @@
 		align-content: start;
 	}
 	.tile {
+		min-width: 0;
+		overflow-wrap: anywhere;
 		min-height: 3.75rem;
 		padding: 0.4rem 0.75rem;
 		border: 2px solid var(--line);

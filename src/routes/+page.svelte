@@ -10,7 +10,13 @@
 	const statusLabel = { done: 'Completed', skipped: 'Skipped', next: 'Up next', locked: 'Locked' };
 </script>
 
-<main class="page stack">
+<svelte:head>
+	<title>Your lessons · Taysir</title>
+</svelte:head>
+
+<main id="main" class="page stack">
+	<h1 class="visually-hidden">Your lessons</h1>
+
 	<section class="card today" aria-label="Today">
 		<div class="streak">
 			<span class="num">{app.streak.current}</span>
@@ -96,14 +102,14 @@
 <style>
 	.today {
 		display: grid;
-		grid-template-columns: auto 1fr;
+		grid-template-columns: auto minmax(0, 1fr);
 		gap: 1.5rem;
 		align-items: center;
 	}
 	.streak {
 		display: grid;
 		justify-items: center;
-		min-width: 6rem;
+		min-width: min(6rem, 100%);
 	}
 	.num {
 		font-family: var(--font-display);
@@ -145,7 +151,7 @@
 	}
 	.row {
 		display: grid;
-		grid-template-columns: 2.25rem 1fr auto;
+		grid-template-columns: 2.25rem minmax(0, 1fr) auto;
 		gap: 0.75rem;
 		align-items: center;
 		padding: 0.75rem 1rem;
@@ -160,6 +166,8 @@
 	}
 	.titles {
 		display: grid;
+		/* With large text a long word may not fit the row: break it rather than run off the screen. */
+		overflow-wrap: anywhere;
 	}
 	.dot {
 		display: grid;

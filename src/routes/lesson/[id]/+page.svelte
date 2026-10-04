@@ -9,7 +9,11 @@
 	const locked = $derived(lesson ? app.lessonStatus(lesson.id) === 'locked' : false);
 </script>
 
-<main class="page">
+<svelte:head>
+	<title>{lesson ? `${lesson.title} · Taysir` : 'Lesson not found · Taysir'}</title>
+</svelte:head>
+
+<main id="main" class="page">
 	{#if !lesson}
 		<section class="card stack">
 			<h1>Lesson not found</h1>

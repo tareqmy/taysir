@@ -69,6 +69,16 @@ src/routes/         home, welcome, lesson, review, settings, about
 
 `.github/workflows/ci.yml` runs on every push to `master` and on pull requests: it rebuilds the generated data and fails if the committed files differ, then runs the type-check, lint, unit tests and the production build. Nothing is deployed yet; hosting waits until the English has been reviewed.
 
+## Accessibility
+
+The app was audited with axe-core on every screen type (light and dark, 375 px phone width), by keyboard, and with text scaled to 200%. To keep it that way:
+
+- Text colours are checked against the 4.5:1 contrast rule by `src/lib/colors.spec.ts`. Use `--accent-ink`, not `--accent`, for gold text.
+- Every route sets its own page title, has one `h1`, and the layout has a skip link to `#main`.
+- Interactive things are native buttons and links, at least 44 px tall on a phone, with a visible focus ring. Answer state is never colour alone: choices carry hidden text ("correct answer"), the matching screen uses `aria-pressed` and announces matches.
+- After each question, keyboard focus moves to the new question heading, so the next Tab reaches its first answer.
+- Layouts reflow rather than scroll sideways: no fixed multi-column grids; use `repeat(auto-fit, minmax(min(100%, Nrem), 1fr))`, `flex-wrap` and `min-width: 0`. Arabic sizes stop growing at very large text, because an Arabic word cannot be broken across lines.
+
 ## Teacher review
 
 All the English (word glosses, card meanings, lesson text) is a draft that needs a qualified teacher. To get it checked:

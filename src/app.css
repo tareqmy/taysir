@@ -10,6 +10,8 @@
 	--primary-ink: #ffffff;
 	--primary-soft: #dcebe4;
 	--accent: #9a6f22;
+	/* The gold for text and for backgrounds behind light text: 5:1 or better where it is used. */
+	--accent-ink: #7f5a16;
 	--accent-soft: #f4e8cf;
 	--good: #2b7653;
 	--good-soft: #dff0e6;
@@ -36,6 +38,7 @@
 		--primary-ink: #0d1f18;
 		--primary-soft: #1d3a30;
 		--accent: #d9ad5c;
+		--accent-ink: #d9ad5c;
 		--accent-soft: #3a3120;
 		--good: #62b898;
 		--good-soft: #1d3a30;
@@ -91,6 +94,11 @@ a {
 	color: var(--primary);
 }
 
+/* Headings that take focus from a script so the next thing a screen reader reads is clear. */
+[tabindex='-1']:focus {
+	outline: none;
+}
+
 :focus-visible {
 	outline: 3px solid var(--accent);
 	outline-offset: 2px;
@@ -106,14 +114,16 @@ a {
 	font-weight: 400;
 }
 
+/* Arabic words cannot be broken across lines, so with very large text the sizes stop growing once a
+   long word would no longer fit a phone screen. At normal text size the caps change nothing. */
 .ar-xl {
-	font-size: 3.2rem;
+	font-size: min(3.2rem, 20vw);
 }
 .ar-lg {
-	font-size: 2.3rem;
+	font-size: min(2.3rem, 14vw);
 }
 .ar-md {
-	font-size: 1.7rem;
+	font-size: min(1.7rem, 11vw);
 }
 
 /* Layout */
@@ -153,6 +163,9 @@ a {
 	border-radius: 999px;
 	background: var(--primary);
 	color: var(--primary-ink);
+	max-width: 100%;
+	text-align: center;
+	overflow-wrap: anywhere;
 	font: inherit;
 	font-weight: 600;
 	text-decoration: none;
@@ -188,9 +201,26 @@ a {
 	padding: 0.1rem 0.7rem;
 	border-radius: 999px;
 	background: var(--accent-soft);
-	color: var(--accent);
+	color: var(--accent-ink);
 	font-size: 0.85rem;
 	font-weight: 600;
+}
+
+.skip {
+	position: absolute;
+	left: 0.5rem;
+	top: -4rem;
+	z-index: 10;
+	padding: 0.6rem 1rem;
+	border-radius: 999px;
+	background: var(--primary);
+	color: var(--primary-ink);
+	font-weight: 600;
+	text-decoration: none;
+}
+
+.skip:focus {
+	top: 0.5rem;
 }
 
 .visually-hidden {

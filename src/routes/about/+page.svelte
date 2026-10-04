@@ -2,7 +2,11 @@
 	import { DATA_ATTRIBUTION } from '#lib/data';
 </script>
 
-<main class="page stack">
+<svelte:head>
+	<title>About · Taysir</title>
+</svelte:head>
+
+<main id="main" class="page stack">
 	<h1>About Taysir</h1>
 
 	<section class="card stack">

@@ -26,12 +26,13 @@
 </script>
 
 <svelte:head>
-	<title>Taysir: understand the Arabic of the Quran</title>
 	<meta
 		name="description"
 		content="Learn the vocabulary and grammar of Quranic Arabic through real verses, with spaced repetition."
 	/>
 </svelte:head>
+
+<a class="skip" href="#main">Skip to content</a>
 
 <header class="top">
 	<a class="brand" href={resolve('/')}>
@@ -41,7 +42,10 @@
 	<nav aria-label="Main">
 		<a href={resolve('/review')}>
 			Review
-			{#if dueCount > 0}<span class="badge" aria-label="{dueCount} due">{dueCount}</span>{/if}
+			{#if dueCount > 0}
+				<span class="badge" aria-hidden="true">{dueCount}</span>
+				<span class="visually-hidden">({dueCount} due)</span>
+			{/if}
 		</a>
 		<a href={resolve('/about')}>About</a>
 		<a href={resolve('/settings')}>Settings</a>
@@ -57,9 +61,10 @@
 <style>
 	.top {
 		display: flex;
+		flex-wrap: wrap;
 		align-items: center;
 		justify-content: space-between;
-		gap: 1rem;
+		gap: 0 1rem;
 		max-width: 44rem;
 		margin: 0 auto;
 		padding: 0.75rem 1rem;
@@ -81,12 +86,31 @@
 		font-weight: 600;
 		letter-spacing: 0.02em;
 	}
+	/* On a narrow phone the links drop under the name instead of pushing the page sideways. */
+	/* On a narrow phone the Arabic wordmark is enough; the name stays for screen readers. */
+	@media (max-width: 26rem) {
+		.brand .name {
+			position: absolute;
+			width: 1px;
+			height: 1px;
+			overflow: hidden;
+			clip: rect(0 0 0 0);
+			white-space: nowrap;
+		}
+	}
 	nav {
 		display: flex;
-		gap: 1rem;
+		flex-wrap: wrap;
+		gap: 0 0.25rem;
 		align-items: center;
+		margin-left: auto;
 	}
+	/* Padded to a comfortable thumb-sized target. */
 	nav a {
+		display: inline-flex;
+		align-items: center;
+		min-height: 2.75rem;
+		padding: 0 0.5rem;
 		color: var(--ink-soft);
 		text-decoration: none;
 		font-size: 0.95rem;
@@ -100,7 +124,7 @@
 		padding: 0 0.4rem;
 		margin-left: 0.2rem;
 		border-radius: 999px;
-		background: var(--accent);
+		background: var(--accent-ink);
 		color: var(--bg);
 		font-size: 0.75rem;
 		font-weight: 700;

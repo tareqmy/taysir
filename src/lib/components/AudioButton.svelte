@@ -39,6 +39,9 @@
 		{/if}
 	</svg>
 </button>
+<span class="visually-hidden" role="status">
+	{failed ? 'Audio needs an internet connection.' : ''}
+</span>
 
 <style>
 	.audio {
@@ -54,10 +57,6 @@
 	}
 	.audio:hover {
 		background: var(--primary-soft);
-	}
-	.small {
-		width: 2.25rem;
-		height: 2.25rem;
 	}
 	.failed {
 		color: var(--bad);

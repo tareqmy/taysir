@@ -43,11 +43,12 @@
 		display: grid;
 		gap: 0.25rem;
 	}
+	/* One row when there is room; the meaning and the button drop below when large text leaves none. */
 	.family li {
-		display: grid;
-		grid-template-columns: 8rem 1fr auto;
+		display: flex;
+		flex-wrap: wrap;
 		align-items: center;
-		gap: 0.75rem;
+		gap: 0.25rem 0.75rem;
 		padding: 0.25rem 0;
 		border-top: 1px solid var(--line);
 	}
@@ -55,9 +56,12 @@
 		border-top: 0;
 	}
 	.family .ar {
+		flex: 0 0 min(8rem, 100%);
 		text-align: right;
 	}
 	.meaning {
+		flex: 1 1 4rem;
+		min-width: 0;
 		color: var(--ink-soft);
 	}
 </style>

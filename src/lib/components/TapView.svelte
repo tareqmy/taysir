@@ -26,6 +26,11 @@
 			onclick={() => pick(word.id)}
 		>
 			<span class="ar ar-lg">{word.text}</span>
+			{#if answered && word.id === exercise.answerId}
+				<span class="visually-hidden">, correct answer</span>
+			{:else if answered && word.id === picked}
+				<span class="visually-hidden">, your answer, not correct</span>
+			{/if}
 		</button>
 	{/each}
 </div>
@@ -63,5 +68,14 @@
 	.word.wrong {
 		border-color: var(--bad);
 		background: var(--bad-soft);
+	}
+	/* Forced colours drop the colours above, so the borders carry the difference. */
+	@media (forced-colors: active) {
+		.word.right {
+			border-width: 5px;
+		}
+		.word.wrong {
+			border-style: dashed;
+		}
 	}
 </style>

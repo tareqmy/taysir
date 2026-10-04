@@ -76,7 +76,11 @@
 	}
 </script>
 
-<main class="page stack">
+<svelte:head>
+	<title>Settings · Taysir</title>
+</svelte:head>
+
+<main id="main" class="page stack">
 	<h1>Settings</h1>
 
 	<section class="card stack" aria-labelledby="goal">
@@ -172,9 +176,11 @@
 		display: inline-flex;
 		align-items: center;
 		gap: 0.5rem;
+		max-width: 100%;
 		padding: 0.6rem 1rem;
 		border: 2px solid var(--line);
 		border-radius: 999px;
+		overflow-wrap: anywhere;
 		cursor: pointer;
 	}
 	label.chosen {

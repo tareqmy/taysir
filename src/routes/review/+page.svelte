@@ -23,9 +23,18 @@
 			.sort((a, b) => a.getTime() - b.getTime());
 		return upcoming[0];
 	});
+
+	/** Moves focus to an element when it appears, so keyboard users land on the new content. */
+	function focusOnMount(node: HTMLElement) {
+		node.focus();
+	}
 </script>
 
-<main class="page stack">
+<svelte:head>
+	<title>Review · Taysir</title>
+</svelte:head>
+
+<main id="main" class="page stack">
 	<header>
 		<h1>Review</h1>
 		<p class="muted">
@@ -46,7 +55,7 @@
 		</section>
 	{:else if summary}
 		<section class="card stack" aria-live="polite">
-			<h2>Review complete</h2>
+			<h2 tabindex="-1" use:focusOnMount>Review complete</h2>
 			<p>
 				{summary.firstTryCorrect} of {summary.total} right first time.
 				{#if remaining > 0}
