@@ -5,7 +5,9 @@
 	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
 	import { onMount } from 'svelte';
+	import UpdateBanner from '#lib/components/UpdateBanner.svelte';
 	import { app } from '#lib/progress/instance';
+	import { appUpdate } from '#lib/update.svelte';
 
 	let { children } = $props();
 
@@ -14,6 +16,7 @@
 
 	onMount(() => {
 		app.init();
+		void appUpdate.start();
 	});
 
 	$effect(() => {
@@ -23,6 +26,8 @@
 	});
 
 	const dueCount = $derived(app.ready ? app.dueCards.length : 0);
+	/** Updating reloads the page, which would start a lesson or review again. */
+	const busy = $derived(page.route.id === '/lesson/[id]' || page.route.id === '/review');
 </script>
 
 <svelte:head>
@@ -57,6 +62,8 @@
 {:else}
 	<p class="page muted" role="status">Loading…</p>
 {/if}
+
+<UpdateBanner {busy} />
 
 <style>
 	.top {

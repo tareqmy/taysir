@@ -13,12 +13,14 @@ const SHELL = resolveHere('./');
 const ASSETS = new Set<string>([...immutable, ...assets].map((file) => resolveHere(file.path)));
 
 sw.addEventListener('install', (event) => {
-	event.waitUntil(
-		caches
-			.open(CACHE)
-			.then((cache) => cache.addAll([...ASSETS, SHELL]))
-			.then(() => sw.skipWaiting())
-	);
+	event.waitUntil(caches.open(CACHE).then((cache) => cache.addAll([...ASSETS, SHELL])));
+	// No skipWaiting() here. A new version waits until the learner chooses to switch to it (see
+	// `src/lib/update.svelte.ts`), so a page that is open is never left running its old code
+	// against a cache that has been replaced. The first install has nothing to wait for.
+});
+
+sw.addEventListener('message', (event) => {
+	if (event.data?.type === 'SKIP_WAITING') void sw.skipWaiting();
 });
 
 sw.addEventListener('activate', (event) => {

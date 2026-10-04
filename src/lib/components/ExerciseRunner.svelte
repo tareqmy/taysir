@@ -210,6 +210,8 @@
 	}
 	.feedback {
 		position: fixed;
+		/* Above the update banner, which sticks to the bottom of the page too. */
+		z-index: 2;
 		left: 0;
 		right: 0;
 		bottom: 0;
