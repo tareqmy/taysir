@@ -4,8 +4,9 @@
 	let {
 		url,
 		label = 'Listen',
-		small = false
-	}: { url: string; label?: string; small?: boolean } = $props();
+		small = false,
+		large = false
+	}: { url: string; label?: string; small?: boolean; large?: boolean } = $props();
 
 	let failed = $state(false);
 
@@ -19,12 +20,18 @@
 	type="button"
 	class="audio"
 	class:small
+	class:large
 	class:failed
 	onclick={play}
 	aria-label={failed ? 'Audio is not available right now' : label}
 	title={failed ? 'Audio needs an internet connection' : label}
 >
-	<svg viewBox="0 0 24 24" width={small ? 18 : 22} height={small ? 18 : 22} aria-hidden="true">
+	<svg
+		viewBox="0 0 24 24"
+		width={large ? 36 : small ? 18 : 22}
+		height={large ? 36 : small ? 18 : 22}
+		aria-hidden="true"
+	>
 		<path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor" />
 		{#if failed}
 			<path d="M16 9l5 6m0-6l-5 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
@@ -57,6 +64,11 @@
 	}
 	.audio:hover {
 		background: var(--primary-soft);
+	}
+	.large {
+		width: 4.5rem;
+		height: 4.5rem;
+		border-width: 2px;
 	}
 	.failed {
 		color: var(--bad);

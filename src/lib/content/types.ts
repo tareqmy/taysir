@@ -16,6 +16,11 @@ interface ExerciseBase {
 	cardId?: string;
 	/** Audio played alongside the prompt. */
 	audioUrl?: string;
+	/**
+	 * The question has to be heard to be answered. Audio is streamed, so the runner leaves these
+	 * out when the device is offline, and always lets the learner skip one without a penalty.
+	 */
+	listening?: boolean;
 	/** Shown after the learner answers. */
 	explanation?: string;
 }

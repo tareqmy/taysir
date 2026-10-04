@@ -70,6 +70,17 @@ export function meaningChoice(lexeme: Lexeme, pool: readonly Lexeme[], rng: Rng)
 	};
 }
 
+/** Hear a word, then choose its meaning: nothing is shown in Arabic until after the answer. */
+export function listenMeaning(lexeme: Lexeme, pool: readonly Lexeme[], rng: Rng): ChooseExercise {
+	return {
+		...meaningChoice(lexeme, pool, rng),
+		id: `listen:${lexeme.id}`,
+		question: 'Listen, then choose the meaning.',
+		prompt: undefined,
+		listening: true
+	};
+}
+
 /** English meaning → Arabic word. */
 export function arabicChoice(lexeme: Lexeme, pool: readonly Lexeme[], rng: Rng): ChooseExercise {
 	const wrong = distractors(
@@ -300,12 +311,22 @@ export function buildPhrase(
 
 // --- Reviews ----------------------------------------------------------------
 
+/** About one word review in four is a listening question, when listening is allowed. */
+const LISTEN_SHARE = 0.25;
+
 /** One spaced-repetition question for a card, in a randomly chosen direction. */
-export function reviewExercise(cardId: string, allLexemes: readonly Lexeme[], rng: Rng): Exercise {
+export function reviewExercise(
+	cardId: string,
+	allLexemes: readonly Lexeme[],
+	rng: Rng,
+	/** Allow “hear the word” questions, which need the audio to load. */
+	canListen = false
+): Exercise {
 	const parsed = parseCardId(cardId);
 	const forward = rng() < 0.5;
 	if (parsed.type === 'lexeme') {
 		const lexeme = lexemeById(parsed.id);
+		if (canListen && rng() < LISTEN_SHARE) return listenMeaning(lexeme, allLexemes, rng);
 		return forward ? meaningChoice(lexeme, allLexemes, rng) : arabicChoice(lexeme, allLexemes, rng);
 	}
 	const letter = letterById(parsed.id);

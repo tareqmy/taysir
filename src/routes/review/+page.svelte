@@ -10,9 +10,11 @@
 	const BATCH = 10;
 
 	// The batch is chosen once when the page opens, so answering does not reshuffle it.
+	// Listening questions need the audio, which is streamed, so they are only offered online.
+	const online = navigator.onLine !== false;
 	const exercises = app.dueCards
 		.slice(0, BATCH)
-		.map((card) => reviewExercise(card.id, lexicon.lexemes, Math.random));
+		.map((card) => reviewExercise(card.id, lexicon.lexemes, Math.random, online));
 	const remaining = app.dueCards.length - exercises.length;
 
 	let summary = $state<RunSummary>();

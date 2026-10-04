@@ -12,6 +12,7 @@ import {
 } from './exercises';
 import { juzAmmaUnits } from './juz-amma';
 import { grammarPatternsUnit } from './grammar-patterns';
+import { withWordListening } from './listening';
 import { shortSurahsUnit } from './short-surahs';
 import { withVerseExercises } from './verse-exercises';
 import type { Block, Lesson, Unit } from './types';
@@ -476,7 +477,8 @@ const grammarUnit: Unit = {
 
 const withVerses = (unit: Unit): Unit => ({
 	...unit,
-	lessons: unit.lessons.map(withVerseExercises)
+	// Word listening goes in first, so the verse-level questions stay at the end of the lesson.
+	lessons: unit.lessons.map((lesson) => withVerseExercises(withWordListening(lesson)))
 });
 
 export const units: Unit[] = [

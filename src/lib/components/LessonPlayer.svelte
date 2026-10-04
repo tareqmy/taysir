@@ -19,7 +19,7 @@
 	const last = $derived(step === lesson.intro.length - 1);
 	const next = $derived(app.nextLesson);
 	const percent = $derived(
-		summary ? Math.round((summary.firstTryCorrect / summary.total) * 100) : 0
+		summary && summary.total > 0 ? Math.round((summary.firstTryCorrect / summary.total) * 100) : 0
 	);
 
 	function forward() {

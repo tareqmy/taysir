@@ -14,7 +14,8 @@ import type { ChooseExercise, BuildExercise, Exercise, Lesson, TapExercise } fro
  * generator seeded from the lesson id so they stay the same between visits.
  */
 
-type Kind = 'build' | 'which' | 'fill' | 'tap';
+type Kind = 'build' | 'which' | 'fill' | 'tap' | 'listen';
+/** Listening is always asked when a verse allows it; the rest are drawn in a random order. */
 const KINDS: Kind[] = ['build', 'which', 'fill', 'tap'];
 const MAX_PER_LESSON = 3;
 
@@ -97,11 +98,10 @@ function build(v: Verse, ctx: Context): BuildExercise | undefined {
 	};
 }
 
-function which(v: Verse, ctx: Context): ChooseExercise | undefined {
-	if (v.words.length < 2 || v.words.length > 9) return undefined;
+/** Three other short verses to offer as wrong answers: the same surah first, and similar lengths. */
+function decoyVerses(v: Verse, ctx: Context): Verse[] | undefined {
 	const line = englishLine(v);
 	const text = arabicLine(v);
-	// Wrong answers come from the same surah first, and from verses of a similar length.
 	const others = shuffle(
 		verseData.verses.filter(
 			(o) =>
@@ -125,7 +125,15 @@ function which(v: Verse, ctx: Context): ChooseExercise | undefined {
 		if (!clash) wrong.push(o);
 		if (wrong.length === 3) break;
 	}
-	if (wrong.length < 3) return undefined;
+	return wrong.length === 3 ? wrong : undefined;
+}
+
+function which(v: Verse, ctx: Context): ChooseExercise | undefined {
+	if (v.words.length < 2 || v.words.length > 9) return undefined;
+	const wrong = decoyVerses(v, ctx);
+	if (!wrong) return undefined;
+	const line = englishLine(v);
+	const text = arabicLine(v);
 
 	const toArabic = ctx.rng() < 0.5;
 	const choices = shuffle([v, ...wrong], ctx.rng).map((o) => ({
@@ -141,6 +149,26 @@ function which(v: Verse, ctx: Context): ChooseExercise | undefined {
 		answerId: `v:${refOf(v)}`,
 		explanation: `${text} says “${line}”.`,
 		audioUrl: verseAudioUrl(v.surah, v.ayah)
+	};
+}
+
+/** Hear the whole verse recited, then choose what it says. */
+function listen(v: Verse, ctx: Context): ChooseExercise | undefined {
+	if (v.words.length < 2 || v.words.length > 9) return undefined;
+	const wrong = decoyVerses(v, ctx);
+	if (!wrong) return undefined;
+	return {
+		kind: 'choose',
+		id: `verse-listen:${refOf(v)}`,
+		question: 'Listen to the verse. What does it say?',
+		choices: shuffle([v, ...wrong], ctx.rng).map((o) => ({
+			id: `v:${refOf(o)}`,
+			chunk: en(englishLine(o))
+		})),
+		answerId: `v:${refOf(v)}`,
+		explanation: `${arabicLine(v)} says “${englishLine(v)}”.`,
+		audioUrl: verseAudioUrl(v.surah, v.ayah),
+		listening: true
 	};
 }
 
@@ -205,7 +233,8 @@ const makers: Record<Kind, (v: Verse, ctx: Context) => Exercise | undefined> = {
 	build,
 	which,
 	fill,
-	tap
+	tap,
+	listen
 };
 
 /** The verse-level questions for a lesson: none for lessons that show no verses. */
@@ -214,7 +243,7 @@ export function verseExercises(lesson: Lesson): Exercise[] {
 	const ctx: Context = { lesson, shown, rng: rngFor(`verses:${lesson.id}`) };
 	const used = new Set<string>();
 	const out: Exercise[] = [];
-	for (const kind of shuffle(KINDS, ctx.rng)) {
+	for (const kind of ['listen' as Kind, ...shuffle(KINDS, ctx.rng)]) {
 		if (out.length >= MAX_PER_LESSON) break;
 		// Different verses where possible; a verse is used twice only if nothing else works.
 		const order = [...shuffle(shown, ctx.rng)].sort(
@@ -228,7 +257,8 @@ export function verseExercises(lesson: Lesson): Exercise[] {
 			break;
 		}
 	}
-	return out;
+	// Listening is drawn first so it is never crowded out, but need not be the first one asked.
+	return shuffle(out, ctx.rng);
 }
 
 /** A lesson with its verse-level questions added after the rest of its exercises. */

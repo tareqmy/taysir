@@ -6,7 +6,9 @@ import {
 	buildPhrase,
 	handChoice,
 	isCorrect,
+	listenMeaning,
 	meaningChoice,
+	reviewExercise,
 	ar,
 	en
 } from './exercises';
@@ -45,6 +47,54 @@ describe('meaningChoice', () => {
 		const exercise = meaningChoice(rabb, lexicon.lexemes, seeded(3));
 		const glosses = exercise.choices.map((c) => c.chunk.text);
 		expect(new Set(glosses).size).toBe(glosses.length);
+	});
+});
+
+describe('listenMeaning', () => {
+	const rabb = lexemeById('rabb');
+
+	it('plays the word and shows nothing to read until the answer', () => {
+		const exercise = listenMeaning(rabb, lexicon.lexemes, seeded(1));
+		expect(exercise.listening).toBe(true);
+		expect(exercise.prompt).toBeUndefined();
+		expect(exercise.audioUrl).toMatch(/\/wbw\/001_002_003\.mp3$/);
+		expect(exercise.cardId).toBe('lx:rabb');
+		expect(exercise.choices).toHaveLength(4);
+		expect(exercise.choices.every((c) => c.chunk.lang === 'en')).toBe(true);
+		expect(exercise.choices.find((c) => c.id === exercise.answerId)?.chunk.text).toBe(rabb.gloss);
+	});
+
+	it('is the same for the same seed', () => {
+		expect(listenMeaning(rabb, lexicon.lexemes, seeded(5))).toEqual(
+			listenMeaning(rabb, lexicon.lexemes, seeded(5))
+		);
+	});
+});
+
+describe('reviewExercise with listening', () => {
+	const cardId = 'lx:rabb';
+
+	it('never listens unless allowed', () => {
+		for (let seed = 1; seed <= 40; seed++) {
+			expect(reviewExercise(cardId, lexicon.lexemes, seeded(seed)).listening).toBeUndefined();
+		}
+	});
+
+	it('listens now and then when allowed, about one time in four', () => {
+		const listening = Array.from({ length: 400 }, (_, i) =>
+			reviewExercise(cardId, lexicon.lexemes, seeded(i + 1), true)
+		).filter((e) => e.listening);
+		expect(listening.length).toBeGreaterThan(60);
+		expect(listening.length).toBeLessThan(140);
+		for (const e of listening) expect(e.cardId).toBe(cardId);
+	});
+
+	it('only listens to words: letters are never played', () => {
+		for (let seed = 1; seed <= 40; seed++) {
+			expect(
+				reviewExercise('lt:ba', lexicon.lexemes, seeded(seed), true).listening
+			).toBeUndefined();
+		}
 	});
 });
 

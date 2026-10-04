@@ -52,9 +52,37 @@ describe('verse-level exercises', () => {
 		}
 	});
 
-	it('use all four kinds of question across the course', () => {
-		for (const kind of ['build', 'which', 'fill', 'tap'])
+	it('use all five kinds of question across the course', () => {
+		for (const kind of ['build', 'which', 'fill', 'tap', 'listen'])
 			expect(ofKind(kind).length).toBeGreaterThan(20);
+	});
+});
+
+describe('listening to a verse', () => {
+	it('is asked in every lesson that has a verse short enough to offer four choices', () => {
+		const withListen = vocabulary.filter((l) =>
+			verseOnes(l).some((e) => e.id.startsWith('verse-listen:'))
+		);
+		// Only lessons about one very long verse can lack one.
+		expect(vocabulary.length - withListen.length).toBeLessThan(vocabulary.length / 10);
+		for (const lesson of withListen) {
+			expect(verseOnes(lesson).filter((e) => e.id.startsWith('verse-listen:'))).toHaveLength(1);
+		}
+	});
+
+	it('plays the verse, shows no Arabic, and offers four different meanings', () => {
+		for (const { lesson, exercise } of ofKind('listen')) {
+			if (exercise.kind !== 'choose') throw new Error('not a choose exercise');
+			expect(exercise.listening, `${lesson.id} ${exercise.id}`).toBe(true);
+			expect(exercise.prompt).toBeUndefined();
+			expect(exercise.audioUrl).toMatch(/^https:\/\/everyayah\.com\/data\/.+\/\d{6}\.mp3$/);
+			expect(exercise.choices).toHaveLength(4);
+			expect(exercise.choices.every((c) => c.chunk.lang === 'en')).toBe(true);
+			expect(new Set(exercise.choices.map((c) => c.chunk.text)).size).toBe(4);
+			const v = verseOf(exercise);
+			const right = exercise.choices.find((c) => c.id === exercise.answerId)!;
+			expect(right.chunk.text).toBe(v.words.map((w) => w.gloss).join(' '));
+		}
 	});
 });
 

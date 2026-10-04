@@ -29,9 +29,10 @@ npm run dev        # http://localhost:5173
 ## How it works
 
 - **SvelteKit 3 / Svelte 5, TypeScript**, rendered entirely on the client as a PWA. Progress lives in the browser's IndexedDB; there is no backend.
-- **Verse-level practice** ends each vocabulary lesson with up to three questions on the verses it showed: put a verse in order, say what a verse means, fill a gap, or tap a word (`src/lib/content/verse-exercises.ts`). A verse's English is its word-by-word glosses joined into one line, so these questions add no new English to review. They are not graded per card.
+- **Verse-level practice** ends each vocabulary lesson with up to three questions on the verses it showed: put a verse in order, say what a verse means, fill a gap, tap a word, or hear a verse and say what it says (`src/lib/content/verse-exercises.ts`). A verse's English is its word-by-word glosses joined into one line, so these questions add no new English to review. They are not graded per card.
+- **Listening questions** play a word or a verse and ask for its meaning, with nothing to read (`listening: true` on an exercise). Each vocabulary lesson has one for a word (`src/lib/content/listening.ts`) and, when it shows a verse of two to nine words, one for a verse; about a quarter of the word questions in a review are listening ones. Because audio is streamed, the runner leaves them out when the device is offline, and a learner can always skip one (“I can’t listen right now”) without a penalty: a skipped question counts for nothing, right or wrong. Listening answers are not timed, so they never earn “Easy” or “Hard”.
 - **Spaced repetition** uses [ts-fsrs](https://github.com/open-spaced-repetition/ts-fsrs). In a review, a wrong answer is graded “Again”, and a right one by how long it took: “Easy” within 3.5 seconds, “Hard” after 9 seconds, otherwise “Good” (thresholds in `src/lib/progress/grading.ts`). Time spent away from the page is ignored.
-- **Audio is streamed**, never bundled: verse recitation from EveryAyah and single-word audio from the Quran.com CDN. Each letter card plays a real recitation of a common Quran word that starts with that letter (chosen in `src/lib/content/alphabet.ts`), because no open-licensed per-letter recordings exist. Lessons work offline; audio needs a connection.
+- **Audio is streamed**, never bundled: verse recitation from EveryAyah and single-word audio from the Quran.com CDN. Each letter card plays a real recitation of a common Quran word that starts with that letter (chosen in `src/lib/content/alphabet.ts`), because no open-licensed per-letter recordings exist. Lessons work offline; audio needs a connection, so listening questions are skipped when there is none.
 - **Backup and restore** (Settings) saves progress to a JSON file and brings it back on another device. A file is checked field by field before it replaces anything, and anything this version of the app does not have is left out. Restoring replaces the progress on the device.
 - **Streaks** count days the daily goal was met. Every seventh day earns a freeze (up to two) that covers one missed day.
 
@@ -77,6 +78,7 @@ The app was audited with axe-core on every screen type (light and dark, 375 px p
 - Every route sets its own page title, has one `h1`, and the layout has a skip link to `#main`.
 - Interactive things are native buttons and links, at least 44 px tall on a phone, with a visible focus ring. Answer state is never colour alone: choices carry hidden text ("correct answer"), the matching screen uses `aria-pressed` and announces matches.
 - After each question, keyboard focus moves to the new question heading, so the next Tab reaches its first answer.
+- A listening question never depends on hearing alone: it has a skip button, and the answer shows the Arabic and its meaning in writing.
 - Layouts reflow rather than scroll sideways: no fixed multi-column grids; use `repeat(auto-fit, minmax(min(100%, Nrem), 1fr))`, `flex-wrap` and `min-width: 0`. Arabic sizes stop growing at very large text, because an Arabic word cannot be broken across lines.
 
 ## Teacher review

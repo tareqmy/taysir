@@ -261,14 +261,36 @@ describe('course', () => {
 	});
 });
 
+describe('word listening', () => {
+	it('gives every vocabulary lesson one question about a word it teaches', () => {
+		for (const lesson of lessons.filter((l) => l.kind === 'vocabulary')) {
+			const listening = lesson.exercises.filter((e) => e.id.startsWith('listen:'));
+			expect(listening, lesson.id).toHaveLength(1);
+			expect(listening[0].listening).toBe(true);
+			expect(lesson.cardIds).toContain(listening[0].cardId);
+		}
+	});
+
+	it('is left out of lessons that teach no words', () => {
+		for (const lesson of lessons.filter((l) => l.kind !== 'vocabulary')) {
+			expect(
+				lesson.exercises.some((e) => e.listening),
+				lesson.id
+			).toBe(false);
+		}
+	});
+});
+
 describe('review exercises', () => {
-	it('can be built for every card in the course, in both directions', () => {
+	it('can be built for every card in the course, in both directions, listening or not', () => {
 		const cardIds = new Set(lessons.flatMap((l) => l.cardIds));
 		for (const cardId of cardIds) {
 			for (const seed of [1, 2, 3, 4, 5, 6]) {
-				const exercise = reviewExercise(cardId, lexicon.lexemes, seeded(seed));
-				expect(exercise.cardId, cardId).toBe(cardId);
-				expect(problemsWith(exercise), `${cardId} seed ${seed}`).toEqual([]);
+				for (const canListen of [false, true]) {
+					const exercise = reviewExercise(cardId, lexicon.lexemes, seeded(seed), canListen);
+					expect(exercise.cardId, cardId).toBe(cardId);
+					expect(problemsWith(exercise), `${cardId} seed ${seed}`).toEqual([]);
+				}
 			}
 		}
 	});
