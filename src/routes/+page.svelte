@@ -47,6 +47,7 @@
 					{app.todayCount} of {goal} exercises today
 				{/if}
 			</p>
+			<a class="more" href={resolve('/progress')}>Your progress</a>
 		</div>
 	</section>
 
@@ -136,6 +137,12 @@
 	}
 	.goal p {
 		margin: 0.4rem 0 0;
+		font-size: 0.9rem;
+	}
+	.more {
+		display: inline-flex;
+		align-items: center;
+		min-height: 2.75rem;
 		font-size: 0.9rem;
 	}
 	.actions {

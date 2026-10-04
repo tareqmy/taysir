@@ -10,6 +10,7 @@ Web app that teaches the Arabic of the Quran (vocabulary + grammar, from real ve
 - **Data:** Quranic Arabic Corpus (via the `mustafa0x/quran-morphology` fork), kept unchanged in `data/source/`. It is GPL, so **Taysir is GPL-3.0**.
 - **Audio:** streamed from public CDNs (EveryAyah verses, Quran.com word audio). Never synthetic voice for Quran text.
 - **v1 features:** spaced repetition (FSRS) and streaks with a daily goal. Not XP or badges.
+- **Progress page:** its own page at `/progress`, linked from the home streak card rather than the top bar (a fourth link wraps on narrow phones). Sections: words by how well they are known, Quran coverage, a 12-week practice calendar, and lessons per unit with streak records. Every number comes from `src/lib/progress/stats.ts`, which works from saved cards and `Meta`, so adding a statistic never needs a migration.
 - **Look:** calm and respectful (warm neutrals, green and gold accents, Amiri Quran font, automatic dark mode).
 - **Working style:** the user wants to pick from options for product decisions. Offer options rather than assuming.
 
@@ -38,6 +39,7 @@ Web app that teaches the Arabic of the Quran (vocabulary + grammar, from real ve
 - A new service worker must not call `skipWaiting()` by itself. It waits for the page to ask (the `SKIP_WAITING` message), because activating deletes the old cache and would leave an open page running old code against missing files. The first install is the exception that needs no wait.
 - `vite preview` indexes the files in `build/` when it starts. After `npm run build`, restart it (`make preview` does), or new hashed files 404 and the service worker's install fails without a clear error.
 - To try the update prompt in a browser: `make build`, serve it, open the app in two tabs, rebuild (the version is a build timestamp) and restart the server. Both tabs show the banner without a reload. Click “Update now” in one, then check that the other tab is not reloaded under you and still offers the update. Unregister the worker and delete the `taysir-*` caches afterwards. In the browser pane, `preview_start` reloads the tab it opens, so keep the tab you are watching separate from it.
+- To audit a page with axe-core, load it into the page from the browser pane: add a `<script src="https://cdn.jsdelivr.net/npm/axe-core@4.10.2/axe.min.js">` from `javascript_tool`, then `await axe.run(document)`. It is not an npm dependency. The empty `color-contrast` “incomplete” entries for the lesson-list ✓ glyphs are expected: they are decoration with `aria-hidden`.
 - Verify UI changes in a browser, not just tests. A useful trick in dev: from the page, `await import('/src/lib/content/course.ts')` gives the real exercise data, so a small script can answer every exercise correctly and confirm each lesson scores 100%. That caught a real bug (split words in the grammar view did not join).
 - The in-app browser pane can report a 0x0 viewport (screenshots and `read_page` come back empty). Calling `resize_window` with a size gives it one. Progress lives in the IndexedDB database `taysir`: to try the review page, set `due` of the `cards` store to a past time and reload.
 

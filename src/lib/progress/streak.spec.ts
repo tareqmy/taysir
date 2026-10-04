@@ -18,7 +18,7 @@ describe('dayKey and addDays', () => {
 
 describe('computeStreak', () => {
 	it('is zero with no activity', () => {
-		expect(computeStreak([], '2026-10-03')).toEqual({ current: 0, freezes: 0 });
+		expect(computeStreak([], '2026-10-03')).toEqual({ current: 0, freezes: 0, longest: 0 });
 	});
 
 	it('counts consecutive days including today', () => {
@@ -36,10 +36,10 @@ describe('computeStreak', () => {
 
 	it('earns a freeze every seventh day and spends it on one missed day', () => {
 		const week = run('2026-10-01', 7);
-		expect(computeStreak(week, '2026-10-07')).toEqual({ current: 7, freezes: 1 });
+		expect(computeStreak(week, '2026-10-07')).toEqual({ current: 7, freezes: 1, longest: 7 });
 
 		const afterGap = [...week, '2026-10-09'];
-		expect(computeStreak(afterGap, '2026-10-09')).toEqual({ current: 8, freezes: 0 });
+		expect(computeStreak(afterGap, '2026-10-09')).toEqual({ current: 8, freezes: 0, longest: 8 });
 	});
 
 	it('caps freezes at two', () => {
@@ -49,5 +49,23 @@ describe('computeStreak', () => {
 	it('resets once a second consecutive day is missed', () => {
 		const week = run('2026-10-01', 7);
 		expect(computeStreak(week, '2026-10-10').current).toBe(0);
+	});
+
+	it('remembers the longest streak after it has been broken', () => {
+		// Five days, a gap, then two more: the five is still the longest.
+		const met = [...run('2026-10-01', 5), ...run('2026-10-08', 2)];
+		expect(computeStreak(met, '2026-10-09')).toMatchObject({ current: 2, longest: 5 });
+	});
+
+	it('counts a day a freeze covered as part of the longest streak', () => {
+		const week = run('2026-10-01', 7);
+		const met = [...week, '2026-10-09', '2026-10-10'];
+		expect(computeStreak(met, '2026-10-10').longest).toBe(9);
+	});
+
+	it('never has a longest streak shorter than the current one', () => {
+		const met = run('2026-10-01', 4);
+		const result = computeStreak(met, '2026-10-04');
+		expect(result.longest).toBe(result.current);
 	});
 });

@@ -58,6 +58,19 @@ const pairs: [string, string][] = [
 	['bad', 'surface']
 ];
 
+/**
+ * [shape colour, background colour]: things drawn rather than written, which need 3:1 (WCAG 1.4.11)
+ * to be seen. The progress bars and the practice calendar.
+ */
+const graphics: [string, string][] = [
+	['primary', 'surface'],
+	['primary', 'surface-2'],
+	['accent-ink', 'surface'],
+	['accent-ink', 'surface-2'],
+	['ink-soft', 'surface'],
+	['ink-soft', 'surface-2']
+];
+
 describe.each([
 	['light', light],
 	['dark', dark]
@@ -66,5 +79,11 @@ describe.each([
 		expect(colours[text], `--${text}`).toBeDefined();
 		expect(colours[background], `--${background}`).toBeDefined();
 		expect(contrast(colours[text], colours[background])).toBeGreaterThanOrEqual(4.5);
+	});
+
+	it.each(graphics)('%s shapes on %s are at least 3:1', (shape, background) => {
+		expect(colours[shape], `--${shape}`).toBeDefined();
+		expect(colours[background], `--${background}`).toBeDefined();
+		expect(contrast(colours[shape], colours[background])).toBeGreaterThanOrEqual(3);
 	});
 });

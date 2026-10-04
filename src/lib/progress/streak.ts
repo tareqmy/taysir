@@ -22,6 +22,8 @@ export interface StreakResult {
 	current: number;
 	/** Streak freezes in hand. A freeze covers one missed day. */
 	freezes: number;
+	/** The longest the streak has ever been, counted by the same rules. */
+	longest: number;
 }
 
 /**
@@ -31,20 +33,22 @@ export interface StreakResult {
  * still be met.
  */
 export function computeStreak(metDays: readonly DayKey[], today: DayKey): StreakResult {
-	if (metDays.length === 0) return { current: 0, freezes: 0 };
+	if (metDays.length === 0) return { current: 0, freezes: 0, longest: 0 };
 	const met = new Set(metDays);
 	let day = [...met].sort()[0];
 	let current = 0;
 	let freezes = 0;
+	let longest = 0;
 
 	for (; day <= today; day = addDays(day, 1)) {
 		if (met.has(day)) {
 			current++;
+			longest = Math.max(longest, current);
 			if (current % DAYS_PER_FREEZE === 0) freezes = Math.min(MAX_FREEZES, freezes + 1);
 		} else if (day < today && current > 0) {
 			if (freezes > 0) freezes--;
 			else current = 0;
 		}
 	}
-	return { current, freezes };
+	return { current, freezes, longest };
 }

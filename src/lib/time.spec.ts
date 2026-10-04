@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { formatRelative } from './time';
+import { formatDayKey, formatRelative } from './time';
 
 const now = new Date('2026-10-03T09:00:00Z');
 const after = (ms: number) => new Date(now.getTime() + ms);
@@ -17,5 +17,19 @@ describe('formatRelative', () => {
 		expect(formatRelative(after(5 * HOUR), now)).toBe('in 5 hours');
 		expect(formatRelative(after(24 * HOUR), now)).toBe('in 1 day');
 		expect(formatRelative(after(72 * HOUR), now)).toBe('in 3 days');
+	});
+});
+
+describe('formatDayKey', () => {
+	it('writes a day in the reader’s language', () => {
+		expect(
+			formatDayKey('2026-10-03', { weekday: 'long', day: 'numeric', month: 'long' }, 'en-GB')
+		).toBe('Saturday 3 October');
+		expect(formatDayKey('2026-10-03', { month: 'short', day: 'numeric' }, 'en-US')).toBe('Oct 3');
+	});
+
+	it('keeps the day it was given across a month and year boundary', () => {
+		expect(formatDayKey('2026-12-31', { day: 'numeric', month: 'short' }, 'en-GB')).toBe('31 Dec');
+		expect(formatDayKey('2027-01-01', { day: 'numeric', month: 'short' }, 'en-GB')).toBe('1 Jan');
 	});
 });
