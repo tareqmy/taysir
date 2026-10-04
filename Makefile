@@ -1,0 +1,65 @@
+# Shortcuts for running and testing Taysir locally. Everything here calls the npm scripts in
+# package.json, so `make` and `npm run` always do the same thing. Run `make` to list the targets.
+
+# Where the servers listen. Override on the command line, for example `make dev PORT=3000`.
+# `HOST=0.0.0.0` makes a server reachable from a phone on the same network, but note that a
+# service worker only runs on localhost or HTTPS, so offline and update behaviour cannot be
+# tried that way.
+PORT ?= 5173
+PREVIEW_PORT ?= 4173
+HOST ?= localhost
+
+.DEFAULT_GOAL := help
+# `ci` runs its steps in order and they share .svelte-kit, so never run targets in parallel.
+.NOTPARALLEL:
+.PHONY: help install dev preview build test test-watch check lint format data data-check ci clean distclean
+
+help: ## List the targets
+	@awk -F ':.*## ' '/^[a-zA-Z_-]+:.*## / { printf "  make %-11s %s\n", $$1, $$2 }' $(MAKEFILE_LIST)
+
+# Installs again only when the dependency list has changed.
+node_modules: package.json package-lock.json
+	npm install
+	@touch node_modules
+
+install: node_modules ## Install dependencies
+
+dev: node_modules ## Dev server with hot reload (http://localhost:5173)
+	npm run dev -- --host $(HOST) --port $(PORT) --strictPort
+
+preview: node_modules build ## Build, then serve the production build with its service worker (http://localhost:4173)
+	npm run preview -- --host $(HOST) --port $(PREVIEW_PORT) --strictPort
+
+build: node_modules ## Static build into build/
+	npm run build
+
+test: node_modules ## Run the unit tests once
+	npm test
+
+test-watch: node_modules ## Run the unit tests again on every change
+	npm run test:unit
+
+check: node_modules ## Type-check Svelte and TypeScript
+	npm run check
+
+lint: node_modules ## Prettier and ESLint, without changing files
+	npm run lint
+
+format: node_modules ## Format every file with Prettier
+	npm run format
+
+data: node_modules ## Rebuild the Quran data in src/lib/data/generated
+	npm run data:build
+
+# The generated data is committed, so it must match what the build script produces.
+data-check: data ## Fail if the generated data is not what the build script produces
+	git diff --exit-code -- src/lib/data/generated
+
+ci: node_modules data-check check lint test build ## Everything the CI workflow runs, in the same order
+	@echo "All CI steps passed."
+
+clean: ## Remove build output (build/ and .svelte-kit/)
+	rm -rf build .svelte-kit
+
+distclean: clean ## Also remove node_modules
+	rm -rf node_modules

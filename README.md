@@ -13,6 +13,8 @@ npm install
 npm run dev        # http://localhost:5173
 ```
 
+There is also a `Makefile` with the same commands as short targets. `make help` lists them: `make dev`, `make preview` (builds, then serves the production build with its service worker on http://localhost:4173), `make test`, `make check`, `make lint`, and `make ci`, which runs every step the CI workflow runs, in the same order. Ports can be changed, for example `make dev PORT=3000`.
+
 | Command                 | What it does                                                    |
 | ----------------------- | --------------------------------------------------------------- |
 | `npm run dev`           | Dev server with hot reload                                      |
