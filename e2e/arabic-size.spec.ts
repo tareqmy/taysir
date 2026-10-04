@@ -10,7 +10,7 @@ import {
 	startAsReader,
 	startWithProgress
 } from './support/learner';
-import { layoutProblems, widestWords, withBigText } from './support/layout';
+import { layoutProblems, useWideFonts, widestWords, withBigText } from './support/layout';
 import { seededLearner } from './support/seed';
 import { expect, test } from './support/test';
 
@@ -120,6 +120,7 @@ test.describe('at the largest Arabic size on a phone', () => {
 	test('nothing overflows, even in the lessons with the widest words', async ({ page }) => {
 		test.setTimeout(240_000);
 		await page.addInitScript(() => localStorage.setItem('taysir.arabicSize', 'largest'));
+		await useWideFonts(page);
 
 		await page.goto('/about');
 		const widest = await widestWords(page, 8);

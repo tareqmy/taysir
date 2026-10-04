@@ -29,6 +29,23 @@ export async function layoutProblems(page: Page, width: number): Promise<string[
 	}, width);
 }
 
+/**
+ * Use wide fonts for the app's ordinary text, whatever the machine has. How text wraps depends on
+ * how wide the fonts are, and the build machine's fonts are not the learner's: a test run on
+ * narrow fonts can pass what wider ones would break. Verdana and DejaVu are about as wide as
+ * common fonts get. (The Arabic keeps the font the app ships.)
+ */
+export async function useWideFonts(page: Page) {
+	await page.addInitScript(() => {
+		document.addEventListener('DOMContentLoaded', () => {
+			const style = document.createElement('style');
+			style.textContent =
+				':root { --font-ui: Verdana, "DejaVu Sans", sans-serif !important; --font-display: Georgia, "DejaVu Serif", serif !important; }';
+			document.head.append(style);
+		});
+	});
+}
+
 /** Run `check` with the page's text scaled to 200%, as a learner who needs big text sees it. */
 export async function withBigText<T>(page: Page, check: () => Promise<T>): Promise<T> {
 	await page.evaluate(() => (document.documentElement.style.fontSize = '32px'));

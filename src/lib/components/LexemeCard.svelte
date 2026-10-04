@@ -56,6 +56,9 @@
 		font-size: 1.35em;
 		line-height: 1;
 		vertical-align: middle;
+		/* The letters of a root are one group. With big text the pill wraps, and it should wrap
+		   between the label and the root, not at a hyphen inside the root. */
+		white-space: nowrap;
 	}
 	.seen {
 		margin: 0.75rem 0 0;
