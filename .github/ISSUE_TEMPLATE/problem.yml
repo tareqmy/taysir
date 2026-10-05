@@ -1,0 +1,30 @@
+name: Something does not work
+description: A crash, a button that does nothing, text that does not fit, or progress that went missing
+title: 'Problem: '
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Taysir keeps your progress only in your browser, on your device. Please do not attach a backup
+        file here: describe what happened instead.
+  - type: input
+    id: where
+    attributes:
+      label: Which page or lesson?
+    validations:
+      required: true
+  - type: textarea
+    id: happened
+    attributes:
+      label: What happened?
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect to happen?
+  - type: input
+    id: device
+    attributes:
+      label: Your device and browser
+      description: For example, iPhone 15 with Safari, or a Windows laptop with Chrome.

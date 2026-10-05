@@ -51,9 +51,10 @@ None of these is automated, and some are decisions rather than tasks.
       README, “Teacher review”). This is the reason for all of the above.
 - [ ] **The wording on the About page is brought up to date.** It says the meanings “are drafts that
       still need review”; after the review it should say who reviewed them, if they agree to be named.
-- [x] **There is a way to report a mistake.** The About page's “Found a mistake?” links the
-      repository's Issues page (`ISSUES_URL` in `src/lib/links.ts`). It needs the repository to be
-      public, and a free GitHub account to report from. An email address could go beside it for
+- [x] **There is a way to report a mistake.** The About page's “Found a mistake?” opens GitHub's
+      list of issue forms (`REPORT_URL` in `src/lib/links.ts`; the forms are in
+      `.github/ISSUE_TEMPLATE`), one for a mistake in a lesson and one for something that does not
+      work. It needs the repository to be public, and a free GitHub account to report from. An email address could go beside it for
       people without one: it would be readable by anyone, so a separate address is wise.
 - [ ] Decide whether the **letter-name recordings** are needed first (CLAUDE.md, “Open items”).
       Without them each letter card plays a Quran word that starts with the letter.

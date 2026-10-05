@@ -6,5 +6,8 @@
 /** Taysir's own source code, which the GPL asks that anyone who receives the app can get. */
 export const SOURCE_URL = 'https://github.com/tareqmy/taysir';
 
-/** Where a learner reports a mistake in a lesson or a meaning. */
-export const ISSUES_URL = `${SOURCE_URL}/issues`;
+/**
+ * Where a learner reports a mistake in a lesson or a meaning. It opens GitHub's list of the forms in
+ * `.github/ISSUE_TEMPLATE`, which ask for the details a correction needs.
+ */
+export const REPORT_URL = `${SOURCE_URL}/issues/new/choose`;

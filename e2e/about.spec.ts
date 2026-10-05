@@ -1,4 +1,4 @@
-import { ISSUES_URL, SOURCE_URL } from '../src/lib/links';
+import { REPORT_URL, SOURCE_URL } from '../src/lib/links';
 import { expect, test } from './support/test';
 
 /** The About page: where to send a mistake, where the source is, and what leaves the device. */
@@ -12,7 +12,7 @@ test('says where to report a mistake, where the source is, and what leaves the d
 	const mistakes = page.getByRole('region', { name: 'Found a mistake?' });
 	await expect(mistakes.getByRole('link', { name: 'Report a mistake on GitHub' })).toHaveAttribute(
 		'href',
-		ISSUES_URL
+		REPORT_URL
 	);
 
 	await expect(page.getByRole('link', { name: 'the Taysir repository on GitHub' })).toHaveAttribute(

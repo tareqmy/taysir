@@ -1,0 +1,32 @@
+name: A mistake in a lesson
+description: A wrong meaning, a wrong explanation, a typo, or Arabic that looks wrong
+title: 'Mistake: '
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you. The English in Taysir, the meanings and the grammar explanations, is a draft that a
+        qualified teacher has not yet reviewed, so corrections are welcome. Please trust your teacher
+        over this app.
+  - type: input
+    id: where
+    attributes:
+      label: Where is it?
+      description: The lesson title, the word, or the surah and verse (for example 78:1).
+    validations:
+      required: true
+  - type: textarea
+    id: now
+    attributes:
+      label: What does it say now?
+    validations:
+      required: true
+  - type: textarea
+    id: better
+    attributes:
+      label: What do you think it should say?
+  - type: textarea
+    id: source
+    attributes:
+      label: How do you know?
+      description: A teacher, a book or a dictionary is ideal. If you are not sure, say so; that helps too.

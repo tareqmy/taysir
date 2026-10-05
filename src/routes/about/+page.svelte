@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { DATA_ATTRIBUTION } from '#lib/data';
-	import { ISSUES_URL, SOURCE_URL } from '#lib/links';
+	import { REPORT_URL, SOURCE_URL } from '#lib/links';
 </script>
 
 <svelte:head>
@@ -27,7 +27,7 @@
 	<section class="card stack" aria-labelledby="mistakes">
 		<h2 id="mistakes">Found a mistake?</h2>
 		<p>
-			Corrections are welcome. <a href={ISSUES_URL}>Report a mistake on GitHub</a> (it needs a free GitHub
+			Corrections are welcome. <a href={REPORT_URL}>Report a mistake on GitHub</a> (it needs a free GitHub
 			account), and say which lesson or word it is in.
 		</p>
 	</section>
