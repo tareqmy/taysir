@@ -28,9 +28,13 @@
 		{ id: 'wellKnown', label: STRENGTH_LABEL.wellKnown, count: counts.wellKnown }
 	]);
 
+	let searchBox = $state<HTMLInputElement>();
+
+	/** The button that does this goes away with the "no words match" message, so focus is put back in the controls rather than lost to the top of a long list. */
 	function clear() {
 		query = '';
 		strength = 'all';
+		searchBox?.focus();
 	}
 </script>
 
@@ -62,6 +66,7 @@
 					id="search"
 					type="search"
 					bind:value={query}
+					bind:this={searchBox}
 					dir="auto"
 					autocomplete="off"
 					autocapitalize="off"
