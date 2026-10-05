@@ -1,5 +1,6 @@
 import type { Page } from '@playwright/test';
 import { lessons } from '../src/lib/content/course';
+import { listenAt, listeningLesson } from './support/course';
 import { layoutProblems, useWideFonts, withBigText } from './support/layout';
 import {
 	answerAll,
@@ -44,10 +45,7 @@ const grammar = lessons.find((l) => l.id === 'grammar-when-o')!;
 const buildAt = grammar.exercises.findIndex((e) => e.kind === 'build');
 
 // A lesson with a listening question.
-const listening = lessons.find((l) =>
-	l.exercises.some((e) => e.listening && e.id.startsWith('listen:'))
-)!;
-const listenAt = listening.exercises.findIndex((e) => e.listening);
+const listening = listeningLesson;
 
 for (const size of SIZES) {
 	test.describe(size.name, () => {

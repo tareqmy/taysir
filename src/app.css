@@ -74,9 +74,8 @@ h3 {
 	font-weight: 600;
 	line-height: 1.2;
 	margin: 0 0 0.5rem;
-	/* With very large text, a word wider than the screen breaks instead of scrolling the page: at a
-	   syllable where the browser knows how to hyphenate, and anywhere where it does not. */
-	hyphens: auto;
+	/* With very large text, a word wider than the screen breaks instead of scrolling the page. It
+	   only breaks when it cannot fit a line of its own, so ordinary headings are never split. */
 	overflow-wrap: break-word;
 }
 

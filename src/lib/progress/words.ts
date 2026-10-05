@@ -1,9 +1,8 @@
-import { parseCardId } from '../content/cards';
 import { lessons } from '../content/course';
 import { lexicon, surahName, verseData } from '../data';
 import type { Lexeme } from '../data/types';
 import type { StoredCard } from './scheduler';
-import { strengthOf, type Strength } from './stats';
+import { strengthOf, tryParseCardId, type Strength } from './stats';
 
 /**
  * The words page: the vocabulary the learner has been given, searched, filtered and sorted. Like the
@@ -14,7 +13,7 @@ export interface LearnedWord {
 	lexeme: Lexeme;
 	card: StoredCard;
 	strength: Strength;
-	/** Where the word comes in the course, counting from the first word taught. Later is newer. */
+	/** Where the card comes in the order the course teaches its cards. Later is newer. */
 	taught: number;
 }
 
@@ -48,14 +47,9 @@ for (const id of lessons.flatMap((lesson) => lesson.cardIds)) {
 export function learnedWords(cards: readonly StoredCard[]): LearnedWord[] {
 	const words: LearnedWord[] = [];
 	for (const card of cards) {
-		let id: string;
-		try {
-			const parsed = parseCardId(card.id);
-			if (parsed.type !== 'lexeme') continue;
-			id = parsed.id;
-		} catch {
-			continue;
-		}
+		const parsed = tryParseCardId(card.id);
+		if (parsed?.type !== 'lexeme') continue;
+		const id = parsed.id;
 		const lexeme = lexemes.get(id);
 		if (!lexeme) continue;
 		words.push({
@@ -97,7 +91,7 @@ for (const verse of verseData.verses) {
  * them are from surahs the app does not have, so those are shown in the first verse the app does
  * have that holds the word, and four have none (they are only named by their reference).
  */
-export function wordExample({ sample }: Lexeme, id: string): WordExample {
+export function wordExample({ id, sample }: Lexeme): WordExample {
 	const [surah, ayah] = sample.loc.split(':').map(Number);
 	const inAppVerse = (at: { surah: number; ayah: number }) => ({
 		inApp: true,
@@ -129,9 +123,20 @@ export function fold(text: string): string {
 		.trim();
 }
 
-/** What a word can be found by: its dictionary form, the form seen in the Quran, its root and meaning. */
+const DAGGER_ALEF = String.fromCodePoint(0x670);
+const ALEF = String.fromCodePoint(0x627);
+
+/**
+ * What a word can be found by: its dictionary form, the form seen in the Quran, its root and
+ * meaning. The Quran marks some long a sounds with a small dagger alef where everyday spelling
+ * writes a full alef, so a word with one can be typed either way and is known by both spellings.
+ */
 function searchable({ lexeme }: LearnedWord): string[] {
-	return [lexeme.arabic, lexeme.sample.form, lexeme.root ?? '', lexeme.gloss].map(fold);
+	const texts = [lexeme.arabic, lexeme.sample.form, lexeme.root ?? '', lexeme.gloss];
+	const spelledOut = texts
+		.filter((text) => text.includes(DAGGER_ALEF))
+		.map((text) => text.replaceAll(DAGGER_ALEF, ALEF));
+	return [...texts, ...spelledOut].map(fold);
 }
 
 /** Every word typed must be found somewhere in the word, in any order. Nothing typed matches all. */

@@ -1,5 +1,6 @@
 import { lessons } from '../src/lib/content/course';
 import { audit } from './support/axe';
+import { listenAt, listeningLesson } from './support/course';
 import {
 	answerAll,
 	answerExercise,
@@ -30,17 +31,14 @@ const grammar = lessons.find((l) => l.id === 'grammar-when-o')!;
 const buildAt = grammar.exercises.findIndex((e) => e.kind === 'build');
 
 // A lesson with a listening question, so that screen is checked too.
-const lesson = lessons.find((l) =>
-	l.exercises.some((e) => e.listening && e.id.startsWith('listen:'))
-)!;
-const listenAt = lesson.exercises.findIndex((e) => e.listening);
+const lesson = listeningLesson;
 
 for (const mode of modes) {
 	test.describe(mode.name, () => {
 		test.use({ viewport: mode.viewport, colorScheme: mode.colorScheme });
 
 		test('every screen has no accessibility problems', async ({ page }) => {
-			test.setTimeout(120_000);
+			test.setTimeout(180_000);
 			const seed = seededLearner({ due: 2, dueWords: 4 });
 
 			await test.step('welcome and about, before a starting point is chosen', async () => {

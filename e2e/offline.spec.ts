@@ -1,5 +1,6 @@
 import type { BrowserContext, Page } from '@playwright/test';
 import { lessons } from '../src/lib/content/course';
+import { listenAt, listeningLesson } from './support/course';
 import {
 	answerAll,
 	answerExercise,
@@ -20,14 +21,13 @@ import { seededLearner } from './support/seed';
 
 // These tests are about the worker, which every other test keeps out of the way.
 test.use({ serviceWorkers: 'allow' });
+// A service worker to install, a server to stop and start, and a lesson to do: allow for a slower machine.
+test.describe.configure({ timeout: 90_000 });
 
 // A lesson with a listening question, and what a learner who has done everything before it meets.
-const lesson = lessons.find((l) =>
-	l.exercises.some((e) => e.listening && e.id.startsWith('listen:'))
-)!;
+const lesson = listeningLesson;
 const learner = () => seededLearner({ lessonsDone: lessons.indexOf(lesson) });
 const heardLess = lesson.exercises.filter((e) => !e.listening);
-const listenAt = lesson.exercises.findIndex((e) => e.listening);
 
 /** The worker has installed and taken control, which is when every file it needs is kept. */
 const installed = (page: Page) =>

@@ -66,7 +66,7 @@ test('lists every word learned, and counts them by how well they are known', asy
 	expect(learned.length, 'the learner should know a good many words').toBeGreaterThan(100);
 	await expect(rows(page)).toHaveCount(learned.length);
 	await expect(
-		page.getByText(`${learned.length.toLocaleString()} words`, { exact: true })
+		page.getByText(`${learned.length.toLocaleString('en-US')} words`, { exact: true })
 	).toBeVisible();
 
 	for (const [name, count] of [
@@ -81,7 +81,9 @@ test('lists every word learned, and counts them by how well they are known', asy
 			expect(label.trim()).toBe(name);
 		}
 		await expect(
-			page.getByText(`${count.toLocaleString()} of ${learned.length.toLocaleString()} words`)
+			page.getByText(
+				`${count.toLocaleString('en-US')} of ${learned.length.toLocaleString('en-US')} words`
+			)
 		).toBeVisible();
 	}
 	await page.getByRole('radio', { name: /^All\b/ }).check();
@@ -162,9 +164,18 @@ test('opens a word to show its root and a verse it comes from', async ({ page })
 
 	await expect(toggle(row)).toHaveAttribute('aria-expanded', 'false');
 	await expect(verse).toHaveCount(0);
+	// A closed word takes up no room of its own: its panel is not drawn at all, so a list of hundreds
+	// is not hundreds of empty padded boxes.
+	const panel = row.locator('.panel');
+	await expect(panel).toBeHidden();
+	const closedHeight = await row.evaluate((el) => el.getBoundingClientRect().height);
+	expect(await panel.evaluate((el) => getComputedStyle(el).display)).toBe('none');
 
 	await toggle(row).click();
 	await expect(toggle(row)).toHaveAttribute('aria-expanded', 'true');
+	expect(await row.evaluate((el) => el.getBoundingClientRect().height)).toBeGreaterThan(
+		closedHeight
+	);
 	await expect(row.getByText(/^root/)).toBeVisible();
 	await expect(row.getByText(/appears .* in the Quran/)).toBeVisible();
 	await expect(row.getByText(/Seen as/)).toContainText(`${surahName(surah)} ${surah}:${ayah}`);
@@ -173,6 +184,7 @@ test('opens a word to show its root and a verse it comes from', async ({ page })
 	await toggle(row).click();
 	await expect(toggle(row)).toHaveAttribute('aria-expanded', 'false');
 	await expect(verse).toHaveCount(0);
+	expect(await row.evaluate((el) => el.getBoundingClientRect().height)).toBe(closedHeight);
 });
 
 test('names only the reference for a word that is in none of the verses the app has', async ({

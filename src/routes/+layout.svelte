@@ -103,7 +103,6 @@
 		font-weight: 600;
 		letter-spacing: 0.02em;
 	}
-	/* On a narrow phone the links drop under the name instead of pushing the page sideways. */
 	/* On a narrow phone the Arabic wordmark is enough; the name stays for screen readers. */
 	@media (max-width: 26rem) {
 		.brand .name {

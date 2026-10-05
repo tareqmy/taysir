@@ -85,5 +85,31 @@ test('keeps going, and warns, when saving starts to fail partway', async ({ page
 	// The learner is not stopped: the lesson goes through and counts.
 	await finishFirstLesson(page);
 	await page.goto('/');
-	await expect(notice(page)).toHaveCount(0); // a new page starts again from what was saved: nothing
+	// Once the app has started and read what was saved, which is nothing; not before, or an alert
+	// that has yet to be drawn would be missed.
+	await expect(page.getByRole('heading', { name: 'Where would you like to start?' })).toBeVisible();
+	await expect(notice(page)).toHaveCount(0);
+});
+
+test('does not pretend to have erased progress when the browser will not erase it', async ({
+	page
+}) => {
+	await page.addInitScript(() => {
+		// Saving works, so there is progress; only erasing is refused.
+		IDBObjectStore.prototype.clear = function () {
+			throw new DOMException('The operation is insecure.', 'SecurityError');
+		};
+	});
+	await startAsReader(page);
+	await page.goto('/settings');
+	await expect(page.getByRole('heading', { level: 1, name: 'Settings' })).toBeVisible();
+
+	page.once('dialog', (dialog) => void dialog.accept());
+	await page.getByRole('button', { name: 'Erase all progress' }).click();
+	await expect(notice(page)).toContainText('could not be erased');
+	await expect(page).toHaveURL(/\/settings$/);
+
+	// It told the truth: what was saved is still there, so a fresh page does not ask where to start.
+	await page.reload();
+	await expect(page.getByRole('heading', { level: 1, name: 'Settings' })).toBeVisible();
 });

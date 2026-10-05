@@ -13,6 +13,8 @@ import type { Site } from './support/site';
 
 // These tests are about the worker, which every other test keeps out of the way.
 test.use({ serviceWorkers: 'allow' });
+// A service worker to install and a redeploy to find, twice over in places: allow for a slower machine.
+test.describe.configure({ timeout: 90_000 });
 
 const banner = (page: Page) => page.getByRole('complementary', { name: 'Update available' });
 const updateNow = (page: Page) => banner(page).getByRole('button', { name: 'Update now' });

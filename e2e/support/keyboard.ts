@@ -8,7 +8,7 @@ import { expect } from './test';
  * behind something, and that you are never stuck. Everything here sends real key presses.
  */
 
-export interface Stop {
+interface Stop {
 	name: string;
 	/** Scrolled into the window, as the browser does for whatever takes focus. */
 	inView: boolean;
@@ -18,7 +18,7 @@ export interface Stop {
 	covered: boolean;
 }
 
-export interface TabAudit {
+interface TabAudit {
 	stops: Stop[];
 	/** Focus went round again, or out of the page. False means the page kept handing out stops. */
 	ended: boolean;
@@ -29,10 +29,11 @@ export interface TabAudit {
 }
 
 /**
- * The most Tab presses a screen is given before it counts as a trap. The longest page is the words
- * page, with two stops (the word and its speaker) for each of over five hundred words.
+ * The most Tab presses a screen is given before it counts as a trap. The longest page audited is
+ * the home screen, with a stop for each of about a hundred and fifty lessons; the words page is
+ * audited a third at a time (two stops for each word, the word and its speaker).
  */
-const MAX_STOPS = 1500;
+const MAX_STOPS = 800;
 
 /** Put the "where Tab starts from" mark at the top of the page, whatever has had focus before. */
 async function startFromTop(page: Page) {
@@ -70,9 +71,13 @@ function describeFocus(page: Page) {
 		let node: Element | null = el;
 		for (let up = 0; node && up < 3 && !indicated; up++, node = node.parentElement) {
 			const style = getComputedStyle(node);
+			// A transparent outline is no sign at all.
+			const colour = /rgba?\(([^)]*)\)/.exec(style.outlineColor)?.[1].split(',') ?? [];
+			const seen = colour.length < 4 || Number(colour[3]) > 0;
 			indicated =
 				style.outlineStyle !== 'none' &&
 				parseFloat(style.outlineWidth) >= 2 &&
+				seen &&
 				node.matches(':focus-visible, :focus-within');
 		}
 
@@ -102,14 +107,16 @@ function unreached(page: Page) {
 	return page.evaluate(() => {
 		const seen = (window as unknown as { kbSeen: Set<Element> }).kbSeen;
 		const candidates = document.querySelectorAll<HTMLElement>(
-			'a[href], button, input, select, textarea, summary, [tabindex]'
+			'a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="link"], [role="checkbox"], [role="switch"], [role="menuitem"], [role="tab"]'
 		);
 		const missed: string[] = [];
 		for (const el of candidates) {
 			const disabled = (el as HTMLButtonElement).disabled === true;
 			// A heading or panel with tabindex -1 is only for a script to focus. A button or link with
 			// it can no longer be reached by Tab, which is exactly what this is here to find.
-			const native = el.matches('a[href], button, input, select, textarea, summary');
+			const native = el.matches(
+				'a[href], button, input, select, textarea, summary, [role="button"], [role="link"], [role="checkbox"], [role="switch"], [role="menuitem"], [role="tab"]'
+			);
 			if (disabled || (el.getAttribute('tabindex') === '-1' && !native)) continue;
 			if (el.closest('[inert], [aria-hidden="true"]') || !el.checkVisibility()) continue;
 			const rect = el.getBoundingClientRect();
@@ -181,12 +188,14 @@ export async function auditTabOrder(page: Page, screen: string): Promise<TabAudi
 
 /** Tab until `target` has focus. Says how many presses it took; fails if it is never reached. */
 export async function tabTo(page: Page, target: Locator, { max = 40 } = {}): Promise<number> {
+	// Without this a control that is not there would be waited for until the whole test timed out.
+	await expect(target, 'the control to Tab to').toBeAttached();
 	const focused = () => target.evaluate((el) => el === document.activeElement);
 	for (let presses = 0; presses < max; presses++) {
-		if (await focused().catch(() => false)) return presses;
+		if (await focused()) return presses;
 		await page.keyboard.press('Tab');
 	}
-	if (await focused().catch(() => false)) return max;
+	if (await focused()) return max;
 	const now = await page.evaluate(() => {
 		const el = document.activeElement;
 		return el

@@ -73,9 +73,17 @@
 	const dateFormat = new Intl.DateTimeFormat(undefined, { dateStyle: 'long' });
 	const plural = (n: number, one: string, many: string) => `${n} ${n === 1 ? one : many}`;
 
+	let eraseFailed = $state(false);
+
 	async function reset() {
 		if (!confirm('Erase all progress on this device? This cannot be undone.')) return;
-		await app.reset();
+		eraseFailed = false;
+		try {
+			await app.reset();
+		} catch {
+			eraseFailed = true;
+			return;
+		}
 		await goto(resolve('/welcome'));
 	}
 </script>
@@ -197,6 +205,12 @@
 			Clearing your browser data will erase it, so back it up first if it matters to you.
 		</p>
 		<button type="button" class="btn btn-quiet danger" onclick={reset}>Erase all progress</button>
+		{#if eraseFailed}
+			<p class="message bad" role="alert">
+				Your progress could not be erased, so it has been left as it was. This browser is not
+				letting Taysir change what it saved.
+			</p>
+		{/if}
 	</section>
 </main>
 

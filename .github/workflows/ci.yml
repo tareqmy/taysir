@@ -57,6 +57,14 @@ jobs:
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
 
+      # The layout checks pin Verdana or DejaVu Sans for the app's text. Whether the runner has either
+      # decides how wide that text is, so the log says what it will really get.
+      - name: Which fonts the tests will use
+        run: |
+          fc-match "Verdana"
+          fc-match "DejaVu Sans"
+          fc-match "sans-serif"
+
       - name: Browser tests
         run: npm run e2e
 

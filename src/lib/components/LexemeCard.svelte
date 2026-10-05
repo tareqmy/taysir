@@ -53,7 +53,7 @@
 		align-items: center;
 	}
 	.pill .ar {
-		font-size: 1.35em;
+		font-size: calc(1.35em * var(--ar-scale, 1));
 		line-height: 1;
 		vertical-align: middle;
 		/* The letters of a root are one group. With big text the pill wraps, and it should wrap

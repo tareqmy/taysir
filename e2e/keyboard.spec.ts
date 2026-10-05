@@ -6,17 +6,21 @@ import {
 	answerAll,
 	chooseBackupFile,
 	continueButton,
+	runSession,
 	startAsReader,
 	startWithProgress
 } from './support/learner';
+import { listenAt, listeningLesson } from './support/course';
 import { auditTabOrder, answerByKeyboard, press, tabTo } from './support/keyboard';
+import { useWideFonts } from './support/layout';
 import { seededLearner } from './support/seed';
 import { expect, test } from './support/test';
 
 /**
  * The app used with the keyboard alone. Two kinds of test: an audit that presses Tab through every
- * screen (every control reachable, in the order of the page, with a visible focus that nothing
- * covers, and no trap), and journeys that do real things with Enter, Space and the arrow keys.
+ * screen (every control reachable, none given a tabindex above zero, a visible focus that nothing
+ * covers, and no trap; the order itself is checked only on the home screen), and journeys that do
+ * real things with Enter, Space and the arrow keys.
  */
 
 const modes = [
@@ -43,10 +47,7 @@ const lessonsByKind = [
 	)
 ];
 
-const listening = lessons.find((l) =>
-	l.exercises.some((e) => e.listening && e.id.startsWith('listen:'))
-)!;
-const listenAt = listening.exercises.findIndex((e) => e.listening);
+const listening = listeningLesson;
 const grammar = lessons.find((l) => l.id === 'grammar-when-o')!;
 
 /** Read a lesson through by keyboard: Continue stays where it is, so Enter is all it takes. */
@@ -79,6 +80,8 @@ test.describe('every screen, by the Tab key', () => {
 		test(`${mode.name}: every control is reached, seen and not stuck`, async ({ page }) => {
 			test.setTimeout(240_000);
 			await page.setViewportSize(mode.viewport);
+			// Where lines wrap decides what a focused control can be hidden behind.
+			await useWideFonts(page);
 			// Every lesson but the last is done, so each can be opened and the lesson list still has a next one.
 			const seed = seededLearner({ lessonsDone: lessons.length - 1, dueWords: 10 });
 
@@ -179,12 +182,7 @@ test.describe('every screen, by the Tab key', () => {
 					await expect(continueButton(page)).toBeVisible();
 					await auditTabOrder(page, `${path}: answer feedback`);
 					await continueButton(page).click();
-					const done = page.getByRole('heading', { name: summary });
-					for (let n = 0; n < 40 && !(await done.isVisible()); n++) {
-						await choices.getByRole('button').first().click();
-						await continueButton(page).click();
-						await expect(choices.or(done)).toBeVisible();
-					}
+					await runSession(page, summary);
 					await auditTabOrder(page, `${path}: summary`);
 				}
 				await page.goto('/review');
@@ -209,7 +207,7 @@ test.describe('every screen, by the Tab key', () => {
 				await page.goto('/words');
 				await expect(page.getByRole('heading', { level: 1, name: 'Your words' })).toBeVisible();
 				// A third of the list, so the audit is not over a thousand key presses long three times
-				// over. The whole list is walked in the words journey below.
+				// over. Every row is the same component, so a third shows what the whole list would.
 				await page.getByRole('radio', { name: /^Well known\b/ }).check();
 				await auditTabOrder(page, 'words');
 				await page.locator('ul.words button.toggle').first().click();
@@ -280,7 +278,9 @@ test.describe('doing things by keyboard', () => {
 		);
 	});
 
-	test('every kind of question can be answered with Enter and Space', async ({ page }) => {
+	test('every kind of question can be answered by keyboard, with Enter and with Space', async ({
+		page
+	}) => {
 		test.setTimeout(240_000);
 		const seed = seededLearner({ lessonsDone: lessons.length });
 		await startWithProgress(page, seed.backup);

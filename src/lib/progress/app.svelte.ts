@@ -169,8 +169,13 @@ export class AppState {
 		this.tick++;
 	}
 
+	/**
+	 * Erases everything. Like `restore`, this is something the learner asked for by name, so a
+	 * browser that will not do it throws: carrying on would show an empty app that gets the old
+	 * progress back at the next load.
+	 */
 	async reset() {
-		await this.save(() => this.store.clear());
+		await this.store.clear();
 		this.meta = defaultMeta();
 		this.cards = [];
 		this.tick++;

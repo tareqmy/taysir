@@ -17,6 +17,8 @@ export interface InstallEnvironment {
 	addEventListener(type: string, listener: (event: Event) => void): void;
 	matchMedia(query: string): { matches: boolean };
 	navigator: DeviceInfo & { standalone?: boolean };
+	/** The install prompt, if the browser sent it before the app started (see `src/app.html`). */
+	__taysirInstallPrompt?: Event;
 }
 
 /** The little of `localStorage` this needs. */
@@ -35,9 +37,15 @@ export interface InstallStorage {
  */
 export class AppInstall {
 	/** Running as an installed app (a home-screen icon or its own window), so nothing to offer. */
-	installed = $state(false);
+	standalone = $state(false);
+	/** The browser said the app was installed during this visit, which may still be a browser tab. */
+	installedHere = $state(false);
 	/** The browser has offered its install prompt and it has not been used yet. */
 	canPrompt = $state(false);
+	/** The browser's install prompt is open, waiting for the learner. */
+	asking = $state(false);
+	/** The learner closed the browser's install prompt without installing. */
+	declined = $state(false);
 	/** An iPhone or iPad. */
 	apple = $state(false);
 	/** The learner put the card on the home screen away. The offer in Settings stays. */
@@ -45,7 +53,11 @@ export class AppInstall {
 
 	/** What to show here right now. */
 	mode: InstallMode = $derived(
-		installMode({ installed: this.installed, canPrompt: this.canPrompt, apple: this.apple })
+		installMode({
+			installed: this.standalone || this.installedHere,
+			canPrompt: this.canPrompt,
+			apple: this.apple
+		})
 	);
 	/** The home-screen card: only where there is something to do about it, and not put away. */
 	offerOnHome = $derived((this.mode === 'button' || this.mode === 'steps') && !this.hintDismissed);
@@ -70,7 +82,7 @@ export class AppInstall {
 		this.started = true;
 
 		this.apple = isAppleTouchDevice(env.navigator);
-		this.installed =
+		this.standalone =
 			env.matchMedia('(display-mode: standalone)').matches || env.navigator.standalone === true;
 		try {
 			this.hintDismissed = this.storage?.getItem(INSTALL_HINT_KEY) === 'dismissed';
@@ -78,31 +90,47 @@ export class AppInstall {
 			// Storage is blocked: the card shows until it is put away this visit.
 		}
 
-		env.addEventListener('beforeinstallprompt', (event) => {
+		const keep = (event: Event) => {
 			// Hold the browser's own offer back, so it comes where the learner is not mid-lesson.
 			event.preventDefault();
 			this.prompt = event as InstallPromptEvent;
 			this.canPrompt = true;
-		});
+		};
+		env.addEventListener('beforeinstallprompt', keep);
+		// The browser may have sent it already: a small script in the page's head keeps it until now.
+		const early = env.__taysirInstallPrompt;
+		if (early) {
+			delete env.__taysirInstallPrompt;
+			keep(early);
+		}
 		env.addEventListener('appinstalled', () => {
 			this.prompt = undefined;
 			this.canPrompt = false;
-			this.installed = true;
+			this.installedHere = true;
 		});
 	}
 
-	/** Brings up the browser's own install prompt. Says what the learner chose. */
+	/**
+	 * Brings up the browser's own install prompt, and says what the learner chose. While it is open
+	 * the offer stays as it is; nothing changes until the learner has answered.
+	 */
 	async install(): Promise<'accepted' | 'dismissed' | 'unavailable'> {
 		const prompt = this.prompt;
-		if (!prompt) return 'unavailable';
+		if (!prompt || this.asking) return 'unavailable';
 		// A prompt can be shown once. If the browser will offer again, it sends a new one.
 		this.prompt = undefined;
-		this.canPrompt = false;
+		this.asking = true;
 		try {
 			await prompt.prompt();
-			return (await prompt.userChoice).outcome;
+			const { outcome } = await prompt.userChoice;
+			if (outcome === 'accepted') this.installedHere = true;
+			else this.declined = true;
+			return outcome;
 		} catch {
 			return 'unavailable';
+		} finally {
+			this.asking = false;
+			this.canPrompt = false;
 		}
 	}
 

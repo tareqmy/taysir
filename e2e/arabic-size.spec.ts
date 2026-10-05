@@ -1,7 +1,7 @@
 import { readFile } from 'node:fs/promises';
 import type { Page } from '@playwright/test';
 import { lessons } from '../src/lib/content/course';
-import { verseData } from '../src/lib/data';
+import { surahName, verseData } from '../src/lib/data';
 import { defaultMeta } from '../src/lib/progress/store';
 import {
 	answerExercise,
@@ -174,15 +174,17 @@ test.describe('at the largest Arabic size on a phone', () => {
 			}
 		}
 
-		// The page that lists verses, with a surah that holds a widest word open.
+		// The page that lists verses, with the surah that holds a widest word open.
 		const [surah] = [...refs].map((ref) => Number(ref.split(':')[0]));
 		await page.goto('/verses');
-		await page.locator('.surahs summary').filter({ hasNotText: /^$/ }).first().click();
-		await check('the verses page');
+		await page
+			.locator('.surahs summary', { hasText: surahName(surah) })
+			.first()
+			.click();
+		await check(`the verses page, with ${surahName(surah)} open`);
 		await page.goto('/settings');
 		await check('settings, with its preview verse');
 
 		expect(problems, 'screens where the Arabic does not fit').toEqual([]);
-		expect(surah).toBeGreaterThan(0);
 	});
 });

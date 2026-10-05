@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { tick } from 'svelte';
 	import { resolve } from '$app/paths';
 	import InstallOffer from '#lib/components/InstallOffer.svelte';
 	import { units } from '#lib/content/course';
@@ -8,6 +9,17 @@
 	const next = $derived(app.nextLesson);
 	/** Not before a first lesson is done: until then the learner has not yet seen what is worth keeping. */
 	const offerInstall = $derived(appInstall.offerOnHome && app.meta.completedLessons.length > 0);
+
+	let main = $state<HTMLElement>();
+	/** Said aloud when the card goes: the button that had focus is gone with it. */
+	let installNote = $state('');
+
+	/** The card has gone, taking the focused button with it: say so, and keep focus on the page. */
+	async function settled(note: string) {
+		installNote = note;
+		await tick();
+		main?.focus();
+	}
 	const dueCount = $derived(app.dueCards.length);
 	const goal = $derived(app.meta.dailyGoal);
 	const percent = $derived(Math.min(100, Math.round((app.todayCount / goal) * 100)));
@@ -18,8 +30,9 @@
 	<title>Your lessons · Taysir</title>
 </svelte:head>
 
-<main id="main" class="page stack">
+<main id="main" class="page stack" tabindex="-1" bind:this={main}>
 	<h1 class="visually-hidden">Your lessons</h1>
+	<span class="visually-hidden" role="status">{installNote}</span>
 
 	<section class="card today" aria-label="Today">
 		<div class="streak">
@@ -78,9 +91,16 @@
 	{#if offerInstall}
 		<section class="card stack" aria-labelledby="install">
 			<h2 id="install">Keep Taysir at hand</h2>
-			<InstallOffer here="home" />
+			<InstallOffer here="home" onsettled={settled} />
 			<div>
-				<button type="button" class="btn btn-quiet" onclick={() => appInstall.dismissHint()}>
+				<button
+					type="button"
+					class="btn btn-quiet"
+					onclick={() => {
+						appInstall.dismissHint();
+						void settled('Put away. You can still install Taysir from Settings.');
+					}}
+				>
 					Not now
 				</button>
 			</div>

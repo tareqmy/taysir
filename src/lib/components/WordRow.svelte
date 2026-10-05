@@ -8,7 +8,7 @@
 	let { word }: { word: LearnedWord } = $props();
 
 	const lexeme = $derived(word.lexeme);
-	const example = $derived(wordExample(lexeme, lexeme.id));
+	const example = $derived(wordExample(lexeme));
 	const panel = $derived(`word-${lexeme.id}`);
 	const times = $derived(lexeme.count === 1 ? 'once' : `${lexeme.count.toLocaleString()} times`);
 	/** The row's own details open on tap, and are only built then: a long list has hundreds of rows. */
@@ -120,6 +120,10 @@
 		gap: 0.5rem;
 		padding: 0.25rem 0.25rem 1rem;
 	}
+	/* The `hidden` attribute is only the browser's own rule, which the display above would beat. */
+	.panel[hidden] {
+		display: none;
+	}
 	.meta {
 		display: flex;
 		flex-wrap: wrap;
@@ -127,7 +131,7 @@
 		gap: 0.5rem 0.75rem;
 	}
 	.pill .ar {
-		font-size: 1.35em;
+		font-size: calc(1.35em * var(--ar-scale, 1));
 		line-height: 1;
 		vertical-align: middle;
 		/* The letters of a root are one group, so a wrapped pill breaks before them, not inside. */

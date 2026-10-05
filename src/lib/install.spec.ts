@@ -61,6 +61,8 @@ describe('installMode', () => {
 class FakePage extends EventTarget {
 	standaloneMedia = false;
 	navigator: InstallEnvironment['navigator'];
+	/** Set by the script in the page's head when the browser sends the prompt before the app starts. */
+	__taysirInstallPrompt?: Event;
 
 	constructor(userAgent = ANDROID, platform = 'Linux armv81', maxTouchPoints = 5) {
 		super();
@@ -132,6 +134,62 @@ describe('AppInstall', () => {
 
 		page.offer();
 		expect(install.mode).toBe('button');
+	});
+
+	it('keeps the offer as it is while the browser’s prompt is open, and notes a "no"', async () => {
+		const { page, install } = setup();
+		let choose!: (outcome: 'accepted' | 'dismissed') => void;
+		const event = Object.assign(new Event('beforeinstallprompt', { cancelable: true }), {
+			prompt: vi.fn(async () => {}),
+			userChoice: new Promise<{ outcome: 'accepted' | 'dismissed' }>((resolve) => {
+				choose = (outcome) => resolve({ outcome });
+			})
+		});
+		page.dispatchEvent(event);
+
+		const asking = install.install();
+		// Waiting for the learner: still the button, shown as waiting, and not offered a second time.
+		expect(install.asking).toBe(true);
+		expect(install.mode).toBe('button');
+		expect(install.offerOnHome).toBe(true);
+		expect(await install.install()).toBe('unavailable');
+		expect(event.prompt).toHaveBeenCalledOnce();
+
+		choose('dismissed');
+		expect(await asking).toBe('dismissed');
+		expect(install.asking).toBe(false);
+		expect(install.declined).toBe(true);
+		expect(install.mode).toBe('none');
+		expect(install.offerOnHome).toBe(false);
+	});
+
+	it('is installed once the learner accepts, without waiting for the browser to say so', async () => {
+		const { page, install } = setup();
+		page.offer('accepted');
+		expect(await install.install()).toBe('accepted');
+		expect(install.mode).toBe('installed');
+		expect(install.declined).toBe(false);
+		// Installed during a visit is not the same as running as the installed app.
+		expect(install.standalone).toBe(false);
+		expect(install.installedHere).toBe(true);
+	});
+
+	it('picks up a prompt the browser sent before the app started', () => {
+		const page = new FakePage();
+		const early = new Event('beforeinstallprompt', { cancelable: true });
+		page.__taysirInstallPrompt = early;
+		const { install } = setup(page);
+		expect(install.mode).toBe('button');
+		expect(early.defaultPrevented).toBe(true);
+		// Taken, so it cannot be taken twice.
+		expect(page.__taysirInstallPrompt).toBeUndefined();
+	});
+
+	it('stops asking when the prompt fails, so the offer is not left waiting', async () => {
+		const { page, install } = setup();
+		page.offer().prompt.mockRejectedValueOnce(new DOMException('Not allowed', 'NotAllowedError'));
+		expect(await install.install()).toBe('unavailable');
+		expect(install.asking).toBe(false);
 	});
 
 	it('copes with a prompt that fails to show', async () => {

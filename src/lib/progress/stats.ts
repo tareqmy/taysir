@@ -12,7 +12,7 @@ import { addDays, type DayKey } from './streak';
  */
 
 /** A card's kind, or nothing for an id this version does not know: one odd card must not break a page. */
-function parsed(cardId: string): ParsedCardId | undefined {
+export function tryParseCardId(cardId: string): ParsedCardId | undefined {
 	try {
 		return parseCardId(cardId);
 	} catch {
@@ -56,7 +56,7 @@ export function strengthOf(card: StoredCard): Strength {
 export function wordKnowledge(cards: readonly StoredCard[]): WordKnowledge {
 	const result: WordKnowledge = { learning: 0, familiar: 0, wellKnown: 0 };
 	for (const card of cards) {
-		if (parsed(card.id)?.type === 'lexeme') result[strengthOf(card)]++;
+		if (tryParseCardId(card.id)?.type === 'lexeme') result[strengthOf(card)]++;
 	}
 	return result;
 }
@@ -65,7 +65,7 @@ export const wordsLearned = (k: WordKnowledge) => k.learning + k.familiar + k.we
 
 /** Letters the learner has been given. */
 export function lettersLearned(cards: readonly StoredCard[]): number {
-	return cards.filter((card) => parsed(card.id)?.type === 'letter').length;
+	return cards.filter((card) => tryParseCardId(card.id)?.type === 'letter').length;
 }
 
 // --- The Quran ----------------------------------------------------------------------------------
@@ -74,7 +74,7 @@ export function lettersLearned(cards: readonly StoredCard[]): number {
 export function learnedLexemes(cards: readonly StoredCard[]): Set<string> {
 	return new Set(
 		cards.flatMap((card) => {
-			const found = parsed(card.id);
+			const found = tryParseCardId(card.id);
 			return found?.type === 'lexeme' ? [found.id] : [];
 		})
 	);

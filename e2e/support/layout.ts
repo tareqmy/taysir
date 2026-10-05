@@ -58,6 +58,11 @@ export async function withBigText<T>(page: Page, check: () => Promise<T>): Promi
 		session.send('Page.setFontSizes' as never, { fontSizes: { standard, fixed } } as never);
 	await setSizes(32, 26);
 	try {
+		// An experimental call: if a browser ignored it, every "200% text" check would quietly run at
+		// normal size and pass.
+		const size = await page.evaluate(() => getComputedStyle(document.documentElement).fontSize);
+		if (size !== '32px')
+			throw new Error(`The browser's font size was not doubled: the page is at ${size}`);
 		return await check();
 	} finally {
 		await setSizes(16, 13);
@@ -83,10 +88,12 @@ export async function widestWords(page: Page, count: number): Promise<string[]> 
 			holder.append(span);
 			return span;
 		});
-		// The font is fetched when it is first needed, so give it time to arrive.
+		// The font is fetched when it is first needed: ask for it, for these words, and wait.
+		await document.fonts.load('100px "Amiri Quran"', list.join(' '));
 		await document.fonts.ready;
-		await new Promise((resolve) => setTimeout(resolve, 500));
-		await document.fonts.ready;
+		if (!document.fonts.check('100px "Amiri Quran"', list[0])) {
+			throw new Error('The Arabic font did not load, so no word could be measured in it');
+		}
 		const measured = spans.map((span, i) => [list[i], span.getBoundingClientRect().width] as const);
 		holder.remove();
 		return measured;

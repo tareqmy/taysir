@@ -1,6 +1,7 @@
 import type { Page } from '@playwright/test';
 import { audit } from './support/axe';
 import { layoutProblems, useWideFonts, withBigText } from './support/layout';
+import { press } from './support/keyboard';
 import { startAsReader, startWithProgress } from './support/learner';
 import { seededLearner } from './support/seed';
 import { expect, test } from './support/test';
@@ -15,20 +16,30 @@ const IPHONE =
 	'Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1';
 const PHONE = { width: 375, height: 812 };
 
-type Probe = { installPrompts: number; offered: Event };
+type Probe = {
+	installPrompts: number;
+	offered: Event;
+	/** Answers the browser's prompt, when the test held it open. */
+	choose?: (outcome: 'accepted' | 'dismissed') => void;
+};
 
-/** The browser offers its install prompt, as Chrome does once it finds the app installable. */
-async function offerInstall(page: Page) {
-	await page.evaluate(() => {
+/**
+ * The browser offers its install prompt, as Chrome does once it finds the app installable. With
+ * `hold`, the prompt stays open until the test answers it with `probe.choose`.
+ */
+async function offerInstall(page: Page, { hold = false } = {}) {
+	await page.evaluate((hold) => {
 		const event = new Event('beforeinstallprompt', { cancelable: true });
 		const probe: Probe = { installPrompts: 0, offered: event };
-		Object.assign(event, {
-			prompt: async () => void probe.installPrompts++,
-			userChoice: Promise.resolve({ outcome: 'accepted' })
-		});
+		const choice = hold
+			? new Promise<{ outcome: string }>((resolve) => {
+					probe.choose = (outcome) => resolve({ outcome });
+				})
+			: Promise.resolve({ outcome: 'accepted' });
+		Object.assign(event, { prompt: async () => void probe.installPrompts++, userChoice: choice });
 		(window as unknown as { probe: Probe }).probe = probe;
 		window.dispatchEvent(event);
-	});
+	}, hold);
 }
 
 /** How many times the app has brought up the browser's install prompt. */
@@ -83,8 +94,90 @@ test.describe('where the browser offers to install', () => {
 		// Once the browser says it is installed, Settings says so rather than offering again.
 		await page.evaluate(() => window.dispatchEvent(new Event('appinstalled')));
 		await openSettings(page);
-		await expect(section(page)).toContainText('You are using Taysir as an installed app.');
+		// Installed during a visit that is still a browser tab: not "using it as an installed app".
+		await expect(section(page)).toContainText('Taysir is installed on this device.');
+		await expect(section(page)).not.toContainText('You are using');
 		await expect(installButton(page)).toHaveCount(0);
+	});
+
+	test('keeps the offer as it was while the browser’s prompt is open, and says so if declined', async ({
+		page
+	}) => {
+		await afterFirstLesson(page);
+		await offerInstall(page, { hold: true });
+		await openSettings(page);
+
+		await installButton(page).click();
+		await expect.poll(() => promptsShown(page)).toBe(1);
+		// Waiting for the learner: a disabled button, and not a claim that the browser cannot install.
+		await expect(
+			section(page).getByRole('button', { name: 'Waiting for your browser…' })
+		).toBeDisabled();
+		await expect(section(page)).not.toContainText('not offering');
+
+		await page.evaluate(() => (window as unknown as { probe: Probe }).probe.choose!('dismissed'));
+		await expect(section(page)).toContainText('You chose not to install it this time.');
+		// The button that had focus is gone: the section takes it, and its new wording is read out.
+		await expect(section(page).getByRole('status')).toBeFocused();
+	});
+
+	test('"Install" and "Not now" by keyboard leave focus on the page, and say what happened', async ({
+		page
+	}) => {
+		await afterFirstLesson(page);
+		await offerInstall(page);
+		const said = (text: string) => page.getByRole('status').filter({ hasText: text });
+
+		await press(page, card(page).getByRole('button', { name: 'Install Taysir' }));
+		await expect.poll(() => promptsShown(page)).toBe(1);
+		await expect(card(page)).toHaveCount(0);
+		await expect(page.locator('main#main')).toBeFocused();
+		await expect(said('Taysir is being installed.')).toHaveCount(1);
+
+		// And the same for putting the card away.
+		await page.reload();
+		await expect(page.getByRole('heading', { name: 'Your lessons' })).toBeAttached();
+		await offerInstall(page);
+		await press(page, card(page).getByRole('button', { name: 'Not now' }));
+		await expect(card(page)).toHaveCount(0);
+		await expect(page.locator('main#main')).toBeFocused();
+		await expect(said('Put away. You can still install Taysir from Settings.')).toHaveCount(1);
+	});
+
+	test('keeps a prompt the browser sends before the app has started listening', async ({
+		page
+	}) => {
+		await afterFirstLesson(page);
+		// The app's own files are held back, so the browser's event comes first, as it can on a slow
+		// phone that already has the app cached.
+		await page.route('**/_app/immutable/**/*.js', async (route) => {
+			await new Promise((resolve) => setTimeout(resolve, 1500));
+			await route.continue();
+		});
+		await page.addInitScript(() => {
+			document.addEventListener('DOMContentLoaded', () => {
+				const event = new Event('beforeinstallprompt', { cancelable: true });
+				Object.assign(event, {
+					prompt: async () => {},
+					userChoice: Promise.resolve({ outcome: 'accepted' })
+				});
+				window.dispatchEvent(event);
+			});
+		});
+		await page.goto('/settings');
+		await expect(section(page).getByRole('button', { name: 'Install Taysir' })).toBeVisible({
+			timeout: 20_000
+		});
+	});
+
+	test('asks for the manifest with credentials, so it still loads behind a login', async ({
+		page
+	}) => {
+		await page.goto('/about');
+		await expect(page.locator('link[rel=manifest]')).toHaveAttribute(
+			'crossorigin',
+			'use-credentials'
+		);
 	});
 
 	test('"Not now" puts the card away for good, and Settings still has the button', async ({

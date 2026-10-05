@@ -291,6 +291,16 @@ describe('when the browser will not keep anything', () => {
 		expect(app.needsPlacement).toBe(true);
 	});
 
+	it('does not pretend to erase progress that the browser will not let it erase', async () => {
+		// Reading works but nothing can be changed, so an erase that carried on would show an empty
+		// app and get the old progress back at the next load.
+		const app = new AppState(new RefusingStore(true), () => now);
+		await app.init();
+		await app.setPlacement('beginner', 10);
+		await expect(app.reset()).rejects.toThrow();
+		expect(app.needsPlacement).toBe(false);
+	});
+
 	it('keeps what the learner does for the visit, and lets them download it', async () => {
 		const app = new AppState(new RefusingStore(false), () => now);
 		await app.init();

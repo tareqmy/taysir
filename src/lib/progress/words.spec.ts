@@ -66,7 +66,7 @@ describe('wordExample', () => {
 	it('always gives a verse the app has, when it says it has one', () => {
 		// The words page opens a word's example verse, so one marked as in the app has to exist.
 		for (const lexeme of lexicon.lexemes) {
-			const example = wordExample(lexeme, lexeme.id);
+			const example = wordExample(lexeme);
 			expect(example.form, lexeme.id).not.toBe('');
 			expect(example.place, lexeme.id).toMatch(/\d+:\d+$/);
 			if (example.inApp) {
@@ -78,7 +78,7 @@ describe('wordExample', () => {
 	it('uses the word’s own example when that verse is in the app', () => {
 		const lexeme = lexicon.lexemes.find((l) => l.sample.loc.startsWith('1:'))!;
 		const [surah, ayah] = lexeme.sample.loc.split(':').map(Number);
-		expect(wordExample(lexeme, lexeme.id)).toEqual({
+		expect(wordExample(lexeme)).toEqual({
 			form: lexeme.sample.form,
 			surah,
 			ayah,
@@ -89,7 +89,7 @@ describe('wordExample', () => {
 
 	it('uses another verse for a word whose own example is from a surah the app does not have', () => {
 		const lexeme = lexicon.lexemes.find((l) => l.id === 'alima')!;
-		const example = wordExample(lexeme, lexeme.id);
+		const example = wordExample(lexeme);
 		expect(example.inApp).toBe(true);
 		expect(`${example.surah}:${example.ayah}`).not.toBe(
 			lexeme.sample.loc.split(':').slice(0, 2).join(':')
@@ -98,11 +98,11 @@ describe('wordExample', () => {
 	});
 
 	it('names the reference only, for a word that is in none of the app’s verses', () => {
-		const lexeme = lexicon.lexemes.find((l) => !wordExample(l, l.id).inApp)!;
+		const lexeme = lexicon.lexemes.find((l) => !wordExample(l).inApp)!;
 		expect(lexeme, 'some word should have no verse in the app').toBeDefined();
 		const [surah, ayah] = lexeme.sample.loc.split(':').map(Number);
 		// A surah the app has no name for, so the name is left out rather than failing the page.
-		expect(wordExample(lexeme, lexeme.id)).toEqual({
+		expect(wordExample(lexeme)).toEqual({
 			form: lexeme.sample.form,
 			surah,
 			ayah,
@@ -163,6 +163,24 @@ describe('matchesSearch', () => {
 	it('finds a word by its root, typed with or without hyphens', () => {
 		expect(matchesSearch(word, lexeme.root!)).toBe(true);
 		expect(matchesSearch(word, [...lexeme.root!].join('-'))).toBe(true);
+	});
+
+	it('finds a word with a dagger alef under either spelling', () => {
+		const dagger = String.fromCodePoint(0x670);
+		const lexeme = lexicon.lexemes.find((l) => l.arabic.includes(dagger))!;
+		expect(lexeme, 'some word should be written with a dagger alef').toBeDefined();
+		const marked = learnedWords([learning(lexemeCardId(lexeme.id))])[0];
+
+		// As the Quran writes it (the mark is dropped) and as it is usually typed (a full alef).
+		const asWritten = lexeme.arabic.normalize('NFD').replace(/\p{M}/gu, '');
+		const withAlef = lexeme.arabic
+			.replaceAll(dagger, String.fromCodePoint(0x627))
+			.normalize('NFD')
+			.replace(/\p{M}/gu, '');
+		expect(withAlef).not.toBe(asWritten);
+		expect(matchesSearch(marked, asWritten)).toBe(true);
+		expect(matchesSearch(marked, withAlef)).toBe(true);
+		expect(matchesSearch(marked, `${withAlef}zzzz`)).toBe(false);
 	});
 
 	it('needs every word typed to be found, in any order', () => {
