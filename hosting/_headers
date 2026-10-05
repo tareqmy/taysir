@@ -1,0 +1,32 @@
+# Response headers for Cloudflare Pages (Netlify reads the same format). The deploy workflow copies
+# this file into build/ as `_headers`. What each rule is for is in hosting/README.md, and
+# src/lib/hosting.spec.ts runs these rules through the same checks that `npm run hosting:check`
+# makes on a live site, so an edit that breaks one fails a test.
+#
+# Cache-Control is set on exact paths, never on /*: where several rules match, a host joins their
+# values, and "no-cache" joined to "immutable" would mean nothing.
+
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: DENY
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
+
+# The files that say which version is current. A copy kept anywhere hides a new version.
+/
+  Cache-Control: no-cache
+/index.html
+  Cache-Control: no-cache
+/service-worker.js
+  Cache-Control: no-cache
+/_app/version.json
+  Cache-Control: no-cache
+/manifest.webmanifest
+  Content-Type: application/manifest+json
+  Cache-Control: no-cache
+/robots.txt
+  Cache-Control: no-cache
+
+# Built files are named for their contents, so a changed file has a new name and may be kept.
+/_app/immutable/*
+  Cache-Control: public, max-age=31536000, immutable

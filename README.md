@@ -13,7 +13,7 @@ npm install
 npm run dev        # http://localhost:5173
 ```
 
-There is also a `Makefile` with the same commands as short targets. `make help` lists them: `make dev`, `make preview` (builds, then serves the production build with its service worker on http://localhost:4173), `make tunnel` (the same build at a temporary https address, to try on a phone: see “Trying it on a phone”), `make test`, `make e2e`, `make check`, `make lint`, and `make ci`, which runs every step the CI workflow runs, in the same order. Ports can be changed, for example `make dev PORT=3000`.
+There is also a `Makefile` with the same commands as short targets. `make help` lists them: `make dev`, `make preview` (builds, then serves the production build with its service worker on http://localhost:4173), `make tunnel` (the same build at a temporary https address, to try on a phone: see “Trying it on a phone”), `make test`, `make e2e`, `make check`, `make lint`, `make hosting-check URL=…` (see “Hosting”), and `make ci`, which runs every step the CI workflow runs, in the same order. Ports can be changed, for example `make dev PORT=3000`.
 
 | Command                 | What it does                                                    |
 | ----------------------- | --------------------------------------------------------------- |
@@ -23,6 +23,7 @@ There is also a `Makefile` with the same commands as short targets. `make help` 
 | `npm test`              | Unit tests (Vitest)                                             |
 | `npm run e2e`           | Browser tests: builds, serves the build, runs it in Chromium    |
 | `npm run e2e:install`   | Download the Chromium the browser tests use (needed once)       |
+| `npm run hosting:check` | Check a live copy is hosted the way the app needs (see Hosting) |
 | `npm run check`         | Type-check Svelte and TypeScript                                |
 | `npm run lint`          | Prettier and ESLint                                             |
 | `npm run data:build`    | Rebuild the Quran data from the corpus (see below)              |
@@ -96,7 +97,15 @@ e2e/                browser tests (Playwright), with their helpers in e2e/suppor
 
 ## Continuous integration
 
-`.github/workflows/ci.yml` runs on every push to `master` and on pull requests: it rebuilds the generated data and fails if the committed files differ, then runs the type-check, lint, unit tests and the production build. A second job, alongside it, runs the browser tests in Chromium and keeps the report if one fails. Nothing is deployed yet; hosting waits until the English has been reviewed.
+`.github/workflows/ci.yml` runs on every push to `master` and on pull requests: it rebuilds the generated data and fails if the committed files differ, then runs the type-check, lint, unit tests and the production build. A second job, alongside it, runs the browser tests in Chromium and keeps the report if one fails. Nothing is deployed yet; hosting waits until the English has been reviewed. A second workflow, `deploy.yml`, is switched off: it runs only when a person starts it, and only once the repository variable `DEPLOY_ENABLED` is `true` (see “Hosting”).
+
+## Hosting
+
+Not deployed, and not to be until a teacher has reviewed the English. Everything for the day that changes is in [`hosting/`](hosting/README.md): what a host must do and why, a checklist to work through before the first public deploy (review applied, source linked for the GPL, audio terms, privacy wording, a way to report mistakes), how to set up Cloudflare Pages with the trial copy behind Cloudflare Access, and the checks to make on a real phone from the deployed address.
+
+- `hosting/_headers` sets the cache and security headers for Cloudflare Pages (Netlify reads the same format), and `hosting/robots-preview.txt` keeps search engines out of a trial copy.
+- `.github/workflows/deploy.yml` deploys to Cloudflare Pages as a trial copy (`preview`) or the public site (`production`, which also needs “reviewed” typed in). It is run by hand only, and does nothing until `DEPLOY_ENABLED` is set. It has not been run, as it needs a Cloudflare account.
+- `make hosting-check URL=https://…` (add `PREVIEW=1` for a trial copy) tests a live copy: https, the app's routes, nothing cached that says which version is current, built files kept for a year, the manifest's type, the safe headers, and `robots.txt`. The same checks run in `src/lib/hosting.spec.ts` against a stand-in host set up from `hosting/_headers`, so an edit to that file or the workflow that breaks what the app needs fails a test.
 
 ## Browser tests
 

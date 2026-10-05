@@ -1,0 +1,3 @@
+# A copy for trying out, not the public site: please do not index it.
+User-agent: *
+Disallow: /

@@ -16,7 +16,7 @@ TUNNEL ?= cloudflared tunnel --url http://localhost:$(PREVIEW_PORT)
 .DEFAULT_GOAL := help
 # `ci` runs its steps in order and they share .svelte-kit, so never run targets in parallel.
 .NOTPARALLEL:
-.PHONY: help install dev preview tunnel tunnel-check build test test-watch e2e e2e-install check lint format data data-check ci clean distclean
+.PHONY: help install dev preview tunnel tunnel-check build test test-watch e2e e2e-install check lint format data data-check hosting-check ci clean distclean
 
 help: ## List the targets
 	@awk -F ':.*## ' '/^[a-zA-Z_-]+:.*## / { printf "  make %-11s %s\n", $$1, $$2 }' $(MAKEFILE_LIST)
@@ -82,6 +82,11 @@ data: node_modules ## Rebuild the Quran data in src/lib/data/generated
 # The generated data is committed, so it must match what the build script produces.
 data-check: data ## Fail if the generated data is not what the build script produces
 	git diff --exit-code -- src/lib/data/generated
+
+# For a copy you have deployed: make hosting-check URL=https://example.pages.dev [PREVIEW=1]
+hosting-check: node_modules ## Check that a live copy is hosted the way the app needs (URL=https://...)
+	@test -n "$(URL)" || { echo "Say where: make hosting-check URL=https://..."; exit 2; }
+	npm run --silent hosting:check -- "$(URL)" $(if $(PREVIEW),--preview)
 
 ci: node_modules data-check check lint test build e2e ## Everything the CI workflow runs, in the same order
 	@echo "All CI steps passed."

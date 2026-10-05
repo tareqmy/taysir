@@ -1,0 +1,80 @@
+name: Deploy
+
+# Switched off. Nothing runs this on its own: not a push, not a pull request, not a timer. Taysir is
+# not to be put on the internet until a teacher has reviewed the English (hosting/README.md says
+# what to do first), so this runs only when a person starts it from the Actions tab, and then only
+# once the repository variable DEPLOY_ENABLED has been set to "true".
+#
+#   preview     a trial copy for the teacher and for phones. Keep it behind Cloudflare Access.
+#   production  the public site. Also needs the word "reviewed" typed in, to say the review is done.
+
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: 'preview is a trial copy that search engines are kept away from; production is the public site'
+        type: choice
+        options:
+          - preview
+          - production
+        default: preview
+      confirm:
+        description: 'Production only: type "reviewed" to say the teacher review has been applied'
+        type: string
+        required: false
+        default: ''
+
+permissions:
+  contents: read
+
+# Two deploys at once could finish in either order, so queue them.
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: vars.DEPLOY_ENABLED == 'true' && (inputs.target == 'preview' || inputs.confirm == 'reviewed')
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      TARGET: ${{ inputs.target }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      # The browser tests are not repeated here: run this on a commit whose CI is green.
+      - name: Generated data is up to date
+        run: |
+          npm run data:build
+          git diff --exit-code -- src/lib/data/generated
+
+      - run: npm run check
+      - run: npm run lint
+      - run: npm test
+      - run: npm run build
+
+      - name: Add the host's headers, and keep search engines out of a trial copy
+        run: |
+          cp hosting/_headers build/_headers
+          if [ "$TARGET" = "preview" ]; then
+            cp hosting/robots-preview.txt build/robots.txt
+            printf '\n/*\n  X-Robots-Tag: noindex, nofollow\n' >> build/_headers
+          fi
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: >-
+            pages deploy build
+            --project-name=${{ vars.CLOUDFLARE_PAGES_PROJECT || 'taysir' }}
+            --branch=${{ inputs.target == 'production' && 'main' || 'preview' }}
+            --commit-dirty=true
