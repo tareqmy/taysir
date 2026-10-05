@@ -1,7 +1,13 @@
 import { spawnSync } from 'node:child_process';
 import { readdirSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { checkHosting, freshFor, type Fetcher, type Reply } from '../../scripts/hosting-check.ts';
+import {
+	checkHosting,
+	freshFor,
+	sourceFinding,
+	type Fetcher,
+	type Reply
+} from '../../scripts/hosting-check.ts';
 
 /**
  * The hosting contract (`hosting/README.md`). The checks that `npm run hosting:check` makes on a live
@@ -343,6 +349,20 @@ describe('the files the site ships', () => {
 				icon.src
 			).not.toThrow();
 		}
+	});
+});
+
+describe('the link to the source code', () => {
+	it('must open on a launched site', () => {
+		expect(sourceFinding('https://example.com/repo', 200).ok).toBe(true);
+		// A private repository answers 404 to a visitor, and a moved one redirects or is gone.
+		for (const status of [404, 403, 301, 500, 0]) {
+			expect(sourceFinding('https://example.com/repo', status).ok, String(status)).toBe(false);
+		}
+	});
+
+	it('says what to change when it does not', () => {
+		expect(sourceFinding('https://example.com/repo', 404).detail).toContain('SOURCE_URL');
 	});
 });
 

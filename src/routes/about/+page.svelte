@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { DATA_ATTRIBUTION } from '#lib/data';
+	import { ISSUES_URL, SOURCE_URL } from '#lib/links';
 </script>
 
 <svelte:head>
@@ -20,6 +21,27 @@
 			This is an early version. So far it covers Al-Fatiha and all of Juz Amma (surahs 78 to 114),
 			and the explanations and word meanings are drafts that still need review by a qualified
 			teacher. If you notice a mistake, please trust your teacher over this app.
+		</p>
+	</section>
+
+	<section class="card stack" aria-labelledby="mistakes">
+		<h2 id="mistakes">Found a mistake?</h2>
+		<p>
+			Corrections are welcome. <a href={ISSUES_URL}>Report a mistake on GitHub</a> (it needs a free GitHub
+			account), and say which lesson or word it is in.
+		</p>
+	</section>
+
+	<section class="card stack" aria-labelledby="privacy">
+		<h2 id="privacy">Your privacy</h2>
+		<p>
+			Your progress is kept only in this browser, on this device. Taysir has no accounts and no
+			analytics, and sends your progress nowhere.
+		</p>
+		<p>
+			Two things do reach other computers. When you play a recording, your browser asks the audio
+			host (EveryAyah or Quran.com) for it, and that host can see your internet address. And, as
+			with any website, whoever hosts Taysir sees the ordinary visits to it.
 		</p>
 	</section>
 
@@ -50,9 +72,10 @@
 	<section class="card stack">
 		<h2>License</h2>
 		<p>
-			Taysir is free software, released under the GNU General Public License, version 3. The Quranic
-			Arabic Corpus data it uses is also GPL-licensed, and the source link above lets you follow
-			changes to it.
+			Taysir is free software, released under the GNU General Public License, version 3: you may
+			use, study, share and change it. Its source code is in
+			<a href={SOURCE_URL}>the Taysir repository on GitHub</a>. The Quranic Arabic Corpus data it
+			uses is also GPL-licensed; the links in “Sources and credits” lead to it.
 		</p>
 	</section>
 </main>

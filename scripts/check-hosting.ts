@@ -6,13 +6,17 @@
  *
  * Only the address's origin is used: a path on the end is dropped.
  *
+ * A launched site (without `--preview`) must also link source code that opens: the About page's
+ * link, `SOURCE_URL`, is fetched too.
+ *
  * Add `--preview` for a copy that is only for trying out: it then expects search engines to be kept
  * out, where a launched site expects them to be let in. A copy behind Cloudflare Access turns away
  * a visitor with no pass, so give the script a service token: set CF_ACCESS_CLIENT_ID and
  * CF_ACCESS_CLIENT_SECRET. Exits with 1 if anything is wrong. Runs directly on Node (type
  * stripping). What each check is for is in `hosting/README.md`.
  */
-import { checkHosting, type Reply } from './hosting-check.ts';
+import { SOURCE_URL } from '../src/lib/links.ts';
+import { checkHosting, sourceFinding, type Reply } from './hosting-check.ts';
 
 const [address, ...flags] = process.argv.slice(2);
 if (!address || flags.some((flag) => flag !== '--preview')) {
@@ -42,7 +46,15 @@ async function fetchPath(path: string): Promise<Reply> {
 	};
 }
 
-const findings = await checkHosting(origin, fetchPath, { preview: flags.includes('--preview') });
+const preview = flags.includes('--preview');
+const findings = await checkHosting(origin, fetchPath, { preview });
+if (!preview) {
+	// A trial copy may come before the repository is public; the launched site may not.
+	const status = await fetch(SOURCE_URL, { signal: AbortSignal.timeout(20_000) })
+		.then((response) => response.status)
+		.catch(() => 0);
+	findings.push(sourceFinding(SOURCE_URL, status));
+}
 for (const finding of findings) {
 	console.log(
 		`${finding.ok ? '✔' : '✘'} ${finding.check}${finding.ok ? '' : `: ${finding.detail}`}`

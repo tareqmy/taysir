@@ -66,6 +66,20 @@ function keptForAYear(reply: Reply): boolean {
 	return !/\bno-cache\b|\bno-store\b/.test(control) && age !== null && Number(age[1]) >= A_YEAR;
 }
 
+/**
+ * The About page links Taysir's source code, which the GPL asks that anyone who receives the app
+ * can get. A public site whose link does not open (the repository is private, or has moved) has
+ * not met that, so the launch check opens it. `status` is what the address answered, or 0 if it
+ * could not be reached.
+ */
+export function sourceFinding(url: string, status: number): Finding {
+	return {
+		check: 'the link to the source code opens',
+		ok: status === 200,
+		detail: `${url} answered ${status === 0 ? 'nothing' : status}; make the repository public, or change SOURCE_URL in src/lib/links.ts`
+	};
+}
+
 export async function checkHosting(
 	origin: string,
 	fetcher: Fetcher,

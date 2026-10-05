@@ -51,9 +51,10 @@ None of these is automated, and some are decisions rather than tasks.
       README, “Teacher review”). This is the reason for all of the above.
 - [ ] **The wording on the About page is brought up to date.** It says the meanings “are drafts that
       still need review”; after the review it should say who reviewed them, if they agree to be named.
-- [ ] **There is a way to report a mistake**, such as a link to the repository's issues or an email
-      address. The About page tells learners to trust their teacher over the app; it should also tell
-      them where to send a correction.
+- [x] **There is a way to report a mistake.** The About page's “Found a mistake?” links the
+      repository's Issues page (`ISSUES_URL` in `src/lib/links.ts`). It needs the repository to be
+      public, and a free GitHub account to report from. An email address could go beside it for
+      people without one: it would be readable by anyone, so a separate address is wise.
 - [ ] Decide whether the **letter-name recordings** are needed first (CLAUDE.md, “Open items”).
       Without them each letter card plays a Quran word that starts with the letter.
 
@@ -62,11 +63,12 @@ None of these is automated, and some are decisions rather than tasks.
 This is not legal advice. The app and the corpus data it carries are GPL, which asks that people who
 receive the program can get its source.
 
-- [ ] **Link the source from the About page.** It now says “the source link above lets you follow
-      changes”, but links only to the corpus and to Tanzil, not to Taysir itself, and the repository
-      is private. Either make the repository public or give another way to get the source (and say
-      which on the About page). A visitor's browser receives the program, so the public site is
-      distribution.
+- [x] **The About page links the source** (`SOURCE_URL` in `src/lib/links.ts`).
+- [ ] **Make that link open: make the repository public.** It is private now, so the link gives a
+      “not found” page to a visitor. A visitor's browser receives the program, so the public site is
+      distribution. (If you would rather keep it private, change the About page to offer the source on
+      request, and say how.) `make hosting-check` on the launched site fetches the link and fails
+      while it does not open; on a trial copy it does not look.
 - [ ] **Confirm the audio may be used this way.** Verses stream from EveryAyah and words from
       audio.qurancdn.com, from learners' browsers. Read their terms for use in a public app, and
       decide what to do if either stops working (the app already carries on without audio).
@@ -78,8 +80,9 @@ receive the program can get its source.
 - [ ] Settings (“Your data”) already says progress is kept only on the learner's device and that
       nothing is sent to a server. That stays true only while the app has **no analytics**; if you
       add any, change that text first.
-- [ ] Say on the About page that when a learner plays audio, the audio host sees their address. (Page
-      views are seen by the host you pick, as with any site.)
+- [x] The About page says that when a learner plays audio, the audio host sees their address, and
+      that whoever hosts the site sees ordinary visits (“Your privacy”). Keep it true: if you add
+      analytics, or another service the app calls, change it first.
 
 ### Technical
 
