@@ -126,6 +126,11 @@
 			{#if app.cards.length > 0}
 				<a class="btn btn-quiet" href={resolve('/practice')}>Practise your weakest words</a>
 			{/if}
+			{#if learned > 0}
+				<a class="btn btn-quiet" href={resolve('/words')}>
+					Browse your words: {learned.toLocaleString()}
+				</a>
+			{/if}
 		</div>
 	</section>
 

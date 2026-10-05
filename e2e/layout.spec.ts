@@ -67,6 +67,9 @@ test('every screen fits a phone, at normal and at double text size', async ({ pa
 
 	await test.step('settings, while restoring saved progress', async () => {
 		await startAsReader(page);
+		await page.goto('/words');
+		await expect(page.getByText('Finish a vocabulary lesson')).toBeVisible();
+		await fits(page, 'words: nothing learned yet');
 		await chooseBackupFile(page, JSON.stringify(seed.backup));
 		await expect(page.getByRole('group', { name: 'Confirm restore' })).toBeVisible();
 		await fits(page, 'settings: confirm restore');
@@ -155,6 +158,18 @@ test('every screen fits a phone, at normal and at double text size', async ({ pa
 		await page.locator('.surahs summary').first().click();
 		await expect(page.getByRole('region', { name: /verse \d+$/ }).first()).toBeVisible();
 		await fits(page, 'verses: a surah open');
+	});
+
+	await test.step('words: the list, a word open, and a search that finds nothing', async () => {
+		await page.goto('/words');
+		await expect(page.getByRole('heading', { level: 1, name: 'Your words' })).toBeVisible();
+		await fits(page, 'words');
+		await page.locator('ul.words button.toggle').first().click();
+		await expect(page.locator('ul.words').getByRole('region').first()).toBeVisible();
+		await fits(page, 'words: a word open');
+		await page.getByRole('searchbox', { name: 'Search your words' }).fill('zzzzqq');
+		await expect(page.getByText('No words match.')).toBeVisible();
+		await fits(page, 'words: nothing found');
 	});
 
 	await test.step('settings', async () => {

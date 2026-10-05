@@ -119,6 +119,7 @@ test('every screen opens from its address with no connection, and a review can b
 		['/practice', 'Extra practice'],
 		['/progress', 'Your progress'],
 		['/verses', 'Verses you know'],
+		['/words', 'Your words'],
 		['/settings', 'Settings'],
 		['/about', 'About Taysir'],
 		[`/lesson/${lessons[0].id}`, lessons[0].title]
