@@ -4,6 +4,8 @@
  *   npm run hosting:check -- https://taysir.pages.dev
  *   npm run hosting:check -- https://preview.taysir.pages.dev --preview
  *
+ * Only the address's origin is used: a path on the end is dropped.
+ *
  * Add `--preview` for a copy that is only for trying out: it then expects search engines to be kept
  * out, where a launched site expects them to be let in. A copy behind Cloudflare Access turns away
  * a visitor with no pass, so give the script a service token: set CF_ACCESS_CLIENT_ID and

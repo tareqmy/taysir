@@ -86,7 +86,7 @@ data-check: data ## Fail if the generated data is not what the build script prod
 # For a copy you have deployed: make hosting-check URL=https://example.pages.dev [PREVIEW=1]
 hosting-check: node_modules ## Check that a live copy is hosted the way the app needs (URL=https://...)
 	@test -n "$(URL)" || { echo "Say where: make hosting-check URL=https://..."; exit 2; }
-	npm run --silent hosting:check -- "$(URL)" $(if $(PREVIEW),--preview)
+	npm run --silent hosting:check -- "$(URL)" $(if $(filter 1 yes true,$(PREVIEW)),--preview)
 
 ci: node_modules data-check check lint test build e2e ## Everything the CI workflow runs, in the same order
 	@echo "All CI steps passed."

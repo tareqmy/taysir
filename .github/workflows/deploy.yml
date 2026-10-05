@@ -6,7 +6,8 @@ name: Deploy
 # once the repository variable DEPLOY_ENABLED has been set to "true".
 #
 #   preview     a trial copy for the teacher and for phones. Keep it behind Cloudflare Access.
-#   production  the public site. Also needs the word "reviewed" typed in, to say the review is done.
+#   production  the public site. Also needs the word "reviewed" typed in, to say the review is done,
+#               and only the default branch may be deployed to it.
 
 on:
   workflow_dispatch:
@@ -27,19 +28,43 @@ on:
 permissions:
   contents: read
 
-# Two deploys at once could finish in either order, so queue them.
+# A deploy already running is left to finish. At most one more waits behind it: a third replaces the
+# one waiting, which is what is wanted when two people ask for the same thing.
 concurrency:
   group: deploy
   cancel-in-progress: false
 
 jobs:
   deploy:
-    if: vars.DEPLOY_ENABLED == 'true' && (inputs.target == 'preview' || inputs.confirm == 'reviewed')
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
       TARGET: ${{ inputs.target }}
     steps:
+      # First, so that nothing else runs unless deploying has been allowed, and so that a run that
+      # is refused says why instead of finishing without a word.
+      - name: Is deploying allowed?
+        env:
+          ENABLED: ${{ vars.DEPLOY_ENABLED }}
+          CONFIRM: ${{ inputs.confirm }}
+          BRANCH: ${{ github.ref_name }}
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+        run: |
+          if [ "$ENABLED" != "true" ]; then
+            echo "::error::Deploying is switched off. Set the repository variable DEPLOY_ENABLED to true to allow it."
+            exit 1
+          fi
+          if [ "$TARGET" = "production" ]; then
+            if [ "$CONFIRM" != "reviewed" ]; then
+              echo "::error::Production needs the word reviewed typed in, to say the teacher review has been applied."
+              exit 1
+            fi
+            if [ "$BRANCH" != "$DEFAULT_BRANCH" ]; then
+              echo "::error::Production is deployed from $DEFAULT_BRANCH, not from $BRANCH."
+              exit 1
+            fi
+          fi
+
       - uses: actions/checkout@v4
 
       - uses: actions/setup-node@v4

@@ -1,4 +1,5 @@
-import { readFileSync } from 'node:fs';
+import { spawnSync } from 'node:child_process';
+import { readdirSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { checkHosting, freshFor, type Fetcher, type Reply } from '../../scripts/hosting-check.ts';
 
@@ -61,6 +62,17 @@ const rules = parseHeaders(headersFile);
 
 const BUILT = '/_app/immutable/entry/start.Dk3x9aQ2.js';
 
+/** The real manifest, icons and robots.txt, so a change to them is held to the same checks. */
+const manifestText = read('static/manifest.webmanifest');
+const manifest = JSON.parse(manifestText) as {
+	start_url: string;
+	scope: string;
+	display: string;
+	icons: { src: string }[];
+};
+const typeOf = (path: string) => (path.endsWith('.svg') ? 'image/svg+xml' : 'image/png');
+const lastIcon = manifest.icons.at(-1)!.src;
+
 const files: Record<string, { type: string; body: string }> = {
 	'/': {
 		type: 'text/html; charset=utf-8',
@@ -71,14 +83,12 @@ const files: Record<string, { type: string; body: string }> = {
 		body: 'self.addEventListener("fetch", () => {})'
 	},
 	'/_app/version.json': { type: 'application/json', body: '{"version":"1"}' },
-	'/manifest.webmanifest': {
-		type: 'application/manifest+json',
-		body: JSON.stringify({ icons: [{ src: '/icon-192.png' }, { src: '/icon-512.png' }] })
-	},
-	'/icon-192.png': { type: 'image/png', body: '' },
-	'/icon-512.png': { type: 'image/png', body: '' },
+	'/manifest.webmanifest': { type: 'application/manifest+json', body: manifestText },
+	...Object.fromEntries(
+		manifest.icons.map((icon) => [icon.src, { type: typeOf(icon.src), body: '' }])
+	),
 	[BUILT]: { type: 'text/javascript', body: 'export {}' },
-	'/robots.txt': { type: 'text/plain', body: 'User-agent: *\nDisallow:\n' }
+	'/robots.txt': { type: 'text/plain', body: read('static/robots.txt') }
 };
 
 interface HostOptions {
@@ -86,6 +96,8 @@ interface HostOptions {
 	headers?: string;
 	/** Answer a path the host has no file for with a 404 rather than with the app. */
 	noFallback?: boolean;
+	/** Files the host does not have. Like Cloudflare Pages, it then answers with the app. */
+	missing?: string[];
 	/** Change what a path answers. */
 	tweak?: (path: string, reply: { status: number; headers: Record<string, string> }) => void;
 	robots?: string;
@@ -95,10 +107,16 @@ interface HostOptions {
  * A host set up from the headers file. What it does without a rule is what Cloudflare Pages does:
  * ask the browser to check a file each time. A rule's header replaces the host's own.
  */
-function host({ headers = headersFile, noFallback, tweak, robots }: HostOptions = {}): Fetcher {
+function host({
+	headers = headersFile,
+	noFallback,
+	missing = [],
+	tweak,
+	robots
+}: HostOptions = {}): Fetcher {
 	const set = parseHeaders(headers);
 	return async (path) => {
-		const known = path in files;
+		const known = path in files && !missing.includes(path);
 		const file = known ? files[path] : files['/'];
 		const reply = {
 			status: known || !noFallback ? 200 : 404,
@@ -132,18 +150,42 @@ describe('hosting/_headers', () => {
 		for (const rule of rules) expect(rule.headers.length, rule.pattern).toBeGreaterThan(0);
 	});
 
-	it('sets Cache-Control from one rule per path, so values are never joined', () => {
-		for (const path of ['/', '/index.html', '/service-worker.js', '/_app/version.json', BUILT]) {
-			const setting = rules.filter(
+	/** The rules that set Cache-Control for a path. */
+	const cacheRules = (path: string) =>
+		rules
+			.filter(
 				(rule) =>
 					covers(rule.pattern, path) &&
 					rule.headers.some(([name]) => name.toLowerCase() === 'cache-control')
-			);
-			expect(
-				setting.map((rule) => rule.pattern),
-				path
-			).toHaveLength(1);
+			)
+			.map((rule) => rule.pattern);
+
+	it('sets Cache-Control from exactly one rule where it matters, so values are never joined', () => {
+		for (const path of [
+			'/',
+			'/service-worker.js',
+			'/_app/version.json',
+			'/manifest.webmanifest',
+			BUILT
+		]) {
+			expect(cacheRules(path), path).toHaveLength(1);
 		}
+	});
+
+	it('never sets it twice for anything else the site serves', () => {
+		const everything = [
+			...readdirSync(new URL('../../static/', import.meta.url)).map((name) => `/${name}`),
+			'/lesson/fatiha-1',
+			'/review',
+			'/words',
+			'/_app/immutable/chunks/abc.js',
+			'/_app/immutable/assets/0.def.css'
+		];
+		for (const path of everything) expect(cacheRules(path).length, path).toBeLessThanOrEqual(1);
+	});
+
+	it('has no rule for /index.html, which Cloudflare Pages sends to / before any rule applies', () => {
+		expect(rules.map((rule) => rule.pattern)).not.toContain('/index.html');
 	});
 
 	it('gives a launched site every check', async () => {
@@ -230,12 +272,42 @@ describe('the checks', () => {
 		});
 		expect(await failures(wrongType)).toEqual(['the manifest has its own type']);
 
-		const noIcon = host({
-			tweak: (path, reply) => {
-				if (path === '/icon-512.png') reply.status = 404;
-			}
+		// Cloudflare Pages answers a file it does not have with the app, status 200: an icon that is
+		// not there is HTML, which is not an image.
+		const noIcon = host({ missing: [lastIcon] });
+		expect(await failures(noIcon)).toEqual([`icon ${lastIcon}`]);
+	});
+
+	it('notice a file the host does not have, though it answers 200 with the app in its place', async () => {
+		expect(await failures(host({ missing: ['/_app/version.json'] }))).toEqual([
+			'/_app/version.json exists'
+		]);
+		expect(await failures(host({ missing: ['/service-worker.js'] }))).toEqual([
+			'/service-worker.js exists'
+		]);
+	});
+
+	it('need an instruction to keep built files for a year, not just the word immutable', async () => {
+		const immutable = 'Cache-Control: public, max-age=31536000, immutable';
+		for (const control of [
+			'Cache-Control: immutable',
+			'Cache-Control: public, max-age=0, immutable'
+		]) {
+			const fetcher = host({ headers: headersFile.replace(immutable, control) });
+			expect(await failures(fetcher), control).toEqual(['built files are kept for good']);
+		}
+	});
+
+	it('say plainly when the site sits behind a login and the checker has no pass', async () => {
+		const loginPage: Fetcher = async () => ({
+			status: 302,
+			header: (name) =>
+				name === 'location' ? 'https://taysir.cloudflareaccess.com/cdn-cgi/access/login/x' : null,
+			text: async () => ''
 		});
-		expect(await failures(noIcon)).toEqual(['icon /icon-512.png']);
+		const found = await checkHosting(SITE, loginPage, { preview: true });
+		expect(found.filter((f) => !f.ok).map((f) => f.check)).toEqual(['the site can be reached']);
+		expect(found.find((f) => !f.ok)!.detail).toContain('CF_ACCESS_CLIENT_ID');
 	});
 
 	it('need the three plain safeguards', async () => {
@@ -253,6 +325,24 @@ describe('the checks', () => {
 		};
 		const found = await checkHosting(SITE, down, { preview: false });
 		expect(found.some((f) => !f.ok && f.detail.includes('fetch failed'))).toBe(true);
+	});
+});
+
+describe('the files the site ships', () => {
+	it('lets search engines into the launched site', () => {
+		expect(read('static/robots.txt')).not.toMatch(/^\s*Disallow:\s*\/\s*$/m);
+	});
+
+	it('has a manifest that starts at the root, as an app, with icons that exist', () => {
+		expect(manifest.start_url).toBe('/');
+		expect(manifest.scope).toBe('/');
+		expect(manifest.display).toBe('standalone');
+		for (const icon of manifest.icons) {
+			expect(
+				() => readFileSync(new URL(`../../static${icon.src}`, import.meta.url)),
+				icon.src
+			).not.toThrow();
+		}
 	});
 });
 
@@ -293,12 +383,65 @@ describe('the deploy workflow', () => {
 		expect(triggers).toEqual(['workflow_dispatch']);
 	});
 
-	it('does nothing until the repository says deploying is allowed', () => {
-		expect(workflow).toMatch(/if: vars\.DEPLOY_ENABLED == 'true'/);
+	/** The script in the step that decides whether to go on, which is the first thing the job does. */
+	const gate = (() => {
+		const start = workflow.indexOf('- name: Is deploying allowed?');
+		const end = workflow.indexOf('\n      - ', start + 1);
+		const step = workflow.slice(start, end);
+		const run = step.slice(step.indexOf('run: |\n') + 'run: |\n'.length);
+		return run
+			.split('\n')
+			.map((line) => line.slice(10))
+			.join('\n');
+	})();
+
+	/** Run the gate as the runner would, and say whether it let the deploy go on. */
+	const allows = (env: Record<string, string>) =>
+		spawnSync('bash', ['-c', gate], { env: { PATH: process.env.PATH ?? '', ...env } }).status === 0;
+	const settings = {
+		ENABLED: 'true',
+		TARGET: 'preview',
+		CONFIRM: '',
+		BRANCH: 'master',
+		DEFAULT_BRANCH: 'master'
+	};
+
+	it('checks whether deploying is allowed before it does anything else', () => {
+		expect(workflow.indexOf('- name: Is deploying allowed?')).toBeGreaterThan(0);
+		expect(workflow.indexOf('- name: Is deploying allowed?')).toBeLessThan(
+			workflow.indexOf('uses: actions/checkout')
+		);
+		expect(gate).toContain('exit 1');
 	});
 
-	it('needs the review confirmed before it publishes to production', () => {
-		expect(workflow).toMatch(/inputs\.target == 'preview' \|\| inputs\.confirm == 'reviewed'/);
+	it('does nothing until the repository says deploying is allowed', () => {
+		expect(allows({ ...settings, ENABLED: '' })).toBe(false);
+		expect(allows({ ...settings, ENABLED: 'false' })).toBe(false);
+		expect(allows(settings)).toBe(true);
+		expect(allows({ ...settings, TARGET: 'production', CONFIRM: 'reviewed', ENABLED: '' })).toBe(
+			false
+		);
+	});
+
+	it('allows a trial copy from any branch, since it is for trying things out', () => {
+		expect(allows({ ...settings, BRANCH: 'some-feature' })).toBe(true);
+	});
+
+	it('publishes to production only once the review is confirmed, and only from the default branch', () => {
+		const production = { ...settings, TARGET: 'production' };
+		expect(allows(production)).toBe(false);
+		expect(allows({ ...production, CONFIRM: 'yes' })).toBe(false);
+		expect(allows({ ...production, CONFIRM: 'reviewed' })).toBe(true);
+		expect(allows({ ...production, CONFIRM: 'reviewed', BRANCH: 'some-feature' })).toBe(false);
+	});
+
+	it('says why when it refuses', () => {
+		const refused = spawnSync('bash', ['-c', gate], {
+			env: { PATH: process.env.PATH ?? '', ...settings, ENABLED: '' },
+			encoding: 'utf8'
+		});
+		expect(refused.stdout).toContain('::error::');
+		expect(refused.stdout).toContain('DEPLOY_ENABLED');
 	});
 
 	it('puts the headers file and, for a trial copy, the keep-out files into the build', () => {
@@ -307,10 +450,26 @@ describe('the deploy workflow', () => {
 		expect(workflow).toContain('X-Robots-Tag: noindex, nofollow');
 	});
 
-	it('keeps its secrets out of the commands it runs', () => {
-		// The target is handed over as an environment variable and not written into a script.
+	it('never writes an expression into a script it runs', () => {
+		// A value is handed to a script as an environment variable, never pasted into its text.
+		const lines = workflow.split('\n');
+		const scripts: string[] = [];
+		for (const [index, line] of lines.entries()) {
+			const run = /^(\s*)(?:- )?run:\s*(.*)$/.exec(line);
+			if (!run) continue;
+			if (run[2] && run[2] !== '|') {
+				scripts.push(run[2]);
+				continue;
+			}
+			const indent = run[1].length;
+			for (const next of lines.slice(index + 1)) {
+				if (next.trim() !== '' && next.search(/\S/) <= indent) break;
+				scripts.push(next);
+			}
+		}
+		expect(scripts.length).toBeGreaterThan(5);
+		for (const line of scripts) expect(line, line).not.toContain('${{');
 		expect(workflow).toContain('TARGET: ${{ inputs.target }}');
-		expect(workflow).not.toMatch(/run:[^\n]*\$\{\{\s*inputs\./);
 	});
 });
 

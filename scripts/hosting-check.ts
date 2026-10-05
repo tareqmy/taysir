@@ -41,6 +41,8 @@ const A_YEAR = 31_536_000;
 const ROUTES = ['/lesson/fatiha-1', '/review', '/progress', '/words'];
 
 const isHtml = (reply: Reply) => /text\/html/i.test(reply.header('content-type') ?? '');
+const isJson = (reply: Reply) => /json/i.test(reply.header('content-type') ?? '');
+const isImage = (reply: Reply) => /^image\//i.test(reply.header('content-type') ?? '');
 const isJavaScript = (reply: Reply) =>
 	/(text|application)\/(x-)?javascript/i.test(reply.header('content-type') ?? '');
 
@@ -54,9 +56,15 @@ export function freshFor(reply: Reply): number {
 	return Number.POSITIVE_INFINITY;
 }
 
-/** Whether a reply says it may be served without asking again, for long. */
-const keptForAYear = (reply: Reply) =>
-	/\bimmutable\b/i.test(reply.header('cache-control') ?? '') || freshFor(reply) >= A_YEAR;
+/**
+ * Whether a reply says in so many words that it may be kept for a year. A reply with no instruction
+ * (which `freshFor` reads as unlimited) or only `immutable` does not: the host's own default decides.
+ */
+function keptForAYear(reply: Reply): boolean {
+	const control = (reply.header('cache-control') ?? '').toLowerCase();
+	const age = /(?:^|[\s,])max-age=(\d+)/.exec(control);
+	return !/\bno-cache\b|\bno-store\b/.test(control) && age !== null && Number(age[1]) >= A_YEAR;
+}
 
 export async function checkHosting(
 	origin: string,
@@ -86,6 +94,18 @@ export async function checkHosting(
 
 	// The page, and the app's own routes answering with it.
 	const shell = await get('/');
+	const sentToLogin =
+		shell &&
+		/^30\d$/.test(String(shell.status)) &&
+		/cloudflareaccess\.com/i.test(shell.header('location') ?? '');
+	if (shell && sentToLogin) {
+		add(
+			'the site can be reached',
+			false,
+			'it sent the checker to a Cloudflare Access login page. Give the checker a service token (CF_ACCESS_CLIENT_ID and CF_ACCESS_CLIENT_SECRET): hosting/README.md says how'
+		);
+		return findings;
+	}
 	if (shell) {
 		add(
 			'the home page is the app',
@@ -112,22 +132,20 @@ export async function checkHosting(
 	for (const path of ['/service-worker.js', '/_app/version.json']) {
 		const reply = await get(path);
 		if (!reply) continue;
-		add(`${path} exists`, reply.status === 200, `status ${reply.status}`);
+		// A host that answers every unknown path with the app answers 200 for a missing file too, so
+		// "exists" means the right kind of file.
+		const kind = path.endsWith('.json') ? isJson(reply) : isJavaScript(reply);
+		add(
+			`${path} exists`,
+			reply.status === 200 && kind,
+			`status ${reply.status}, content-type ${reply.header('content-type') ?? '(none)'}`
+		);
 		add(
 			`${path} is checked on every visit`,
 			freshFor(reply) === 0,
 			`cache-control: ${reply.header('cache-control') ?? '(none)'}; if it is kept, a new version is not found`
 		);
 	}
-	const worker = await get('/service-worker.js');
-	if (worker) {
-		add(
-			'the service worker is JavaScript',
-			isJavaScript(worker),
-			worker.header('content-type') ?? '(none)'
-		);
-	}
-
 	// The manifest, and the icons it names.
 	const manifestReply = await get('/manifest.webmanifest');
 	if (manifestReply) {
@@ -148,7 +166,11 @@ export async function checkHosting(
 			for (const icon of manifest.icons ?? []) {
 				const reply = await get(icon.src);
 				if (reply) {
-					add(`icon ${icon.src}`, reply.status === 200, `status ${reply.status}`);
+					add(
+						`icon ${icon.src}`,
+						reply.status === 200 && isImage(reply),
+						`status ${reply.status}, content-type ${reply.header('content-type') ?? '(none)'}`
+					);
 				}
 			}
 		} catch {

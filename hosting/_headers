@@ -15,8 +15,6 @@
 # The files that say which version is current. A copy kept anywhere hides a new version.
 /
   Cache-Control: no-cache
-/index.html
-  Cache-Control: no-cache
 /service-worker.js
   Cache-Control: no-cache
 /_app/version.json
