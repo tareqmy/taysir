@@ -41,7 +41,7 @@ for (const mode of modes) {
 
 		test('every screen has no accessibility problems', async ({ page }) => {
 			test.setTimeout(120_000);
-			const seed = seededLearner({ due: 3 });
+			const seed = seededLearner({ due: 2, dueWords: 4 });
 
 			await test.step('welcome and about, before a starting point is chosen', async () => {
 				await page.goto('/');

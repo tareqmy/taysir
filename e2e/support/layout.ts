@@ -46,13 +46,22 @@ export async function useWideFonts(page: Page) {
 	});
 }
 
-/** Run `check` with the page's text scaled to 200%, as a learner who needs big text sees it. */
+/**
+ * Run `check` with the browser's own font size set to double, as a learner who needs big text has
+ * it. That is not the same as setting the page's root font size: a `rem` in a media query means the
+ * browser's setting, not the page's, so `@media (min-height: 36rem)` only stops matching on a phone
+ * when the setting itself is doubled. Chromium-only; the default sizes are put back afterwards.
+ */
 export async function withBigText<T>(page: Page, check: () => Promise<T>): Promise<T> {
-	await page.evaluate(() => (document.documentElement.style.fontSize = '32px'));
+	const session = await page.context().newCDPSession(page);
+	const setSizes = (standard: number, fixed: number) =>
+		session.send('Page.setFontSizes' as never, { fontSizes: { standard, fixed } } as never);
+	await setSizes(32, 26);
 	try {
 		return await check();
 	} finally {
-		await page.evaluate(() => (document.documentElement.style.fontSize = ''));
+		await setSizes(16, 13);
+		await session.detach();
 	}
 }
 

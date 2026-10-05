@@ -37,12 +37,20 @@ test('extra practice counts toward today but leaves the review schedule alone', 
 	await expect(page.getByRole('group', { name: 'Choices' })).toBeVisible();
 });
 
-test('a review brings back what is due and moves it out of the way', async ({ page }) => {
-	const due = 6;
-	const seed = seededLearner({ due });
+test('a review brings back what is due, letters and words, and moves it out of the way', async ({
+	page
+}) => {
+	// Three letters and three words: the first cards learned are letters, so words are asked for apart.
+	const seed = seededLearner({ due: 3, dueWords: 3 });
 	await startWithProgress(page, seed.backup);
 
-	const dueIds = seed.cards.slice(0, due).map((card) => card.id);
+	const dueIds = seed.cards
+		.filter((card) => new Date(card.due).getTime() <= Date.now())
+		.map((card) => card.id);
+	const due = dueIds.length;
+	expect(due).toBe(6);
+	expect(dueIds.filter((id) => id.startsWith('lt:'))).toHaveLength(3);
+	expect(dueIds.filter((id) => id.startsWith('lx:'))).toHaveLength(3);
 	await page.getByRole('link', { name: `Review ${due} items` }).click();
 	await expect(page.getByRole('heading', { level: 1, name: 'Review' })).toBeVisible();
 	await expect(page.getByRole('progressbar', { name: 'Progress' })).toHaveAttribute(

@@ -1,5 +1,6 @@
 import type { Page } from '@playwright/test';
 import { audit } from './support/axe';
+import { layoutProblems, useWideFonts, withBigText } from './support/layout';
 import { startAsReader } from './support/learner';
 import { expect, test } from './support/served';
 import type { Site } from './support/site';
@@ -176,4 +177,34 @@ test('switching in one tab leaves another open tab alone, which can still switch
 	await expect.poll(() => pageVersion(other)).toBe(next);
 	await expect(banner(other)).toHaveCount(0);
 	await expect.poll(() => cacheNames(other)).toEqual([`taysir-${next}`]);
+});
+
+test('at twice the text size on a phone, the offer fits and leaves the page to be read', async ({
+	page,
+	site
+}) => {
+	const phone = { width: 375, height: 812 };
+	await page.setViewportSize(phone);
+	await useWideFonts(page);
+	await openInstalled(page, site);
+	await deployAndNotice(page, site);
+	// Partway through a lesson it says the most, so check it there.
+	await page.getByRole('link', { name: /^Continue:/ }).click();
+	await expect(banner(page)).toContainText('Updating restarts what you are doing now.');
+
+	/** Nothing sideways, and if it follows the learner down the page it may not take much of it. */
+	const fits = async () => {
+		expect(await layoutProblems(page, phone.width)).toEqual([]);
+		const offer = await page.evaluate(() => {
+			const el = document.querySelector('aside.update')!;
+			return {
+				height: el.getBoundingClientRect().height,
+				follows: getComputedStyle(el).position === 'sticky',
+				window: window.innerHeight
+			};
+		});
+		if (offer.follows) expect(offer.height).toBeLessThanOrEqual(offer.window / 3);
+	};
+	await fits();
+	await withBigText(page, fits);
 });
