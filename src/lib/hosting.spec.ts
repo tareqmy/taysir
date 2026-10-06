@@ -67,6 +67,8 @@ const rules = parseHeaders(headersFile);
 // --- A stand-in for a host ----------------------------------------------------------------------
 
 const BUILT = '/_app/immutable/entry/start.Dk3x9aQ2.js';
+/** A large built file, like the one that holds the verse data. */
+const BIG = '/_app/immutable/chunks/Bq2dVx1a.js';
 
 /** The real manifest, icons and robots.txt, so a change to them is held to the same checks. */
 const manifestText = read('static/manifest.webmanifest');
@@ -79,10 +81,10 @@ const manifest = JSON.parse(manifestText) as {
 const typeOf = (path: string) => (path.endsWith('.svg') ? 'image/svg+xml' : 'image/png');
 const lastIcon = manifest.icons.at(-1)!.src;
 
-const files: Record<string, { type: string; body: string }> = {
+const files: Record<string, { type: string; body: string; encoding?: string }> = {
 	'/': {
 		type: 'text/html; charset=utf-8',
-		body: `<!doctype html><link rel="manifest" href="/manifest.webmanifest"><script type="module" src="${BUILT}"></script>`
+		body: `<!doctype html><link rel="manifest" href="/manifest.webmanifest"><script type="module" src="${BUILT}"></script><link rel="modulepreload" href="${BIG}">`
 	},
 	'/service-worker.js': {
 		type: 'text/javascript',
@@ -94,6 +96,7 @@ const files: Record<string, { type: string; body: string }> = {
 		manifest.icons.map((icon) => [icon.src, { type: typeOf(icon.src), body: '' }])
 	),
 	[BUILT]: { type: 'text/javascript', body: 'export {}' },
+	[BIG]: { type: 'text/javascript', body: 'x'.repeat(50_000), encoding: 'br' },
 	'/robots.txt': { type: 'text/plain', body: read('static/robots.txt') }
 };
 
@@ -129,6 +132,7 @@ function host({
 			headers: {
 				'content-type': file.type,
 				'cache-control': 'public, max-age=0, must-revalidate',
+				...(file.encoding ? { 'content-encoding': file.encoding } : {}),
 				...headersFrom(set, path)
 			} as Record<string, string>
 		};
@@ -267,6 +271,25 @@ describe('the checks', () => {
 			)
 		});
 		expect(await failures(fetcher)).toEqual(['built files are kept for good']);
+	});
+
+	it('need the large built files sent compressed, and let a small one go as it is', async () => {
+		// The host in these tests compresses the big file and sends the small one plain: that passes.
+		expect(await failures(host())).toEqual([]);
+		const plain = host({
+			tweak: (path, reply) => {
+				if (path === BIG) delete reply.headers['content-encoding'];
+			}
+		});
+		expect(await failures(plain)).toEqual(['large built files are sent compressed']);
+		for (const encoding of ['gzip', 'br', 'zstd']) {
+			const fetcher = host({
+				tweak: (path, reply) => {
+					if (path === BIG) reply.headers['content-encoding'] = encoding;
+				}
+			});
+			expect(await failures(fetcher), encoding).toEqual([]);
+		}
 	});
 
 	it('need the manifest to have its own type, and the icons to be there', async () => {

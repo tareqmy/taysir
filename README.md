@@ -108,7 +108,7 @@ Not deployed, and not to be until a teacher has reviewed the English. Everything
 
 - `hosting/_headers` sets the cache and security headers for Cloudflare Pages (Netlify reads the same format), and `hosting/robots-preview.txt` keeps search engines out of a trial copy.
 - `.github/workflows/deploy.yml` deploys to Cloudflare Pages as a trial copy (`preview`) or the public site (`production`, which also needs “reviewed” typed in and runs only from the default branch). It is run by hand only, and refuses (saying why) until `DEPLOY_ENABLED` is set. It has not been run, as it needs a Cloudflare account.
-- `make hosting-check URL=https://…` (add `PREVIEW=1` for a trial copy) tests a live copy: https, the app's routes, the About page's link to the source code opening (launched site only), nothing cached that says which version is current, built files kept for a year, the manifest's type, the safe headers, and `robots.txt`. The same checks run in `src/lib/hosting.spec.ts` against a stand-in host set up from `hosting/_headers`, so an edit to that file or the workflow that breaks what the app needs fails a test.
+- `make hosting-check URL=https://…` (add `PREVIEW=1` for a trial copy) tests a live copy: https, the app's routes, the About page's link to the source code opening (launched site only), nothing cached that says which version is current, built files kept for a year and sent compressed, the manifest's type, the safe headers, and `robots.txt`. The same checks run in `src/lib/hosting.spec.ts` against a stand-in host set up from `hosting/_headers`, so an edit to that file or the workflow that breaks what the app needs fails a test.
 
 ## Browser tests
 

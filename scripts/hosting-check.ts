@@ -30,6 +30,12 @@ export interface Options {
 	preview: boolean;
 }
 
+/** A script this long, in characters once decoded, is worth sending compressed. */
+const LARGE_FILE = 20_000;
+
+/** The encodings a browser asks for, and a host answers with. */
+const COMPRESSED = /^(br|gzip|zstd|deflate)$/i;
+
 /** A year, in seconds: how long a file whose name changes with its contents may be kept. */
 const A_YEAR = 31_536_000;
 
@@ -195,7 +201,8 @@ export async function checkHosting(
 	// A built file: its name changes whenever its contents do, so it may be kept for good.
 	if (shell) {
 		const html = await shell.text();
-		const built = /\/_app\/immutable\/[^"'\s)]+\.js/.exec(html)?.[0];
+		const builtFiles = [...new Set(html.match(/\/_app\/immutable\/[^"'\s)]+\.js/g) ?? [])];
+		const built = builtFiles[0];
 		if (!built) {
 			add('a built file can be found in the page', false, 'the page names no /_app/immutable file');
 		} else {
@@ -212,6 +219,25 @@ export async function checkHosting(
 					`cache-control: ${reply.header('cache-control') ?? '(none)'}; every visit would fetch them again`
 				);
 			}
+			// The first visit downloads every script the page names, and the verse data alone is over half
+			// a megabyte before it is compressed, so a host that sends them as they are costs a slow phone
+			// seconds. Only the large ones matter; a small file may be sent as it is.
+			const uncompressed: string[] = [];
+			let large = 0;
+			for (const path of builtFiles) {
+				const file = path === built && reply ? reply : await get(path);
+				if (!file || file.status !== 200) continue;
+				if ((await file.text()).length < LARGE_FILE) continue;
+				large++;
+				if (!COMPRESSED.test(file.header('content-encoding') ?? '')) uncompressed.push(path);
+			}
+			add(
+				'large built files are sent compressed',
+				uncompressed.length === 0,
+				uncompressed.length === 0
+					? `${large} large files, all compressed`
+					: `${uncompressed.slice(0, 3).join(', ')}${uncompressed.length > 3 ? ' and more' : ''} had no content-encoding: the first visit would download them in full`
+			);
 		}
 	}
 

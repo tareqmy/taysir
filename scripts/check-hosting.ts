@@ -36,7 +36,8 @@ async function fetchPath(path: string): Promise<Reply> {
 	const response = await fetch(new URL(path, origin), {
 		// Redirects are findings, not something to follow past.
 		redirect: 'manual',
-		headers: pass,
+		// What a browser asks for, so that a host that compresses does, and the checker can see it.
+		headers: { 'accept-encoding': 'br, gzip', ...pass },
 		signal: AbortSignal.timeout(20_000)
 	});
 	return {
