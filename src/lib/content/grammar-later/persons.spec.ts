@@ -26,7 +26,8 @@ const verbs: Record<string, string> = {
 	'103:3:3': '3MP', // āmanū, they believed
 	'103:3:4': '3MP', // ʿamilū, and they did
 	'100:4:1': '3FP', // fa-atharna, then they raised
-	'78:28:1': '3MP' // wa-kadhdhabū, and they denied
+	'78:28:1': '3MP', // wa-kadhdhabū, and they denied
+	'69:14:4': '3FD' // fa-dukkatā, then both are crushed
 };
 
 /** The persons of the past verbs in every place a verb's text appears in the studied surahs. */
@@ -100,6 +101,12 @@ describe('the lesson on “she” and “they” in the past', () => {
 				o.text
 			).toBe(false);
 		}
+	});
+
+	it('is right that the dual verb names two feminine doers, past in form, with the earth and the mountains as the two', () => {
+		expect(has('69:14:4', '3FD')).toBe(true);
+		expect(has('69:14:4', 'PASS')).toBe(true);
+		expect(strings).toContain(textAt('69:14:4'));
 	});
 
 	it('taps the one verb of “and they denied Our signs with denial”', () => {

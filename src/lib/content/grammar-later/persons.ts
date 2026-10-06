@@ -29,7 +29,7 @@ export const personsLesson: Lesson = {
 	id: 'grammar-past-persons',
 	unitId: 'grammar-later',
 	title: 'She and they, in the past',
-	subtitle: 'Two more endings for a past verb',
+	subtitle: 'Endings for she, they and two',
 	kind: 'grammar',
 	intro: [
 		rule(
@@ -60,6 +60,18 @@ export const personsLesson: Lesson = {
 		text(
 			'Things in the plural count as “she”',
 			`A plural of things is treated as a feminine singular, as you saw for describing words. So ${w(101, 6, 3)} ${w(101, 6, 4)} (“his scales became heavy”) has the “she” ending, although “scales” is plural.`
+		),
+		text(
+			'Two: the dual',
+			`For exactly two doers there is a dual ending, -ā, and -atā when the two are feminine. ${w(69, 14, 4)} is “then both are crushed”: the earth and the mountains are spoken of together as two, so the verb ends in -tā, “the two of them” (feminine). It is also passive: the vowels inside the verb change, and no one is named as the doer.`
+		),
+		phrase(
+			69,
+			14,
+			1,
+			4,
+			'and the earth and the mountains are carried, then both are crushed',
+			'-tā: the dual ending of a past verb, for two feminine.'
 		),
 		text(
 			'The ending -ū',
@@ -131,6 +143,15 @@ export const personsLesson: Lesson = {
 			ar(w(103, 3, 3)),
 			[ar(w(82, 5, 1)), ar(w(110, 3, 6))],
 			`${w(103, 3, 3)} is “they believed”. ${w(82, 5, 1)} has -at, and ${w(110, 3, 6)} has no ending.`,
+			rng
+		),
+		handChoice(
+			'persons-9',
+			`Who or what does the ending of ${w(69, 14, 4)} point to?`,
+			undefined,
+			en('two, both feminine: “the two of them”'),
+			[en('one, feminine'), en('many people')],
+			'-tā is the dual ending for two feminine things, here the earth and the mountains.',
 			rng
 		),
 		tapTheyDenied
