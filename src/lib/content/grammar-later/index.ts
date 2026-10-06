@@ -1,6 +1,7 @@
 import type { Unit } from '../types';
 import { agreementLesson } from './agreement';
 import { conditionsLesson } from './conditions';
+import { exceptionsLesson } from './exceptions';
 import { idhaLesson } from './idha';
 import { personsLesson } from './persons';
 
@@ -17,5 +18,5 @@ export const grammarLaterUnit: Unit = {
 	title: 'Grammar from the later surahs',
 	description:
 		'Describing words matching their noun, past-tense verbs for “she” and “they”, “when”, “if”, “except” and swearing by something. Every example is a word you have already met.',
-	lessons: [agreementLesson, personsLesson, idhaLesson, conditionsLesson]
+	lessons: [agreementLesson, personsLesson, idhaLesson, conditionsLesson, exceptionsLesson]
 };

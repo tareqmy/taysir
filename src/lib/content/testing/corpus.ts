@@ -183,9 +183,14 @@ export function choice(lesson: Lesson, id: string) {
 	return { exercise: found, answer, others };
 }
 
-/** Every `Arabic word (“meaning”)` a piece of lesson text gives, as the word and its meaning. */
+/**
+ * Every `Arabic word (“meaning”)` and `Arabic word means “meaning”` a piece of lesson text gives, as
+ * the word and its meaning.
+ */
 export const glossClaims = (text: string) =>
-	[...text.matchAll(/([\p{scx=Arabic}\p{M}]+) \(“([^”]+)”\)/gu)].map((m) => [m[1], m[2]] as const);
+	[...text.matchAll(/([\p{scx=Arabic}\p{M}]+)(?: \(| means )“([^”]+)”/gu)].map(
+		(m) => [m[1], m[2]] as const
+	);
 
 const PRONOUNS = new Set(['i', 'we', 'you', 'he', 'she', 'it', 'they', 'him', 'her', 'them', 'us']);
 
