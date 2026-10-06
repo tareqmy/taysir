@@ -7222,7 +7222,7 @@
 			"arabic": "طُمِسَتْ",
 			"root": "طمس",
 			"pos": "verb",
-			"gloss": "to be blotted out",
+			"gloss": "to blot out; to be blotted out",
 			"count": 5,
 			"rank": 1315,
 			"sample": {
@@ -7235,7 +7235,7 @@
 			"arabic": "فُرِجَتْ",
 			"root": "فرج",
 			"pos": "verb",
-			"gloss": "to be split open",
+			"gloss": "to be opened up, to be cleft",
 			"count": 1,
 			"rank": 4556,
 			"sample": {
@@ -7248,7 +7248,7 @@
 			"arabic": "نُسِفَتْ",
 			"root": "نسف",
 			"pos": "verb",
-			"gloss": "to be blown away",
+			"gloss": "to blow away, to scatter; to be blown away",
 			"count": 3,
 			"rank": 2005,
 			"sample": {
@@ -7573,7 +7573,7 @@
 			"arabic": "سَمِيع",
 			"root": "سمع",
 			"pos": "noun",
-			"gloss": "hearing, all-hearing",
+			"gloss": "one who hears, all-hearing",
 			"count": 47,
 			"rank": 238,
 			"sample": {
@@ -7637,7 +7637,7 @@
 			"arabic": "غِلّ",
 			"root": "غلل",
 			"pos": "noun",
-			"gloss": "shackle, iron collar",
+			"gloss": "shackle, iron collar; rancour",
 			"count": 9,
 			"rank": 910,
 			"sample": {
@@ -7702,7 +7702,7 @@
 			"arabic": "لَقَّى",
 			"root": "لقي",
 			"pos": "verb",
-			"gloss": "to cause to meet, to grant",
+			"gloss": "to cause to meet, to endow with",
 			"count": 6,
 			"rank": 1234,
 			"sample": {
@@ -8118,7 +8118,7 @@
 			"arabic": "يَفْجُرَ",
 			"root": "فجر",
 			"pos": "verb",
-			"gloss": "to act wickedly",
+			"gloss": "to act wickedly; to burst forth",
 			"count": 2,
 			"rank": 2494,
 			"sample": {
@@ -8144,7 +8144,7 @@
 			"arabic": "خَسَفَ",
 			"root": "خسف",
 			"pos": "verb",
-			"gloss": "to be eclipsed; to sink",
+			"gloss": "to sink, to cause to sink; to be eclipsed",
 			"count": 8,
 			"rank": 997,
 			"sample": {
@@ -8235,7 +8235,7 @@
 			"arabic": "اتَّبَعَ",
 			"root": "تبع",
 			"pos": "verb",
-			"gloss": "to follow, to go after",
+			"gloss": "to follow (a guide or path), to pursue",
 			"count": 136,
 			"rank": 82,
 			"sample": {
@@ -8585,7 +8585,7 @@
 			"arabic": "يُرْهِقَ",
 			"root": "رهق",
 			"pos": "verb",
-			"gloss": "to burden, to overtake with hardship",
+			"gloss": "to burden, to lay a hardship on",
 			"count": 3,
 			"rank": 1992,
 			"sample": {
@@ -9246,7 +9246,7 @@
 			"arabic": "تَعالَى",
 			"root": "علو",
 			"pos": "verb",
-			"gloss": "to be exalted, to be high above",
+			"gloss": "to be high above, to be far above",
 			"count": 14,
 			"rank": 652,
 			"sample": {
@@ -9324,7 +9324,7 @@
 			"arabic": "سَمْع",
 			"root": "سمع",
 			"pos": "noun",
-			"gloss": "hearing",
+			"gloss": "the power of hearing; listening",
 			"count": 22,
 			"rank": 446,
 			"sample": {
@@ -9428,7 +9428,7 @@
 			"arabic": "قاسِط",
 			"root": "قسط",
 			"pos": "noun",
-			"gloss": "one who deviates, unjust",
+			"gloss": "one who deviates from justice",
 			"count": 2,
 			"rank": 2783,
 			"sample": {
@@ -9713,7 +9713,7 @@
 			"arabic": "أَعْلَن",
 			"root": "علن",
 			"pos": "verb",
-			"gloss": "to announce, to make public",
+			"gloss": "to declare openly, to make public",
 			"count": 12,
 			"rank": 694,
 			"sample": {
@@ -9765,7 +9765,7 @@
 			"arabic": "أَمَدَّ",
 			"root": "مدد",
 			"pos": "verb",
-			"gloss": "to provide, to supply",
+			"gloss": "to supply, to aid",
 			"count": 10,
 			"rank": 826,
 			"sample": {
@@ -9895,7 +9895,7 @@
 			"arabic": "أُغْرِقُ",
 			"root": "غرق",
 			"pos": "verb",
-			"gloss": "to be drowned",
+			"gloss": "to drown; to be drowned",
 			"count": 17,
 			"rank": 545,
 			"sample": {
@@ -10064,7 +10064,7 @@
 			"arabic": "جَمِيع",
 			"root": "جمع",
 			"pos": "noun",
-			"gloss": "all, altogether",
+			"gloss": "altogether, all together",
 			"count": 53,
 			"rank": 209,
 			"sample": {
@@ -10259,7 +10259,7 @@
 			"arabic": "قائِم",
 			"root": "قوم",
 			"pos": "noun",
-			"gloss": "standing, upright",
+			"gloss": "standing, steadfast",
 			"count": 17,
 			"rank": 559,
 			"sample": {
@@ -10350,7 +10350,7 @@
 			"arabic": "سِراع",
 			"root": "سرع",
 			"pos": "noun",
-			"gloss": "swift, hurrying",
+			"gloss": "swift, speedy",
 			"count": 2,
 			"rank": 2730,
 			"sample": {
@@ -10778,7 +10778,7 @@
 			"arabic": "قُطِعَ",
 			"root": "قطع",
 			"pos": "verb",
-			"gloss": "to be cut",
+			"gloss": "to cut",
 			"count": 12,
 			"rank": 689,
 			"sample": {
@@ -11063,7 +11063,7 @@
 			"arabic": "عَسَى",
 			"root": "عسي",
 			"pos": "verb",
-			"gloss": "perhaps, it may be that",
+			"gloss": "it may be that (a verb of hope)",
 			"count": 30,
 			"rank": 354,
 			"sample": {
@@ -11284,7 +11284,7 @@
 			"arabic": "قَدِير",
 			"root": "قدر",
 			"pos": "noun",
-			"gloss": "all-powerful",
+			"gloss": "all-powerful, able to do all things",
 			"count": 45,
 			"rank": 243,
 			"sample": {

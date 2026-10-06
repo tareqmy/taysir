@@ -181,7 +181,7 @@ export const unitSpec: UnitSpec = {
 				{
 					type: 'text',
 					title: 'The One who…',
-					body: '{67:1:2}, {67:2:1} and {67:3:1} all begin with the same word, ‘the One who’. Each one introduces something God has done or holds: the dominion, death and life, the seven heavens.'
+					body: '{67:1:2}, {67:2:1} and {67:3:1} are all the same word, ‘the One who’. Each one introduces something God has done or holds: the dominion, death and life, the seven heavens.'
 				},
 				{
 					type: 'text',
@@ -274,7 +274,7 @@ export const unitSpec: UnitSpec = {
 					from: 8,
 					to: 10,
 					translation: 'besides the Most Gracious',
-					note: 'The two small words ‘from’ + dun together are a common way of saying ‘other than’ or ‘besides’.'
+					note: 'The small word ‘from’ followed by dun (‘below’, here ‘other than’) is a common way of saying ‘other than’ or ‘besides’.'
 				}
 			]
 		},

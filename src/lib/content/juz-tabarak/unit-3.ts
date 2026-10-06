@@ -184,7 +184,7 @@ export const unitSpec: UnitSpec = {
 				{
 					type: 'text',
 					title: 'What he would give',
-					body: 'The criminal ‘would wish’ ({70:11:2}) that he could ransom himself ({70:11:5}) with his sons ({70:11:9}), his wife ({70:12:1}), his brother ({70:12:2}), his kin ({70:13:1}) and all who are on the earth ({70:14:4}). Each one is joined to the one before it by wa- (‘and’).'
+					body: 'The criminal ‘would wish’ ({70:11:2}) that he could ransom himself ({70:11:5}) with his sons ({70:11:9}), his wife ({70:12:1}), his brother ({70:12:2}), his kin ({70:13:1}) and all who are on the earth ({70:14:4}). Each one after the first is joined to the one before it by wa- (‘and’).'
 				}
 			]
 		},

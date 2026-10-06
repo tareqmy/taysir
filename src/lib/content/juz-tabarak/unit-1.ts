@@ -83,7 +83,7 @@ export const unitSpec: UnitSpec = {
 				{
 					type: 'text',
 					title: 'Living and dead',
-					body: '{77:26:1} (‘the living’) has the root {root:hayy}, the root of the verb ‘to live’. {77:26:2} (‘and the dead’) has the root {root:mayyit}, the root of the verb ‘to die’. The two opposites stand side by side.'
+					body: '{77:26:1} (‘living ones’) has the root {root:hayy}, the root of the verb ‘to live’. {77:26:2} (‘and dead ones’) has the root {root:mayyit}, the root of the verb ‘to die’. The two opposites stand side by side.'
 				}
 			]
 		},
@@ -118,7 +118,7 @@ export const unitSpec: UnitSpec = {
 				{
 					type: 'text',
 					title: 'The word for “this”',
-					body: '{77:35:1} is the little word ha-, which draws attention, joined to the word on the card ‘this, that’. It begins verse 38 as well, as {77:38:1}.'
+					body: '{77:35:1} is made of the little word ha-, which draws attention, joined to the word on the card ‘this, that’. It begins verse 38 as well, as {77:38:1}.'
 				},
 				{
 					type: 'text',
@@ -305,7 +305,7 @@ export const unitSpec: UnitSpec = {
 				{
 					type: 'text',
 					title: 'A separate “We”',
-					body: '{76:28:1} is the word for ‘we’ on its own. The verb {76:28:2} already ends in -nā, ‘we’, so the extra word stresses who did it. It appeared in {76:23:2} as well.'
+					body: '{76:28:1} is the word for ‘we’ on its own. The verb {76:28:2} already contains the ending -nā, ‘we’ (before -hum, ‘them’), so the extra word stresses who did it. It appeared in {76:23:2} as well.'
 				},
 				{
 					type: 'text',
@@ -330,7 +330,7 @@ export const unitSpec: UnitSpec = {
 				{
 					type: 'text',
 					title: 'After kana',
-					body: '{76:30:9} is a form of kana, ‘to be’. The two describing words that follow it, {76:30:10} and {76:30:11}, both end in -an, because what follows kana is in the accusative.'
+					body: '{76:30:9} is a form of kana, ‘to be’. The two describing words that complete it, {76:30:10} and {76:30:11}, both end in -an, because after kana the word that says what someone or something was is in the accusative. A subject that is named after kana stays in the nominative.'
 				}
 			]
 		},
@@ -372,7 +372,7 @@ export const unitSpec: UnitSpec = {
 				{
 					type: 'text',
 					title: '“There is no …”',
-					body: 'In {75:11:2} {75:11:3}, ‘no refuge’, the word for ‘no’ is followed by a noun ending in -a, without the -an of an indefinite noun. This is how Arabic says ‘there is no …’.'
+					body: 'In {75:11:2} {75:11:3}, ‘no refuge’, the word for ‘no’ is followed by a noun ending in -a, without the -an of an indefinite noun. This is one way Arabic says ‘there is no …’.'
 				}
 			]
 		},
@@ -392,7 +392,7 @@ export const unitSpec: UnitSpec = {
 				{
 					type: 'text',
 					title: '“Upon Us”',
-					body: '{75:17:2} and {75:19:3} are the same word, ‘upon Us’. Here it carries the sense of a duty that rests on Allah: ‘it is for Us’.'
+					body: '{75:17:2} and {75:19:3} are the same word, ‘upon Us’. Here it means that the matter is Ours to carry out: ‘it is for Us’.'
 				}
 			]
 		},

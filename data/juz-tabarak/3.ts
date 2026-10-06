@@ -161,7 +161,7 @@ export const glosses: Record<string, string> = {
 	'71:19:5': 'a carpet',
 
 	'71:20:1': 'so that you walk',
-	'71:20:2': 'in it',
+	'71:20:2': 'from it',
 	'71:20:3': 'paths',
 	'71:20:4': 'broad',
 
@@ -243,7 +243,7 @@ export const glosses: Record<string, string> = {
 
 	'71:28:1': 'my Lord',
 	'71:28:2': 'forgive',
-	'71:28:3': 'me',
+	'71:28:3': 'for me',
 	'71:28:4': 'and for my two parents',
 	'71:28:5': 'and for whoever',
 	'71:28:6': 'entered',
@@ -299,7 +299,7 @@ export const glosses: Record<string, string> = {
 	'70:8:1': 'the day when',
 	'70:8:2': 'will be',
 	'70:8:3': 'the sky',
-	'70:8:4': 'like molten metal',
+	'70:8:4': 'like the molten metal',
 
 	'70:9:1': 'and will be',
 	'70:9:2': 'the mountains',
@@ -339,7 +339,7 @@ export const glosses: Record<string, string> = {
 	'70:15:3': 'a blazing flame',
 
 	'70:16:1': 'stripping away',
-	'70:16:2': 'the scalps',
+	'70:16:2': 'for the scalps',
 
 	'70:17:1': 'it calls',
 	'70:17:2': 'whoever',
@@ -406,7 +406,7 @@ export const glosses: Record<string, string> = {
 	'70:29:4': 'guardians',
 
 	'70:30:1': 'except',
-	'70:30:2': 'with',
+	'70:30:2': 'with (lit. on)',
 	'70:30:3': 'their spouses',
 	'70:30:4': 'or',
 	'70:30:5': 'what',
@@ -481,7 +481,7 @@ export const glosses: Record<string, string> = {
 	'70:40:6': 'indeed We',
 	'70:40:7': 'surely able',
 
-	'70:41:1': 'to',
+	'70:41:1': 'to (lit. on)',
 	'70:41:2': 'that',
 	'70:41:3': 'We replace',
 	'70:41:4': 'better',
@@ -669,7 +669,7 @@ export const glosses: Record<string, string> = {
 
 	'69:24:1': 'eat',
 	'69:24:2': 'and drink',
-	'69:24:3': 'happily',
+	'69:24:3': 'pleasantly',
 	'69:24:4': 'for what',
 	'69:24:5': 'you sent ahead',
 	'69:24:6': 'in',
@@ -841,11 +841,11 @@ export const seeds: { id: string; loc: string; gloss: string }[] = [
 	{ id: 'duaa', loc: '71:6:3:1', gloss: 'call, supplication' },
 	{ id: 'kullama', loc: '71:7:2:1', gloss: 'whenever, every time that' },
 	{ id: 'udhun', loc: '71:7:9:1', gloss: 'ear' },
-	{ id: 'alana', loc: '71:9:3:1', gloss: 'to announce, to make public' },
+	{ id: 'alana', loc: '71:9:3:1', gloss: 'to declare openly, to make public' },
 	{ id: 'asarra', loc: '71:9:5:2', gloss: 'to keep secret, to say in private' },
 	{ id: 'ghaffar', loc: '71:10:6:1', gloss: 'one who forgives again and again' },
 	{ id: 'midrar', loc: '71:11:4:1', gloss: 'pouring abundantly' },
-	{ id: 'amadda', loc: '71:12:1:2', gloss: 'to provide, to supply' },
+	{ id: 'amadda', loc: '71:12:1:2', gloss: 'to supply, to aid' },
 	{ id: 'nur', loc: '71:16:4:1', gloss: 'light' },
 	{ id: 'bisat', loc: '71:19:5:1', gloss: 'carpet, spread' },
 	{ id: 'fijaj', loc: '71:20:4:1', gloss: 'wide path, mountain pass' },
@@ -855,7 +855,7 @@ export const seeds: { id: string; loc: string; gloss: string }[] = [
 	{ id: 'kathir', loc: '71:24:3:1', gloss: 'many, much' },
 	{ id: 'dalal', loc: '71:24:8:1', gloss: 'error, straying' },
 	{ id: 'khatia', loc: '71:25:2:1', gloss: 'misdeed, fault' },
-	{ id: 'ughriqa', loc: '71:25:3:1', gloss: 'to be drowned' },
+	{ id: 'ughriqa', loc: '71:25:3:1', gloss: 'to drown; to be drowned' },
 	{ id: 'kaffar', loc: '71:27:10:1', gloss: 'persistent disbeliever' },
 	{ id: 'walidayn', loc: '71:28:4:3', gloss: 'both parents' },
 
@@ -870,7 +870,7 @@ export const seeds: { id: string; loc: string; gloss: string }[] = [
 	{ id: 'ihn', loc: '70:9:3:3', gloss: 'tufts of wool' },
 	{ id: 'wadda', loc: '70:11:2:1', gloss: 'to wish, to long for' },
 	{ id: 'iftada', loc: '70:11:5:1', gloss: 'to ransom oneself' },
-	{ id: 'jamian', loc: '70:14:4:1', gloss: 'all, altogether' },
+	{ id: 'jamian', loc: '70:14:4:1', gloss: 'altogether, all together' },
 	{ id: 'anja', loc: '70:14:6:1', gloss: 'to save, to rescue' },
 	{ id: 'awaa', loc: '70:18:2:2', gloss: 'to hoard, to store up' },
 	{ id: 'halu', loc: '70:19:4:1', gloss: 'anxious, restless' },
@@ -885,14 +885,14 @@ export const seeds: { id: string; loc: string; gloss: string }[] = [
 	{ id: 'amanah', loc: '70:32:3:2', gloss: 'trust, something entrusted' },
 	{ id: 'ahd', loc: '70:32:4:2', gloss: 'covenant, pledge' },
 	{ id: 'shahada', loc: '70:33:3:2', gloss: 'testimony' },
-	{ id: 'qaim', loc: '70:33:4:1', gloss: 'standing, upright' },
+	{ id: 'qaim', loc: '70:33:4:1', gloss: 'standing, steadfast' },
 	{ id: 'qibal', loc: '70:36:4:1', gloss: 'front, direction' },
 	{ id: 'muhti', loc: '70:36:5:1', gloss: 'hastening, rushing' },
 	{ id: 'shimal', loc: '70:37:4:2', gloss: 'left, left side' },
 	{ id: 'masbuq', loc: '70:41:8:2', gloss: 'outrun, overtaken' },
 	{ id: 'laiba', loc: '70:42:3:2', gloss: 'to play, to amuse oneself' },
 	{ id: 'yulaqi', loc: '70:42:5:1', gloss: 'to meet, to encounter' },
-	{ id: 'sira', loc: '70:43:5:1', gloss: 'swift, hurrying' },
+	{ id: 'sira', loc: '70:43:5:1', gloss: 'swift, speedy' },
 	{ id: 'dhilla', loc: '70:44:4:1', gloss: 'humiliation' },
 
 	// 69 Al-Haqqa
@@ -927,7 +927,7 @@ export const seeds: { id: string; loc: string; gloss: string }[] = [
 	{ id: 'kahin', loc: '69:42:3:1', gloss: 'soothsayer, diviner' },
 	{ id: 'taqawwala', loc: '69:44:2:1', gloss: 'to invent sayings, to fabricate' },
 	{ id: 'badh', loc: '69:44:4:1', gloss: 'some, part of' },
-	{ id: 'qutia', loc: '69:46:2:2', gloss: 'to be cut' },
+	{ id: 'qutia', loc: '69:46:2:2', gloss: 'to cut' },
 	{ id: 'hajiz', loc: '69:47:6:1', gloss: 'one who holds back, barrier' },
 	{ id: 'hasra', loc: '69:50:2:2', gloss: 'regret, anguish' }
 ];

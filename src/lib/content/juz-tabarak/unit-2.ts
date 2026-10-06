@@ -26,7 +26,7 @@ export const unitSpec: UnitSpec = {
 				{
 					type: 'rule',
 					title: 'A run of commands',
-					body: 'The verbs {74:2:1}, {74:2:2}, {74:3:2}, {74:4:2}, {74:5:2} and {74:7:2} are all commands to one person. All but the first begin with fa-, ‘so’ or ‘and’. In verses 3, 4, 5 and 7 the thing commanded comes first and the command follows it: ‘and your Lord, so magnify’.'
+					body: 'The verbs {74:2:1}, {74:2:2}, {74:3:2}, {74:4:2}, {74:5:2} and {74:7:2} are all commands to one person. All but the first begin with fa-, ‘so’ or ‘and’. In verses 3, 4 and 5 the thing commanded comes first and the command follows it: ‘and your Lord, so magnify’. In verse 7 it is ‘for your Lord’ that comes first: ‘and for your Lord, so be patient’.'
 				}
 			]
 		},
@@ -125,7 +125,7 @@ export const unitSpec: UnitSpec = {
 				{
 					type: 'rule',
 					title: 'Not … except',
-					body: 'The pattern ‘not … except …’ appears three times in this verse: {74:31:1} … {74:31:5}, {74:31:7} … {74:31:10} and {74:31:53} … {74:31:55}. It means ‘nothing but’. The word for ‘except’ is the card ‘except, unless’.'
+					body: 'The pattern ‘not … except …’ appears four times in this verse: {74:31:1} … {74:31:5}, {74:31:7} … {74:31:10}, {74:31:47} … {74:31:51} and {74:31:53} … {74:31:55}. It means ‘nothing but’. The word for ‘except’ is the card ‘except, unless’.'
 				},
 				{
 					type: 'text',
@@ -145,7 +145,7 @@ export const unitSpec: UnitSpec = {
 				{
 					type: 'text',
 					title: 'Oaths and “when”',
-					body: '{74:32:2}, {74:33:1} and {74:34:1} each begin with wa- meaning ‘by’, as in an oath. The last two are followed by a word for ‘when’, {74:33:2} and {74:34:2}, and a verb about the night and the morning. A later grammar unit returns to oaths.'
+					body: '{74:32:2} begins with wa- meaning ‘by’, as in an oath. {74:33:1} and {74:34:1} go on with more things sworn by, each joined with wa- ‘and’. The last two are followed by a word for ‘when’, {74:33:2} and {74:34:2}, and a verb about the night and the morning. A later grammar unit returns to oaths.'
 				},
 				{
 					type: 'text',
@@ -185,7 +185,7 @@ export const unitSpec: UnitSpec = {
 				{
 					type: 'text',
 					title: 'A habit in the past',
-					body: 'A past form of ‘to be’ followed by a present verb describes something done again and again in the past: {74:45:1} {74:45:2} is ‘we used to plunge’, and {74:46:1} {74:46:2} is ‘we used to deny’.'
+					body: 'A past form of ‘to be’ followed by a present verb often describes something that went on, or was done again and again, in the past: {74:45:1} {74:45:2} is ‘we used to plunge’, and {74:46:1} {74:46:2} is ‘we used to deny’.'
 				},
 				{
 					type: 'text',
@@ -280,7 +280,7 @@ export const unitSpec: UnitSpec = {
 				{
 					type: 'text',
 					title: 'Just as',
-					body: '{73:15:7} is ka- ‘like’ and ma ‘what’ written as one word: ‘just as’. The verse says one thing and then compares it: ‘We sent a messenger to you, just as We sent a messenger to Pharaoh’.'
+					body: '{73:15:7} is ka- ‘like’ joined to ma, a small linking word, written as one word: ‘just as’. The verse says one thing and then compares it: ‘We sent a messenger to you, just as We sent a messenger to Pharaoh’.'
 				},
 				{
 					type: 'text',

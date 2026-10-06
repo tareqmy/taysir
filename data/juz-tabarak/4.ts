@@ -332,7 +332,7 @@ export const glosses: Record<string, string> = {
 
 	'68:50:1': 'so chose him',
 	'68:50:2': 'his Lord',
-	'68:50:3': 'and made him',
+	'68:50:3': 'so made him',
 	'68:50:4': 'among',
 	'68:50:5': 'the righteous',
 
@@ -606,7 +606,7 @@ export const glosses: Record<string, string> = {
 	'67:21:6': 'He withholds',
 	'67:21:7': 'His provision',
 	'67:21:8': 'rather',
-	'67:21:9': 'they persist',
+	'67:21:9': 'they persisted',
 	'67:21:10': 'in',
 	'67:21:11': 'insolence',
 	'67:21:12': 'and aversion',
@@ -745,7 +745,7 @@ export const seeds: { id: string; loc: string; gloss: string }[] = [
 	{ id: 'lawla', loc: '68:28:6:1', gloss: 'if not; why not' },
 	{ id: 'subhan', loc: '68:29:2:1', gloss: 'glory be to (God)' },
 	{ id: 'aqbala', loc: '68:30:1:2', gloss: 'to turn towards, to advance' },
-	{ id: 'asaa', loc: '68:32:1:1', gloss: 'perhaps, it may be that' },
+	{ id: 'asaa', loc: '68:32:1:1', gloss: 'it may be that (a verb of hope)' },
 	{ id: 'abdala', loc: '68:32:4:1', gloss: 'to give in exchange, to replace' },
 
 	{ id: 'hakama', loc: '68:36:4:1', gloss: 'to judge, to decide' },
@@ -767,7 +767,7 @@ export const seeds: { id: string; loc: string; gloss: string }[] = [
 
 	// 67 Al-Mulk
 	{ id: 'tabaraka', loc: '67:1:1:1', gloss: 'to be blessed, to be exalted' },
-	{ id: 'qadeer', loc: '67:1:9:1', gloss: 'all-powerful' },
+	{ id: 'qadeer', loc: '67:1:9:1', gloss: 'all-powerful, able to do all things' },
 	{ id: 'mawt', loc: '67:2:3:2', gloss: 'death' },
 	{ id: 'zayyana', loc: '67:5:2:1', gloss: 'to adorn, to beautify' },
 

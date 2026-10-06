@@ -3548,7 +3548,7 @@
 				{
 					"n": 9,
 					"text": "لَّجُّوا۟",
-					"gloss": "they persist",
+					"gloss": "they persisted",
 					"segments": [
 						{
 							"text": "لَّجُّ",
@@ -9100,7 +9100,7 @@
 				{
 					"n": 3,
 					"text": "فَجَعَلَهُۥ",
-					"gloss": "and made him",
+					"gloss": "so made him",
 					"lexemeId": "jaala",
 					"segments": [
 						{
@@ -11327,7 +11327,7 @@
 				{
 					"n": 3,
 					"text": "هَنِيٓـًٔۢا",
-					"gloss": "happily",
+					"gloss": "pleasantly",
 					"lexemeId": "hani"
 				},
 				{
@@ -13818,7 +13818,7 @@
 				{
 					"n": 4,
 					"text": "كَٱلْمُهْلِ",
-					"gloss": "like molten metal",
+					"gloss": "like the molten metal",
 					"lexemeId": "muhl",
 					"segments": [
 						{
@@ -14312,7 +14312,7 @@
 				{
 					"n": 2,
 					"text": "لِّلشَّوَىٰ",
-					"gloss": "the scalps",
+					"gloss": "for the scalps",
 					"segments": [
 						{
 							"text": "لِّ",
@@ -15049,7 +15049,7 @@
 				{
 					"n": 2,
 					"text": "عَلَىٰٓ",
-					"gloss": "with",
+					"gloss": "with (lit. on)",
 					"lexemeId": "ala"
 				},
 				{
@@ -15970,7 +15970,7 @@
 				{
 					"n": 1,
 					"text": "عَلَىٰٓ",
-					"gloss": "to",
+					"gloss": "to (lit. on)",
 					"lexemeId": "ala"
 				},
 				{
@@ -18486,7 +18486,7 @@
 				{
 					"n": 2,
 					"text": "مِنْهَا",
-					"gloss": "in it",
+					"gloss": "from it",
 					"lexemeId": "min",
 					"segments": [
 						{
@@ -19511,7 +19511,7 @@
 				{
 					"n": 3,
 					"text": "لِى",
-					"gloss": "me",
+					"gloss": "for me",
 					"segments": [
 						{
 							"text": "لِ",
@@ -27494,7 +27494,7 @@
 				{
 					"n": 3,
 					"text": "عَشَرَ",
-					"gloss": "and ten"
+					"gloss": "ten"
 				}
 			]
 		},
@@ -28234,7 +28234,7 @@
 				{
 					"n": 2,
 					"text": "وَٱلْقَمَرِ",
-					"gloss": "and by the moon",
+					"gloss": "by the moon",
 					"lexemeId": "qamar",
 					"segments": [
 						{
@@ -36429,13 +36429,13 @@
 				{
 					"n": 1,
 					"text": "أَحْيَآءً",
-					"gloss": "the living",
+					"gloss": "living ones",
 					"lexemeId": "hayy"
 				},
 				{
 					"n": 2,
 					"text": "وَأَمْوَٰتًا",
-					"gloss": "and the dead",
+					"gloss": "and dead ones",
 					"lexemeId": "mayyit",
 					"segments": [
 						{
