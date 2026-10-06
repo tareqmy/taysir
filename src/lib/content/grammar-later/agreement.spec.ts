@@ -4,7 +4,6 @@ import {
 	choice,
 	has,
 	hasArticle,
-	refOf,
 	refsOf,
 	neighbours,
 	sideBySide,
@@ -109,9 +108,20 @@ describe('the lesson on describing words', () => {
 
 	it('asks for the phrase with ال on both words, and only one has it', () => {
 		const { answer, others } = choice(agreementLesson, 'agree-8');
-		const words = (phrase: string) => phrase.split(' ').map((t) => refOf(t, studied));
-		expect(words(answer.text).every(hasArticle)).toBe(true);
-		for (const o of others) expect(words(o.text).some(hasArticle), o.text).toBe(false);
+		/** Where the two words of a phrase stand side by side in a verse. */
+		const where = (phrase: string) => {
+			const [first, second] = phrase.split(' ');
+			const found = neighbours(first, second, studied);
+			expect(found.length, phrase).toBeGreaterThan(0);
+			return found;
+		};
+		expect(where(answer.text).some(([a, b]) => hasArticle(a) && hasArticle(b))).toBe(true);
+		for (const o of others) {
+			expect(
+				where(o.text).every(([a, b]) => !hasArticle(a) && !hasArticle(b)),
+				o.text
+			).toBe(true);
+		}
 	});
 
 	it('says the disbelievers and the wicked are plural and have ال', () => {

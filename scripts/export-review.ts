@@ -134,7 +134,9 @@ function scopeOfPart(part: Part): Scope {
 	const units = part.unitIds.map((id) => course.units.find((u) => u.id === id)!);
 	const { surahs } = contentOf({ title: '', elsewhere: '', units });
 	return {
-		title: part.title ?? `Juz Amma: ${surahRange(surahs)}`,
+		title:
+			part.title ??
+			`${surahs.every((s) => s >= 78) ? 'Juz Amma' : 'The 29th juz'}: ${surahRange(surahs)}`,
 		elsewhere: `This is part ${part.n} of ${PARTS.length}. The other parts are separate files; each can be reviewed on its own.`,
 		units
 	};

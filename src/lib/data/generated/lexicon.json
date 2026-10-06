@@ -7164,6 +7164,4497 @@
 				"loc": "78:40:15:1",
 				"form": "تُرَٰبًۢا"
 			}
+		},
+		{
+			"id": "waada",
+			"arabic": "وَعَدَ",
+			"root": "وعد",
+			"pos": "verb",
+			"gloss": "to promise",
+			"count": 70,
+			"rank": 165,
+			"sample": {
+				"loc": "77:7:2:1",
+				"form": "تُوعَدُ"
+			}
+		},
+		{
+			"id": "waqi",
+			"arabic": "واقِع",
+			"root": "وقع",
+			"pos": "noun",
+			"gloss": "occurring, about to happen",
+			"count": 6,
+			"rank": 1197,
+			"sample": {
+				"loc": "77:7:3:2",
+				"form": "وَٰقِعٌ"
+			}
+		},
+		{
+			"id": "udhr",
+			"arabic": "عُذْر",
+			"root": "عذر",
+			"pos": "noun",
+			"gloss": "excuse",
+			"count": 2,
+			"rank": 2523,
+			"sample": {
+				"loc": "77:6:1:1",
+				"form": "عُذْرًا"
+			}
+		},
+		{
+			"id": "nudhr",
+			"arabic": "نُذْر",
+			"root": "نذر",
+			"pos": "noun",
+			"gloss": "warning",
+			"count": 1,
+			"rank": 4555,
+			"sample": {
+				"loc": "77:6:3:1",
+				"form": "نُذْرًا"
+			}
+		},
+		{
+			"id": "tumisat",
+			"arabic": "طُمِسَتْ",
+			"root": "طمس",
+			"pos": "verb",
+			"gloss": "to be blotted out",
+			"count": 5,
+			"rank": 1315,
+			"sample": {
+				"loc": "77:8:3:1",
+				"form": "طُمِسَتْ"
+			}
+		},
+		{
+			"id": "furijat",
+			"arabic": "فُرِجَتْ",
+			"root": "فرج",
+			"pos": "verb",
+			"gloss": "to be split open",
+			"count": 1,
+			"rank": 4556,
+			"sample": {
+				"loc": "77:9:3:1",
+				"form": "فُرِجَتْ"
+			}
+		},
+		{
+			"id": "nusifat",
+			"arabic": "نُسِفَتْ",
+			"root": "نسف",
+			"pos": "verb",
+			"gloss": "to be blown away",
+			"count": 3,
+			"rank": 2005,
+			"sample": {
+				"loc": "77:10:3:1",
+				"form": "نُسِفَتْ"
+			}
+		},
+		{
+			"id": "ajjala",
+			"arabic": "أَجَّلَ",
+			"root": "أجل",
+			"pos": "verb",
+			"gloss": "to postpone, to defer",
+			"count": 2,
+			"rank": 2299,
+			"sample": {
+				"loc": "77:12:3:1",
+				"form": "أُجِّلَتْ"
+			}
+		},
+		{
+			"id": "atbaa",
+			"arabic": "أَتْبَعَ",
+			"root": "تبع",
+			"pos": "verb",
+			"gloss": "to make follow, to send after",
+			"count": 15,
+			"rank": 610,
+			"sample": {
+				"loc": "77:17:2:1",
+				"form": "نُتْبِعُ"
+			}
+		},
+		{
+			"id": "mujrim",
+			"arabic": "مُجْرِم",
+			"root": "جرم",
+			"pos": "noun",
+			"gloss": "criminal, guilty one",
+			"count": 52,
+			"rank": 215,
+			"sample": {
+				"loc": "77:18:3:3",
+				"form": "مُجْرِمِينَ"
+			}
+		},
+		{
+			"id": "mahin",
+			"arabic": "مَهِين",
+			"root": "مهن",
+			"pos": "noun",
+			"gloss": "lowly, despised",
+			"count": 4,
+			"rank": 1658,
+			"sample": {
+				"loc": "77:20:5:1",
+				"form": "مَّهِينٍ"
+			}
+		},
+		{
+			"id": "qarar",
+			"arabic": "قَرار",
+			"root": "قرر",
+			"pos": "noun",
+			"gloss": "settled place, stability",
+			"count": 9,
+			"rank": 920,
+			"sample": {
+				"loc": "77:21:3:1",
+				"form": "قَرَارٍ"
+			}
+		},
+		{
+			"id": "niama",
+			"arabic": "نِعْمَ",
+			"root": "نعم",
+			"pos": "verb",
+			"gloss": "how excellent",
+			"count": 18,
+			"rank": 526,
+			"sample": {
+				"loc": "77:23:2:2",
+				"form": "نِعْمَ"
+			}
+		},
+		{
+			"id": "hayy",
+			"arabic": "حَيّ",
+			"root": "حيي",
+			"pos": "noun",
+			"gloss": "living, alive",
+			"count": 24,
+			"rank": 423,
+			"sample": {
+				"loc": "77:26:1:1",
+				"form": "أَحْيَآءً"
+			}
+		},
+		{
+			"id": "mayyit",
+			"arabic": "مَيِّت",
+			"root": "موت",
+			"pos": "noun",
+			"gloss": "dead",
+			"count": 38,
+			"rank": 294,
+			"sample": {
+				"loc": "77:26:2:2",
+				"form": "أَمْوَٰتًا"
+			}
+		},
+		{
+			"id": "rawasi",
+			"arabic": "رَواسِي",
+			"root": "رسو",
+			"pos": "noun",
+			"gloss": "firm mountains",
+			"count": 10,
+			"rank": 849,
+			"sample": {
+				"loc": "77:27:3:1",
+				"form": "رَوَٰسِىَ"
+			}
+		},
+		{
+			"id": "furat",
+			"arabic": "فُرات",
+			"root": "فرت",
+			"pos": "noun",
+			"gloss": "sweet, fresh",
+			"count": 3,
+			"rank": 2028,
+			"sample": {
+				"loc": "77:27:7:1",
+				"form": "فُرَاتًا"
+			}
+		},
+		{
+			"id": "intalaqa",
+			"arabic": "انطَلَقَ",
+			"root": "طلق",
+			"pos": "verb",
+			"gloss": "to set off, to go forth",
+			"count": 9,
+			"rank": 924,
+			"sample": {
+				"loc": "77:29:1:1",
+				"form": "ٱنطَلِقُ"
+			}
+		},
+		{
+			"id": "zill",
+			"arabic": "ظِلّ",
+			"root": "ظلل",
+			"pos": "noun",
+			"gloss": "shade",
+			"count": 14,
+			"rank": 646,
+			"sample": {
+				"loc": "77:30:3:1",
+				"form": "ظِلٍّ"
+			}
+		},
+		{
+			"id": "thalath",
+			"arabic": "ثَلاث",
+			"root": "ثلث",
+			"pos": "noun",
+			"gloss": "three",
+			"count": 8,
+			"rank": 987,
+			"sample": {
+				"loc": "77:30:5:1",
+				"form": "ثَلَٰثِ"
+			}
+		},
+		{
+			"id": "zalil",
+			"arabic": "ظَلِيل",
+			"root": "ظلل",
+			"pos": "noun",
+			"gloss": "shady, giving shade",
+			"count": 2,
+			"rank": 2227,
+			"sample": {
+				"loc": "77:31:2:1",
+				"form": "ظَلِيلٍ"
+			}
+		},
+		{
+			"id": "qasr",
+			"arabic": "قَصْر",
+			"root": "قصر",
+			"pos": "noun",
+			"gloss": "palace, castle",
+			"count": 4,
+			"rank": 1557,
+			"sample": {
+				"loc": "77:32:4:3",
+				"form": "قَصْرِ"
+			}
+		},
+		{
+			"id": "nataqa",
+			"arabic": "يَنطِقُ",
+			"root": "نطق",
+			"pos": "verb",
+			"gloss": "to speak out, to utter",
+			"count": 9,
+			"rank": 927,
+			"sample": {
+				"loc": "77:35:4:1",
+				"form": "يَنطِقُ"
+			}
+		},
+		{
+			"id": "iatadhara",
+			"arabic": "يَعْتَذِرُ",
+			"root": "عذر",
+			"pos": "verb",
+			"gloss": "to make an excuse",
+			"count": 5,
+			"rank": 1368,
+			"sample": {
+				"loc": "77:36:4:2",
+				"form": "يَعْتَذِرُ"
+			}
+		},
+		{
+			"id": "ishtaha",
+			"arabic": "اشْتَهَتْ",
+			"root": "شهو",
+			"pos": "verb",
+			"gloss": "to desire, to crave",
+			"count": 8,
+			"rank": 998,
+			"sample": {
+				"loc": "77:42:3:1",
+				"form": "يَشْتَهُ"
+			}
+		},
+		{
+			"id": "hani",
+			"arabic": "هَنِيئ",
+			"root": "هنأ",
+			"pos": "noun",
+			"gloss": "wholesome, pleasant",
+			"count": 4,
+			"rank": 1496,
+			"sample": {
+				"loc": "77:43:3:1",
+				"form": "هَنِيٓـًٔۢا"
+			}
+		},
+		{
+			"id": "muhsin",
+			"arabic": "مُحْسِن",
+			"root": "حسن",
+			"pos": "noun",
+			"gloss": "doer of good",
+			"count": 38,
+			"rank": 295,
+			"sample": {
+				"loc": "77:44:4:2",
+				"form": "مُحْسِنِينَ"
+			}
+		},
+		{
+			"id": "tamattaa",
+			"arabic": "تَمَتَّعَ",
+			"root": "متع",
+			"pos": "verb",
+			"gloss": "to enjoy oneself",
+			"count": 11,
+			"rank": 756,
+			"sample": {
+				"loc": "77:46:2:2",
+				"form": "تَمَتَّعُ"
+			}
+		},
+		{
+			"id": "qalil",
+			"arabic": "قَلِيل",
+			"root": "قلل",
+			"pos": "noun",
+			"gloss": "little, few",
+			"count": 70,
+			"rank": 161,
+			"sample": {
+				"loc": "77:46:3:1",
+				"form": "قَلِيلًا"
+			}
+		},
+		{
+			"id": "raka",
+			"arabic": "يَرْكَعُ",
+			"root": "ركع",
+			"pos": "verb",
+			"gloss": "to bow",
+			"count": 5,
+			"rank": 1244,
+			"sample": {
+				"loc": "77:48:4:1",
+				"form": "ٱرْكَعُ"
+			}
+		},
+		{
+			"id": "hin",
+			"arabic": "حِين",
+			"root": "حين",
+			"pos": "noun",
+			"gloss": "a time, a while",
+			"count": 35,
+			"rank": 316,
+			"sample": {
+				"loc": "76:1:5:1",
+				"form": "حِينٌ"
+			}
+		},
+		{
+			"id": "samee",
+			"arabic": "سَمِيع",
+			"root": "سمع",
+			"pos": "noun",
+			"gloss": "hearing, all-hearing",
+			"count": 47,
+			"rank": 238,
+			"sample": {
+				"loc": "76:2:9:1",
+				"form": "سَمِيعًۢا"
+			}
+		},
+		{
+			"id": "imma",
+			"arabic": "إِمّا",
+			"pos": "particle",
+			"gloss": "either, whether",
+			"count": 23,
+			"rank": 434,
+			"sample": {
+				"loc": "76:3:4:1",
+				"form": "إِمَّا"
+			}
+		},
+		{
+			"id": "shakir",
+			"arabic": "شاكِر",
+			"root": "شكر",
+			"pos": "noun",
+			"gloss": "thankful, grateful",
+			"count": 14,
+			"rank": 636,
+			"sample": {
+				"loc": "76:3:5:1",
+				"form": "شَاكِرًا"
+			}
+		},
+		{
+			"id": "kafur",
+			"arabic": "كَفُور",
+			"root": "كفر",
+			"pos": "noun",
+			"gloss": "ungrateful",
+			"count": 12,
+			"rank": 733,
+			"sample": {
+				"loc": "76:3:7:1",
+				"form": "كَفُورًا"
+			}
+		},
+		{
+			"id": "silsila",
+			"arabic": "سِلْسِلَة",
+			"root": "سلسل",
+			"pos": "noun",
+			"gloss": "chain",
+			"count": 3,
+			"rank": 2062,
+			"sample": {
+				"loc": "76:4:4:1",
+				"form": "سَلَٰسِلَا۟"
+			}
+		},
+		{
+			"id": "ghill",
+			"arabic": "غِلّ",
+			"root": "غلل",
+			"pos": "noun",
+			"gloss": "shackle, iron collar",
+			"count": 9,
+			"rank": 910,
+			"sample": {
+				"loc": "76:4:5:2",
+				"form": "أَغْلَٰلًا"
+			}
+		},
+		{
+			"id": "awfa",
+			"arabic": "أَوْفَى",
+			"root": "وفي",
+			"pos": "verb",
+			"gloss": "to fulfil",
+			"count": 18,
+			"rank": 518,
+			"sample": {
+				"loc": "76:7:1:1",
+				"form": "يُوفُ"
+			}
+		},
+		{
+			"id": "nadhr",
+			"arabic": "نَذْر",
+			"root": "نذر",
+			"pos": "noun",
+			"gloss": "vow",
+			"count": 2,
+			"rank": 2163,
+			"sample": {
+				"loc": "76:7:2:3",
+				"form": "نَّذْرِ"
+			}
+		},
+		{
+			"id": "asir",
+			"arabic": "أَسِير",
+			"root": "أسر",
+			"pos": "noun",
+			"gloss": "captive",
+			"count": 4,
+			"rank": 1440,
+			"sample": {
+				"loc": "76:8:7:2",
+				"form": "أَسِيرًا"
+			}
+		},
+		{
+			"id": "waqa",
+			"arabic": "وَقَى",
+			"root": "وقي",
+			"pos": "verb",
+			"gloss": "to protect, to shield",
+			"count": 16,
+			"rank": 576,
+			"sample": {
+				"loc": "76:11:1:2",
+				"form": "وَقَىٰ"
+			}
+		},
+		{
+			"id": "laqqa",
+			"arabic": "لَقَّى",
+			"root": "لقي",
+			"pos": "verb",
+			"gloss": "to cause to meet, to grant",
+			"count": 6,
+			"rank": 1234,
+			"sample": {
+				"loc": "76:11:6:2",
+				"form": "لَقَّىٰ"
+			}
+		},
+		{
+			"id": "sabara",
+			"arabic": "صَبَرَ",
+			"root": "صبر",
+			"pos": "verb",
+			"gloss": "to be patient, to endure",
+			"count": 58,
+			"rank": 191,
+			"sample": {
+				"loc": "76:12:3:1",
+				"form": "صَبَرُ"
+			}
+		},
+		{
+			"id": "harir",
+			"arabic": "حَرِير",
+			"root": "حرر",
+			"pos": "noun",
+			"gloss": "silk",
+			"count": 3,
+			"rank": 2015,
+			"sample": {
+				"loc": "76:12:5:2",
+				"form": "حَرِيرًا"
+			}
+		},
+		{
+			"id": "muttaki",
+			"arabic": "مُتَّكِئ",
+			"root": "وكأ",
+			"pos": "noun",
+			"gloss": "reclining",
+			"count": 8,
+			"rank": 1001,
+			"sample": {
+				"loc": "76:13:1:1",
+				"form": "مُّتَّكِـِٔينَ"
+			}
+		},
+		{
+			"id": "tafa",
+			"arabic": "طافَ",
+			"root": "طوف",
+			"pos": "verb",
+			"gloss": "to go around",
+			"count": 8,
+			"rank": 1006,
+			"sample": {
+				"loc": "76:15:1:2",
+				"form": "يُطَافُ"
+			}
+		},
+		{
+			"id": "daniya",
+			"arabic": "دانِيَة",
+			"root": "دنو",
+			"pos": "noun",
+			"gloss": "near, within reach",
+			"count": 3,
+			"rank": 1846,
+			"sample": {
+				"loc": "76:14:1:2",
+				"form": "دَانِيَةً"
+			}
+		},
+		{
+			"id": "fidda",
+			"arabic": "فِضَّة",
+			"root": "فضض",
+			"pos": "noun",
+			"gloss": "silver",
+			"count": 6,
+			"rank": 1154,
+			"sample": {
+				"loc": "76:15:5:1",
+				"form": "فِضَّةٍ"
+			}
+		},
+		{
+			"id": "qawarir",
+			"arabic": "قَوارِيرا",
+			"root": "قرر",
+			"pos": "noun",
+			"gloss": "glass vessels",
+			"count": 3,
+			"rank": 2036,
+			"sample": {
+				"loc": "76:15:8:1",
+				"form": "قَوَارِيرَا۠"
+			}
+		},
+		{
+			"id": "sammaa",
+			"arabic": "سَمَّى",
+			"root": "سمو",
+			"pos": "verb",
+			"gloss": "to name, to call by a name",
+			"count": 8,
+			"rank": 957,
+			"sample": {
+				"loc": "76:18:3:1",
+				"form": "تُسَمَّىٰ"
+			}
+		},
+		{
+			"id": "waleed",
+			"arabic": "وَلِيد",
+			"root": "ولد",
+			"pos": "noun",
+			"gloss": "boy, youth",
+			"count": 7,
+			"rank": 1060,
+			"sample": {
+				"loc": "76:19:3:1",
+				"form": "وِلْدَٰنٌ"
+			}
+		},
+		{
+			"id": "luluu",
+			"arabic": "لُؤْلُؤ",
+			"root": "لؤلؤ",
+			"pos": "noun",
+			"gloss": "pearl",
+			"count": 6,
+			"rank": 1233,
+			"sample": {
+				"loc": "76:19:8:1",
+				"form": "لُؤْلُؤًا"
+			}
+		},
+		{
+			"id": "thiyab",
+			"arabic": "ثِياب",
+			"root": "ثوب",
+			"pos": "noun",
+			"gloss": "garments, clothes",
+			"count": 8,
+			"rank": 993,
+			"sample": {
+				"loc": "76:21:2:1",
+				"form": "ثِيَابُ"
+			}
+		},
+		{
+			"id": "khudr",
+			"arabic": "خُضْر",
+			"root": "خضر",
+			"pos": "noun",
+			"gloss": "green",
+			"count": 5,
+			"rank": 1388,
+			"sample": {
+				"loc": "76:21:4:1",
+				"form": "خُضْرٌ"
+			}
+		},
+		{
+			"id": "asawir",
+			"arabic": "أَساوِر",
+			"root": "سور",
+			"pos": "noun",
+			"gloss": "bracelets",
+			"count": 5,
+			"rank": 1406,
+			"sample": {
+				"loc": "76:21:7:1",
+				"form": "أَسَاوِرَ"
+			}
+		},
+		{
+			"id": "tahur",
+			"arabic": "طَهُور",
+			"root": "طهر",
+			"pos": "noun",
+			"gloss": "pure, purifying",
+			"count": 2,
+			"rank": 2613,
+			"sample": {
+				"loc": "76:21:13:1",
+				"form": "طَهُورًا"
+			}
+		},
+		{
+			"id": "nazzala",
+			"arabic": "نَزَّلَ",
+			"root": "نزل",
+			"pos": "verb",
+			"gloss": "to send down in stages",
+			"count": 62,
+			"rank": 182,
+			"sample": {
+				"loc": "76:23:3:1",
+				"form": "نَزَّلْ"
+			}
+		},
+		{
+			"id": "tanzil",
+			"arabic": "تَنزِيل",
+			"root": "نزل",
+			"pos": "noun",
+			"gloss": "a sending down, revelation",
+			"count": 15,
+			"rank": 623,
+			"sample": {
+				"loc": "76:23:6:1",
+				"form": "تَنزِيلًا"
+			}
+		},
+		{
+			"id": "hukm",
+			"arabic": "حُكْم",
+			"root": "حكم",
+			"pos": "noun",
+			"gloss": "ruling, authority",
+			"count": 30,
+			"rank": 358,
+			"sample": {
+				"loc": "76:24:2:2",
+				"form": "حُكْمِ"
+			}
+		},
+		{
+			"id": "bukra",
+			"arabic": "بُكْرَة",
+			"root": "بكر",
+			"pos": "particle",
+			"gloss": "early morning",
+			"count": 7,
+			"rank": 1105,
+			"sample": {
+				"loc": "76:25:4:1",
+				"form": "بُكْرَةً"
+			}
+		},
+		{
+			"id": "asil",
+			"arabic": "أَصِيل",
+			"root": "أصل",
+			"pos": "particle",
+			"gloss": "evening, late afternoon",
+			"count": 7,
+			"rank": 1085,
+			"sample": {
+				"loc": "76:25:5:2",
+				"form": "أَصِيلًا"
+			}
+		},
+		{
+			"id": "aajila",
+			"arabic": "عاجِلَة",
+			"root": "عجل",
+			"pos": "noun",
+			"gloss": "fleeting, immediate",
+			"count": 3,
+			"rank": 1973,
+			"sample": {
+				"loc": "76:27:4:2",
+				"form": "عَاجِلَةَ"
+			}
+		},
+		{
+			"id": "yadhar",
+			"arabic": "يَذَرَ",
+			"root": "وذر",
+			"pos": "verb",
+			"gloss": "to leave be, to forsake",
+			"count": 45,
+			"rank": 246,
+			"sample": {
+				"loc": "76:27:5:2",
+				"form": "يَذَرُ"
+			}
+		},
+		{
+			"id": "thaqil",
+			"arabic": "ثَقِيل",
+			"root": "ثقل",
+			"pos": "noun",
+			"gloss": "heavy",
+			"count": 5,
+			"rank": 1349,
+			"sample": {
+				"loc": "76:27:8:1",
+				"form": "ثَقِيلًا"
+			}
+		},
+		{
+			"id": "badala",
+			"arabic": "بَدَّلَ",
+			"root": "بدل",
+			"pos": "verb",
+			"gloss": "to replace, to exchange",
+			"count": 23,
+			"rank": 437,
+			"sample": {
+				"loc": "76:28:7:1",
+				"form": "بَدَّلْ"
+			}
+		},
+		{
+			"id": "mathal",
+			"arabic": "مَثَل",
+			"root": "مثل",
+			"pos": "noun",
+			"gloss": "parable, likeness",
+			"count": 88,
+			"rank": 115,
+			"sample": {
+				"loc": "76:28:8:1",
+				"form": "أَمْثَٰلَ"
+			}
+		},
+		{
+			"id": "hakeem",
+			"arabic": "حَكِيم",
+			"root": "حكم",
+			"pos": "noun",
+			"gloss": "wise",
+			"count": 97,
+			"rank": 107,
+			"sample": {
+				"loc": "76:30:11:1",
+				"form": "حَكِيمًا"
+			}
+		},
+		{
+			"id": "adkhala",
+			"arabic": "أُدْخِلَ",
+			"root": "دخل",
+			"pos": "verb",
+			"gloss": "to admit, to make enter",
+			"count": 42,
+			"rank": 263,
+			"sample": {
+				"loc": "76:31:1:1",
+				"form": "يُدْخِلُ"
+			}
+		},
+		{
+			"id": "zalim",
+			"arabic": "ظالِم",
+			"root": "ظلم",
+			"pos": "noun",
+			"gloss": "wrongdoer, unjust",
+			"count": 129,
+			"rank": 87,
+			"sample": {
+				"loc": "76:31:6:3",
+				"form": "ظَّٰلِمِينَ"
+			}
+		},
+		{
+			"id": "aadda",
+			"arabic": "أَعَدَّ",
+			"root": "عدد",
+			"pos": "verb",
+			"gloss": "to prepare, to make ready",
+			"count": 20,
+			"rank": 482,
+			"sample": {
+				"loc": "76:31:7:1",
+				"form": "أَعَدَّ"
+			}
+		},
+		{
+			"id": "qiyama",
+			"arabic": "قِيامَة",
+			"root": "قوم",
+			"pos": "noun",
+			"gloss": "resurrection, standing up",
+			"count": 70,
+			"rank": 162,
+			"sample": {
+				"loc": "75:1:4:2",
+				"form": "قِيَٰمَةِ"
+			}
+		},
+		{
+			"id": "lawwama",
+			"arabic": "لَوّامَة",
+			"root": "لوم",
+			"pos": "noun",
+			"gloss": "much-blaming, reproaching",
+			"count": 1,
+			"rank": 4520,
+			"sample": {
+				"loc": "75:2:4:2",
+				"form": "لَّوَّامَةِ"
+			}
+		},
+		{
+			"id": "banan",
+			"arabic": "بَنان",
+			"root": "بنن",
+			"pos": "noun",
+			"gloss": "fingertips",
+			"count": 2,
+			"rank": 2344,
+			"sample": {
+				"loc": "75:4:6:1",
+				"form": "بَنَانَ"
+			}
+		},
+		{
+			"id": "fajara",
+			"arabic": "يَفْجُرَ",
+			"root": "فجر",
+			"pos": "verb",
+			"gloss": "to act wickedly",
+			"count": 2,
+			"rank": 2494,
+			"sample": {
+				"loc": "75:5:4:2",
+				"form": "يَفْجُرَ"
+			}
+		},
+		{
+			"id": "bariqa",
+			"arabic": "بَرِقَ",
+			"root": "برق",
+			"pos": "verb",
+			"gloss": "to be dazzled",
+			"count": 1,
+			"rank": 4522,
+			"sample": {
+				"loc": "75:7:2:1",
+				"form": "بَرِقَ"
+			}
+		},
+		{
+			"id": "khasafa",
+			"arabic": "خَسَفَ",
+			"root": "خسف",
+			"pos": "verb",
+			"gloss": "to be eclipsed; to sink",
+			"count": 8,
+			"rank": 997,
+			"sample": {
+				"loc": "75:8:1:2",
+				"form": "خَسَفَ"
+			}
+		},
+		{
+			"id": "mafarr",
+			"arabic": "مَفَرّ",
+			"root": "فرر",
+			"pos": "noun",
+			"gloss": "place of escape",
+			"count": 1,
+			"rank": 4523,
+			"sample": {
+				"loc": "75:10:5:2",
+				"form": "مَفَرُّ"
+			}
+		},
+		{
+			"id": "wazar",
+			"arabic": "وَزَر",
+			"root": "وزر",
+			"pos": "noun",
+			"gloss": "refuge, shelter",
+			"count": 1,
+			"rank": 4524,
+			"sample": {
+				"loc": "75:11:3:1",
+				"form": "وَزَرَ"
+			}
+		},
+		{
+			"id": "mustaqarr",
+			"arabic": "مُسْتَقَرّ",
+			"root": "قرر",
+			"pos": "noun",
+			"gloss": "resting place, final settling",
+			"count": 10,
+			"rank": 796,
+			"sample": {
+				"loc": "75:12:4:2",
+				"form": "مُسْتَقَرُّ"
+			}
+		},
+		{
+			"id": "nabbaa",
+			"arabic": "نَبَّأَ",
+			"root": "نبأ",
+			"pos": "verb",
+			"gloss": "to inform, to announce",
+			"count": 46,
+			"rank": 240,
+			"sample": {
+				"loc": "75:13:1:1",
+				"form": "يُنَبَّؤُا۟"
+			}
+		},
+		{
+			"id": "baseera",
+			"arabic": "بَصِيرَة",
+			"root": "بصر",
+			"pos": "noun",
+			"gloss": "insight, perception",
+			"count": 7,
+			"rank": 1074,
+			"sample": {
+				"loc": "75:14:5:1",
+				"form": "بَصِيرَةٌ"
+			}
+		},
+		{
+			"id": "ajila",
+			"arabic": "عَجِلَ",
+			"root": "عجل",
+			"pos": "verb",
+			"gloss": "to hurry",
+			"count": 5,
+			"rank": 1358,
+			"sample": {
+				"loc": "75:16:5:2",
+				"form": "تَعْجَلَ"
+			}
+		},
+		{
+			"id": "ittabaa",
+			"arabic": "اتَّبَعَ",
+			"root": "تبع",
+			"pos": "verb",
+			"gloss": "to follow, to go after",
+			"count": 136,
+			"rank": 82,
+			"sample": {
+				"loc": "75:18:3:2",
+				"form": "ٱتَّبِعْ"
+			}
+		},
+		{
+			"id": "bayan",
+			"arabic": "بَيان",
+			"root": "بين",
+			"pos": "noun",
+			"gloss": "explanation, clear statement",
+			"count": 3,
+			"rank": 1769,
+			"sample": {
+				"loc": "75:19:4:1",
+				"form": "بَيَانَ"
+			}
+		},
+		{
+			"id": "naadira",
+			"arabic": "ناضِرَة",
+			"root": "نضر",
+			"pos": "noun",
+			"gloss": "radiant, glowing",
+			"count": 1,
+			"rank": 4527,
+			"sample": {
+				"loc": "75:22:3:1",
+				"form": "نَّاضِرَةٌ"
+			}
+		},
+		{
+			"id": "naazira",
+			"arabic": "ناظِرَة",
+			"root": "نظر",
+			"pos": "noun",
+			"gloss": "looking, gazing",
+			"count": 2,
+			"rank": 2638,
+			"sample": {
+				"loc": "75:23:3:1",
+				"form": "نَاظِرَةٌ"
+			}
+		},
+		{
+			"id": "baasira",
+			"arabic": "باسِرَة",
+			"root": "بسر",
+			"pos": "noun",
+			"gloss": "scowling, gloomy",
+			"count": 1,
+			"rank": 4528,
+			"sample": {
+				"loc": "75:24:3:1",
+				"form": "بَاسِرَةٌ"
+			}
+		},
+		{
+			"id": "faaqira",
+			"arabic": "فاقِرَة",
+			"root": "فقر",
+			"pos": "noun",
+			"gloss": "back-breaking calamity",
+			"count": 1,
+			"rank": 4529,
+			"sample": {
+				"loc": "75:25:5:1",
+				"form": "فَاقِرَةٌ"
+			}
+		},
+		{
+			"id": "balagha",
+			"arabic": "بَلَغَ",
+			"root": "بلغ",
+			"pos": "verb",
+			"gloss": "to reach",
+			"count": 40,
+			"rank": 279,
+			"sample": {
+				"loc": "75:26:3:1",
+				"form": "بَلَغَتِ"
+			}
+		},
+		{
+			"id": "taraqi",
+			"arabic": "تَراقِي",
+			"root": "ترق",
+			"pos": "noun",
+			"gloss": "collarbones",
+			"count": 1,
+			"rank": 4530,
+			"sample": {
+				"loc": "75:26:4:2",
+				"form": "تَّرَاقِىَ"
+			}
+		},
+		{
+			"id": "firaq",
+			"arabic": "فِراق",
+			"root": "فرق",
+			"pos": "noun",
+			"gloss": "parting, separation",
+			"count": 2,
+			"rank": 2525,
+			"sample": {
+				"loc": "75:28:3:2",
+				"form": "فِرَاقُ"
+			}
+		},
+		{
+			"id": "saq",
+			"arabic": "ساق",
+			"root": "سوق",
+			"pos": "noun",
+			"gloss": "shin, leg",
+			"count": 4,
+			"rank": 1655,
+			"sample": {
+				"loc": "75:29:2:2",
+				"form": "سَّاقُ"
+			}
+		},
+		{
+			"id": "lakin",
+			"arabic": "لٰكِن",
+			"pos": "particle",
+			"gloss": "but, however",
+			"count": 65,
+			"rank": 168,
+			"sample": {
+				"loc": "75:32:1:2",
+				"form": "لَٰكِن"
+			}
+		},
+		{
+			"id": "yatamatta",
+			"arabic": "يَتَمَطَّى",
+			"root": "مطو",
+			"pos": "verb",
+			"gloss": "to swagger, to strut",
+			"count": 1,
+			"rank": 4534,
+			"sample": {
+				"loc": "75:33:5:1",
+				"form": "يَتَمَطَّىٰٓ"
+			}
+		},
+		{
+			"id": "awla",
+			"arabic": "أَوْلَى",
+			"root": "ولي",
+			"pos": "noun",
+			"gloss": "closer, more deserving",
+			"count": 11,
+			"rank": 774,
+			"sample": {
+				"loc": "75:34:1:1",
+				"form": "أَوْلَىٰ"
+			}
+		},
+		{
+			"id": "taraka",
+			"arabic": "تَرَكَ",
+			"root": "ترك",
+			"pos": "verb",
+			"gloss": "to leave, to abandon",
+			"count": 40,
+			"rank": 272,
+			"sample": {
+				"loc": "75:36:4:1",
+				"form": "يُتْرَكَ"
+			}
+		},
+		{
+			"id": "suda",
+			"arabic": "سُدًى",
+			"root": "سدي",
+			"pos": "noun",
+			"gloss": "without purpose, in vain",
+			"count": 1,
+			"rank": 4535,
+			"sample": {
+				"loc": "75:36:5:1",
+				"form": "سُدًى"
+			}
+		},
+		{
+			"id": "yumna",
+			"arabic": "يُمْنَى",
+			"root": "مني",
+			"pos": "verb",
+			"gloss": "to be emitted",
+			"count": 3,
+			"rank": 2072,
+			"sample": {
+				"loc": "75:37:6:1",
+				"form": "يُمْنَىٰ"
+			}
+		},
+		{
+			"id": "alaqa",
+			"arabic": "عَلَقَة",
+			"root": "علق",
+			"pos": "noun",
+			"gloss": "clinging clot",
+			"count": 5,
+			"rank": 1416,
+			"sample": {
+				"loc": "75:38:3:1",
+				"form": "عَلَقَةً"
+			}
+		},
+		{
+			"id": "ahya",
+			"arabic": "أَحْيا",
+			"root": "حيي",
+			"pos": "verb",
+			"gloss": "to give life, to revive",
+			"count": 51,
+			"rank": 217,
+			"sample": {
+				"loc": "75:40:6:1",
+				"form": "يُحْۦِىَ"
+			}
+		},
+		{
+			"id": "kabbara",
+			"arabic": "كَبِّرْ",
+			"root": "كبر",
+			"pos": "verb",
+			"gloss": "to magnify, to declare great",
+			"count": 4,
+			"rank": 1458,
+			"sample": {
+				"loc": "74:3:2:2",
+				"form": "كَبِّرْ"
+			}
+		},
+		{
+			"id": "tahhara",
+			"arabic": "طَهَّرَ",
+			"root": "طهر",
+			"pos": "verb",
+			"gloss": "to cleanse, to make pure",
+			"count": 9,
+			"rank": 870,
+			"sample": {
+				"loc": "74:4:2:2",
+				"form": "طَهِّرْ"
+			}
+		},
+		{
+			"id": "hajara",
+			"arabic": "اهْجُرْ",
+			"root": "هجر",
+			"pos": "verb",
+			"gloss": "to forsake, to keep away from",
+			"count": 5,
+			"rank": 1313,
+			"sample": {
+				"loc": "74:5:2:2",
+				"form": "ٱهْجُرْ"
+			}
+		},
+		{
+			"id": "aasir",
+			"arabic": "عَسِير",
+			"root": "عسر",
+			"pos": "noun",
+			"gloss": "hard, difficult",
+			"count": 2,
+			"rank": 2608,
+			"sample": {
+				"loc": "74:9:4:1",
+				"form": "عَسِيرٌ"
+			}
+		},
+		{
+			"id": "wahid",
+			"arabic": "وَحِيد",
+			"root": "وحد",
+			"pos": "noun",
+			"gloss": "alone, solitary",
+			"count": 1,
+			"rank": 4505,
+			"sample": {
+				"loc": "74:11:4:1",
+				"form": "وَحِيدًا"
+			}
+		},
+		{
+			"id": "mamdud",
+			"arabic": "مَمْدُود",
+			"root": "مدد",
+			"pos": "noun",
+			"gloss": "extended, abundant",
+			"count": 2,
+			"rank": 2758,
+			"sample": {
+				"loc": "74:12:4:1",
+				"form": "مَّمْدُودًا"
+			}
+		},
+		{
+			"id": "mahhada",
+			"arabic": "مَهَّد",
+			"root": "مهد",
+			"pos": "verb",
+			"gloss": "to make smooth, to prepare",
+			"count": 1,
+			"rank": 4506,
+			"sample": {
+				"loc": "74:14:1:2",
+				"form": "مَهَّد"
+			}
+		},
+		{
+			"id": "tamia",
+			"arabic": "يَطْمَعُ",
+			"root": "طمع",
+			"pos": "verb",
+			"gloss": "to covet, to desire eagerly",
+			"count": 8,
+			"rank": 937,
+			"sample": {
+				"loc": "74:15:2:1",
+				"form": "يَطْمَعُ"
+			}
+		},
+		{
+			"id": "anid",
+			"arabic": "عَنِيد",
+			"root": "عند",
+			"pos": "noun",
+			"gloss": "stubborn, obstinate",
+			"count": 4,
+			"rank": 1591,
+			"sample": {
+				"loc": "74:16:5:1",
+				"form": "عَنِيدًا"
+			}
+		},
+		{
+			"id": "arhaqa",
+			"arabic": "يُرْهِقَ",
+			"root": "رهق",
+			"pos": "verb",
+			"gloss": "to burden, to overtake with hardship",
+			"count": 3,
+			"rank": 1992,
+			"sample": {
+				"loc": "74:17:1:2",
+				"form": "أُرْهِقُ"
+			}
+		},
+		{
+			"id": "abasa",
+			"arabic": "عَبَسَ",
+			"root": "عبس",
+			"pos": "verb",
+			"gloss": "to frown",
+			"count": 2,
+			"rank": 2790,
+			"sample": {
+				"loc": "74:22:2:1",
+				"form": "عَبَسَ"
+			}
+		},
+		{
+			"id": "istakbara",
+			"arabic": "اسْتَكْبَرَ",
+			"root": "كبر",
+			"pos": "verb",
+			"gloss": "to be arrogant",
+			"count": 40,
+			"rank": 273,
+			"sample": {
+				"loc": "74:23:3:2",
+				"form": "ٱسْتَكْبَرَ"
+			}
+		},
+		{
+			"id": "sihr",
+			"arabic": "سِحْر",
+			"root": "سحر",
+			"pos": "noun",
+			"gloss": "magic, sorcery",
+			"count": 28,
+			"rank": 369,
+			"sample": {
+				"loc": "74:24:5:1",
+				"form": "سِحْرٌ"
+			}
+		},
+		{
+			"id": "bashar",
+			"arabic": "بَشَر",
+			"root": "بشر",
+			"pos": "noun",
+			"gloss": "mortal, human",
+			"count": 37,
+			"rank": 306,
+			"sample": {
+				"loc": "74:25:5:2",
+				"form": "بَشَرِ"
+			}
+		},
+		{
+			"id": "saqar",
+			"arabic": "سَقَر",
+			"pos": "noun",
+			"gloss": "Saqar (a name of Hell)",
+			"count": 4,
+			"rank": 1671,
+			"sample": {
+				"loc": "74:26:2:1",
+				"form": "سَقَرَ"
+			}
+		},
+		{
+			"id": "asla",
+			"arabic": "أُصْلِي",
+			"root": "صلي",
+			"pos": "verb",
+			"gloss": "to make burn, to cast into a fire",
+			"count": 4,
+			"rank": 1499,
+			"sample": {
+				"loc": "74:26:1:2",
+				"form": "أُصْلِي"
+			}
+		},
+		{
+			"id": "tisa",
+			"arabic": "تِسْعَة",
+			"root": "تسع",
+			"pos": "noun",
+			"gloss": "nine",
+			"count": 2,
+			"rank": 2639,
+			"sample": {
+				"loc": "74:30:2:1",
+				"form": "تِسْعَةَ"
+			}
+		},
+		{
+			"id": "iman",
+			"arabic": "إِيمان",
+			"root": "أمن",
+			"pos": "noun",
+			"gloss": "faith, belief",
+			"count": 45,
+			"rank": 244,
+			"sample": {
+				"loc": "74:31:21:1",
+				"form": "إِيمَٰنًا"
+			}
+		},
+		{
+			"id": "fitna",
+			"arabic": "فِتْنَة",
+			"root": "فتن",
+			"pos": "noun",
+			"gloss": "trial, test",
+			"count": 34,
+			"rank": 325,
+			"sample": {
+				"loc": "74:31:11:1",
+				"form": "فِتْنَةً"
+			}
+		},
+		{
+			"id": "adalla",
+			"arabic": "أَضَلَّ",
+			"root": "ضلل",
+			"pos": "verb",
+			"gloss": "to lead astray",
+			"count": 64,
+			"rank": 173,
+			"sample": {
+				"loc": "74:31:40:1",
+				"form": "يُضِلُّ"
+			}
+		},
+		{
+			"id": "marad",
+			"arabic": "مَرَض",
+			"root": "مرض",
+			"pos": "noun",
+			"gloss": "disease, sickness",
+			"count": 13,
+			"rank": 656,
+			"sample": {
+				"loc": "74:31:32:1",
+				"form": "مَّرَضٌ"
+			}
+		},
+		{
+			"id": "irtaba",
+			"arabic": "ارْتابَ",
+			"root": "ريب",
+			"pos": "verb",
+			"gloss": "to doubt, to be in doubt",
+			"count": 9,
+			"rank": 889,
+			"sample": {
+				"loc": "74:31:23:1",
+				"form": "يَرْتَابَ"
+			}
+		},
+		{
+			"id": "ihda",
+			"arabic": "إِحْدَى",
+			"root": "أحد",
+			"pos": "noun",
+			"gloss": "one of (feminine)",
+			"count": 11,
+			"rank": 771,
+			"sample": {
+				"loc": "74:35:2:2",
+				"form": "إِحْدَى"
+			}
+		},
+		{
+			"id": "nadhir",
+			"arabic": "نَذِير",
+			"root": "نذر",
+			"pos": "noun",
+			"gloss": "warner; warning",
+			"count": 58,
+			"rank": 193,
+			"sample": {
+				"loc": "74:36:1:1",
+				"form": "نَذِيرًا"
+			}
+		},
+		{
+			"id": "taqaddama",
+			"arabic": "تَقَدَّمَ",
+			"root": "قدم",
+			"pos": "verb",
+			"gloss": "to go forward, to advance",
+			"count": 2,
+			"rank": 2722,
+			"sample": {
+				"loc": "74:37:5:1",
+				"form": "يَتَقَدَّمَ"
+			}
+		},
+		{
+			"id": "taakhkhara",
+			"arabic": "تَأَخَّرَ",
+			"root": "أخر",
+			"pos": "verb",
+			"gloss": "to lag behind, to hold back",
+			"count": 3,
+			"rank": 1713,
+			"sample": {
+				"loc": "74:37:7:1",
+				"form": "يَتَأَخَّرَ"
+			}
+		},
+		{
+			"id": "rahina",
+			"arabic": "رَهِينَة",
+			"root": "رهن",
+			"pos": "noun",
+			"gloss": "held as a pledge",
+			"count": 1,
+			"rank": 4515,
+			"sample": {
+				"loc": "74:38:5:1",
+				"form": "رَهِينَةٌ"
+			}
+		},
+		{
+			"id": "salaka",
+			"arabic": "سَلَكَ",
+			"root": "سلك",
+			"pos": "verb",
+			"gloss": "to lead into, to make enter",
+			"count": 12,
+			"rank": 736,
+			"sample": {
+				"loc": "74:42:2:1",
+				"form": "سَلَكَ"
+			}
+		},
+		{
+			"id": "khada",
+			"arabic": "خاضُ",
+			"root": "خوض",
+			"pos": "verb",
+			"gloss": "to plunge into, to engage in",
+			"count": 9,
+			"rank": 903,
+			"sample": {
+				"loc": "74:45:2:1",
+				"form": "نَخُوضُ"
+			}
+		},
+		{
+			"id": "shafaa",
+			"arabic": "شَفاعَة",
+			"root": "شفع",
+			"pos": "noun",
+			"gloss": "intercession",
+			"count": 13,
+			"rank": 660,
+			"sample": {
+				"loc": "74:48:3:1",
+				"form": "شَفَٰعَةُ"
+			}
+		},
+		{
+			"id": "himar",
+			"arabic": "حِمار",
+			"root": "حمر",
+			"pos": "noun",
+			"gloss": "donkey",
+			"count": 5,
+			"rank": 1278,
+			"sample": {
+				"loc": "74:50:2:1",
+				"form": "حُمُرٌ"
+			}
+		},
+		{
+			"id": "munashshara",
+			"arabic": "مُنَشَّرَة",
+			"root": "نشر",
+			"pos": "noun",
+			"gloss": "laid open, unrolled",
+			"count": 1,
+			"rank": 4519,
+			"sample": {
+				"loc": "74:52:9:1",
+				"form": "مُّنَشَّرَةً"
+			}
+		},
+		{
+			"id": "maghfira",
+			"arabic": "مَغْفِرَة",
+			"root": "غفر",
+			"pos": "noun",
+			"gloss": "forgiveness, pardon",
+			"count": 28,
+			"rank": 373,
+			"sample": {
+				"loc": "74:56:11:2",
+				"form": "مَغْفِرَةِ"
+			}
+		},
+		{
+			"id": "nisf",
+			"arabic": "نِصْف",
+			"root": "نصف",
+			"pos": "noun",
+			"gloss": "half",
+			"count": 7,
+			"rank": 1039,
+			"sample": {
+				"loc": "73:3:1:1",
+				"form": "نِّصْفَ"
+			}
+		},
+		{
+			"id": "naqasa",
+			"arabic": "يُنقَصُ",
+			"root": "نقص",
+			"pos": "verb",
+			"gloss": "to reduce, to decrease",
+			"count": 7,
+			"rank": 1086,
+			"sample": {
+				"loc": "73:3:3:1",
+				"form": "ٱنقُصْ"
+			}
+		},
+		{
+			"id": "rattala",
+			"arabic": "رَتَّلْ",
+			"root": "رتل",
+			"pos": "verb",
+			"gloss": "to recite slowly and clearly",
+			"count": 2,
+			"rank": 2609,
+			"sample": {
+				"loc": "73:4:4:2",
+				"form": "رَتِّلِ"
+			}
+		},
+		{
+			"id": "aqwam",
+			"arabic": "أَقْوَم",
+			"root": "قوم",
+			"pos": "noun",
+			"gloss": "more upright, more correct",
+			"count": 4,
+			"rank": 1474,
+			"sample": {
+				"loc": "73:6:7:2",
+				"form": "أَقْوَمُ"
+			}
+		},
+		{
+			"id": "mashriq",
+			"arabic": "مَشْرِق",
+			"root": "شرق",
+			"pos": "noun",
+			"gloss": "east, place of sunrise",
+			"count": 11,
+			"rank": 749,
+			"sample": {
+				"loc": "73:9:2:2",
+				"form": "مَشْرِقِ"
+			}
+		},
+		{
+			"id": "maghrib",
+			"arabic": "مَغْرِب",
+			"root": "غرب",
+			"pos": "noun",
+			"gloss": "west, place of sunset",
+			"count": 10,
+			"rank": 806,
+			"sample": {
+				"loc": "73:9:3:3",
+				"form": "مَغْرِبِ"
+			}
+		},
+		{
+			"id": "wakil",
+			"arabic": "وَكِيل",
+			"root": "وكل",
+			"pos": "noun",
+			"gloss": "trustee, guardian",
+			"count": 24,
+			"rank": 429,
+			"sample": {
+				"loc": "73:9:9:1",
+				"form": "وَكِيلًا"
+			}
+		},
+		{
+			"id": "jamil",
+			"arabic": "جَمِيل",
+			"root": "جمل",
+			"pos": "noun",
+			"gloss": "beautiful, graceful",
+			"count": 7,
+			"rank": 1097,
+			"sample": {
+				"loc": "73:10:7:1",
+				"form": "جَمِيلًا"
+			}
+		},
+		{
+			"id": "lada",
+			"arabic": "لَدَى",
+			"pos": "noun",
+			"gloss": "with, in the presence of",
+			"count": 22,
+			"rank": 456,
+			"sample": {
+				"loc": "73:12:2:1",
+				"form": "لَدَيْ"
+			}
+		},
+		{
+			"id": "mahhala",
+			"arabic": "مَهِّلِ",
+			"root": "مهل",
+			"pos": "verb",
+			"gloss": "to give time, to give respite",
+			"count": 2,
+			"rank": 2787,
+			"sample": {
+				"loc": "73:11:5:2",
+				"form": "مَهِّلْ"
+			}
+		},
+		{
+			"id": "rajafa",
+			"arabic": "تَرْجُفُ",
+			"root": "رجف",
+			"pos": "verb",
+			"gloss": "to quake, to tremble",
+			"count": 2,
+			"rank": 2788,
+			"sample": {
+				"loc": "73:14:2:1",
+				"form": "تَرْجُفُ"
+			}
+		},
+		{
+			"id": "kathib",
+			"arabic": "كَثِيب",
+			"root": "كثب",
+			"pos": "noun",
+			"gloss": "sand dune, heap of sand",
+			"count": 1,
+			"rank": 4496,
+			"sample": {
+				"loc": "73:14:7:1",
+				"form": "كَثِيبًا"
+			}
+		},
+		{
+			"id": "akhdh",
+			"arabic": "أَخْذ",
+			"root": "أخذ",
+			"pos": "noun",
+			"gloss": "a seizing, a grip",
+			"count": 6,
+			"rank": 1175,
+			"sample": {
+				"loc": "73:16:5:1",
+				"form": "أَخْذًا"
+			}
+		},
+		{
+			"id": "waad",
+			"arabic": "وَعْد",
+			"root": "وعد",
+			"pos": "noun",
+			"gloss": "promise",
+			"count": 49,
+			"rank": 232,
+			"sample": {
+				"loc": "73:18:5:1",
+				"form": "وَعْدُ"
+			}
+		},
+		{
+			"id": "maful",
+			"arabic": "مَفْعُول",
+			"root": "فعل",
+			"pos": "noun",
+			"gloss": "done, carried out",
+			"count": 7,
+			"rank": 1058,
+			"sample": {
+				"loc": "73:18:6:1",
+				"form": "مَفْعُولًا"
+			}
+		},
+		{
+			"id": "fadl",
+			"arabic": "فَضْل",
+			"root": "فضل",
+			"pos": "noun",
+			"gloss": "bounty, grace",
+			"count": 84,
+			"rank": 123,
+			"sample": {
+				"loc": "73:20:42:1",
+				"form": "فَضْلِ"
+			}
+		},
+		{
+			"id": "akhar",
+			"arabic": "آخَر",
+			"root": "أخر",
+			"pos": "noun",
+			"gloss": "another, other",
+			"count": 70,
+			"rank": 163,
+			"sample": {
+				"loc": "73:20:36:2",
+				"form": "ءَاخَرُونَ"
+			}
+		},
+		{
+			"id": "daraba",
+			"arabic": "ضَرَبَ",
+			"root": "ضرب",
+			"pos": "verb",
+			"gloss": "to strike; to travel; to set forth (a parable)",
+			"count": 55,
+			"rank": 204,
+			"sample": {
+				"loc": "73:20:37:1",
+				"form": "يَضْرِبُ"
+			}
+		},
+		{
+			"id": "ibtagha",
+			"arabic": "ابْتَغَى",
+			"root": "بغي",
+			"pos": "verb",
+			"gloss": "to seek, to desire",
+			"count": 34,
+			"rank": 326,
+			"sample": {
+				"loc": "73:20:40:1",
+				"form": "يَبْتَغُ"
+			}
+		},
+		{
+			"id": "qaatala",
+			"arabic": "قاتَلَ",
+			"root": "قتل",
+			"pos": "verb",
+			"gloss": "to fight",
+			"count": 54,
+			"rank": 208,
+			"sample": {
+				"loc": "73:20:45:1",
+				"form": "يُقَٰتِلُ"
+			}
+		},
+		{
+			"id": "taifa",
+			"arabic": "طائِفَة",
+			"root": "طوف",
+			"pos": "noun",
+			"gloss": "group, party",
+			"count": 24,
+			"rank": 428,
+			"sample": {
+				"loc": "73:20:12:2",
+				"form": "طَآئِفَةٌ"
+			}
+		},
+		{
+			"id": "hasan",
+			"arabic": "حَسَن",
+			"root": "حسن",
+			"pos": "noun",
+			"gloss": "good, fair",
+			"count": 21,
+			"rank": 476,
+			"sample": {
+				"loc": "73:20:60:1",
+				"form": "حَسَنًا"
+			}
+		},
+		{
+			"id": "marid",
+			"arabic": "مَرِيض",
+			"root": "مرض",
+			"pos": "noun",
+			"gloss": "sick, ill",
+			"count": 10,
+			"rank": 811,
+			"sample": {
+				"loc": "73:20:35:1",
+				"form": "مَّرْضَىٰ"
+			}
+		},
+		{
+			"id": "istamaa",
+			"arabic": "اسْتَمَعَ",
+			"root": "سمع",
+			"pos": "verb",
+			"gloss": "to listen",
+			"count": 16,
+			"rank": 588,
+			"sample": {
+				"loc": "72:1:5:1",
+				"form": "ٱسْتَمَعَ"
+			}
+		},
+		{
+			"id": "jinn",
+			"arabic": "جِنّ",
+			"root": "جنن",
+			"pos": "noun",
+			"gloss": "jinn (unseen beings)",
+			"count": 22,
+			"rank": 461,
+			"sample": {
+				"loc": "72:1:8:2",
+				"form": "جِنِّ"
+			}
+		},
+		{
+			"id": "ashraka",
+			"arabic": "أَشْرَكَ",
+			"root": "شرك",
+			"pos": "verb",
+			"gloss": "to associate partners with God",
+			"count": 71,
+			"rank": 158,
+			"sample": {
+				"loc": "72:2:7:1",
+				"form": "نُّشْرِكَ"
+			}
+		},
+		{
+			"id": "walad",
+			"arabic": "وَلَد",
+			"root": "ولد",
+			"pos": "noun",
+			"gloss": "child, son",
+			"count": 56,
+			"rank": 201,
+			"sample": {
+				"loc": "72:3:9:1",
+				"form": "وَلَدًا"
+			}
+		},
+		{
+			"id": "taala",
+			"arabic": "تَعالَى",
+			"root": "علو",
+			"pos": "verb",
+			"gloss": "to be exalted, to be high above",
+			"count": 14,
+			"rank": 652,
+			"sample": {
+				"loc": "72:3:2:1",
+				"form": "تَعَٰلَىٰ"
+			}
+		},
+		{
+			"id": "ins",
+			"arabic": "إِنس",
+			"root": "أنس",
+			"pos": "noun",
+			"gloss": "humankind (as against jinn)",
+			"count": 18,
+			"rank": 538,
+			"sample": {
+				"loc": "72:5:6:2",
+				"form": "إِنسُ"
+			}
+		},
+		{
+			"id": "kidhb",
+			"arabic": "كَذِب",
+			"root": "كذب",
+			"pos": "noun",
+			"gloss": "lie, falsehood",
+			"count": 33,
+			"rank": 333,
+			"sample": {
+				"loc": "72:5:10:1",
+				"form": "كَذِبًا"
+			}
+		},
+		{
+			"id": "rijal",
+			"arabic": "رِجال",
+			"root": "رجل",
+			"pos": "noun",
+			"gloss": "men",
+			"count": 28,
+			"rank": 377,
+			"sample": {
+				"loc": "72:6:3:1",
+				"form": "رِجَالٌ"
+			}
+		},
+		{
+			"id": "rahaq",
+			"arabic": "رَهَق",
+			"root": "رهق",
+			"pos": "noun",
+			"gloss": "burden, distress",
+			"count": 2,
+			"rank": 2781,
+			"sample": {
+				"loc": "72:6:11:1",
+				"form": "رَهَقًا"
+			}
+		},
+		{
+			"id": "baatha",
+			"arabic": "بَعَثَ",
+			"root": "بعث",
+			"pos": "verb",
+			"gloss": "to raise, to send out",
+			"count": 52,
+			"rank": 212,
+			"sample": {
+				"loc": "72:7:7:1",
+				"form": "يَبْعَثَ"
+			}
+		},
+		{
+			"id": "sam",
+			"arabic": "سَمْع",
+			"root": "سمع",
+			"pos": "noun",
+			"gloss": "hearing",
+			"count": 22,
+			"rank": 446,
+			"sample": {
+				"loc": "72:9:6:3",
+				"form": "سَّمْعِ"
+			}
+		},
+		{
+			"id": "dara",
+			"arabic": "تَدْرِي",
+			"root": "دري",
+			"pos": "verb",
+			"gloss": "to know, to perceive",
+			"count": 12,
+			"rank": 715,
+			"sample": {
+				"loc": "72:10:3:1",
+				"form": "نَدْرِىٓ"
+			}
+		},
+		{
+			"id": "salih",
+			"arabic": "صالِح",
+			"root": "صلح",
+			"pos": "noun",
+			"gloss": "righteous, good (masculine)",
+			"count": 74,
+			"rank": 148,
+			"sample": {
+				"loc": "72:11:3:2",
+				"form": "صَّٰلِحُونَ"
+			}
+		},
+		{
+			"id": "dun",
+			"arabic": "دُون",
+			"root": "دون",
+			"pos": "noun",
+			"gloss": "below; other than, besides",
+			"count": 144,
+			"rank": 77,
+			"sample": {
+				"loc": "72:11:5:1",
+				"form": "دُونَ"
+			}
+		},
+		{
+			"id": "rashad",
+			"arabic": "رَشَد",
+			"root": "رشد",
+			"pos": "noun",
+			"gloss": "right guidance, rectitude",
+			"count": 5,
+			"rank": 1405,
+			"sample": {
+				"loc": "72:10:13:1",
+				"form": "رَشَدًا"
+			}
+		},
+		{
+			"id": "bakhs",
+			"arabic": "بَخْس",
+			"root": "بخس",
+			"pos": "noun",
+			"gloss": "loss, unfair diminishing",
+			"count": 2,
+			"rank": 2417,
+			"sample": {
+				"loc": "72:13:12:1",
+				"form": "بَخْسًا"
+			}
+		},
+		{
+			"id": "muslim",
+			"arabic": "مُسْلِم",
+			"root": "سلم",
+			"pos": "noun",
+			"gloss": "one who submits (a Muslim)",
+			"count": 39,
+			"rank": 288,
+			"sample": {
+				"loc": "72:14:3:2",
+				"form": "مُسْلِمُونَ"
+			}
+		},
+		{
+			"id": "aslama",
+			"arabic": "أَسْلَمَ",
+			"root": "سلم",
+			"pos": "verb",
+			"gloss": "to submit, to surrender",
+			"count": 22,
+			"rank": 450,
+			"sample": {
+				"loc": "72:14:7:1",
+				"form": "أَسْلَمَ"
+			}
+		},
+		{
+			"id": "qasit",
+			"arabic": "قاسِط",
+			"root": "قسط",
+			"pos": "noun",
+			"gloss": "one who deviates, unjust",
+			"count": 2,
+			"rank": 2783,
+			"sample": {
+				"loc": "72:14:5:2",
+				"form": "قَٰسِطُونَ"
+			}
+		},
+		{
+			"id": "tariqa",
+			"arabic": "طَرِيقَة",
+			"root": "طرق",
+			"pos": "noun",
+			"gloss": "way, manner, course",
+			"count": 5,
+			"rank": 1412,
+			"sample": {
+				"loc": "72:16:4:2",
+				"form": "طَّرِيقَةِ"
+			}
+		},
+		{
+			"id": "aarada",
+			"arabic": "أَعْرَضَ",
+			"root": "عرض",
+			"pos": "verb",
+			"gloss": "to turn aside from",
+			"count": 32,
+			"rank": 342,
+			"sample": {
+				"loc": "72:17:4:1",
+				"form": "يُعْرِضْ"
+			}
+		},
+		{
+			"id": "masjid",
+			"arabic": "مَسْجِد",
+			"root": "سجد",
+			"pos": "noun",
+			"gloss": "mosque, place of prostration",
+			"count": 28,
+			"rank": 370,
+			"sample": {
+				"loc": "72:18:2:2",
+				"form": "مَسَٰجِدَ"
+			}
+		},
+		{
+			"id": "kada",
+			"arabic": "كادَ",
+			"root": "كود",
+			"pos": "verb",
+			"gloss": "to almost do, to be about to",
+			"count": 24,
+			"rank": 420,
+			"sample": {
+				"loc": "72:19:7:1",
+				"form": "كَادُ"
+			}
+		},
+		{
+			"id": "darr",
+			"arabic": "ضَرّ",
+			"root": "ضرر",
+			"pos": "noun",
+			"gloss": "harm, injury",
+			"count": 10,
+			"rank": 833,
+			"sample": {
+				"loc": "72:21:6:1",
+				"form": "ضَرًّا"
+			}
+		},
+		{
+			"id": "balagh",
+			"arabic": "بَلاغ",
+			"root": "بلغ",
+			"pos": "noun",
+			"gloss": "conveying, delivery of a message",
+			"count": 15,
+			"rank": 612,
+			"sample": {
+				"loc": "72:23:2:1",
+				"form": "بَلَٰغًا"
+			}
+		},
+		{
+			"id": "risala",
+			"arabic": "رِسالَة",
+			"root": "رسل",
+			"pos": "noun",
+			"gloss": "message, mission",
+			"count": 10,
+			"rank": 832,
+			"sample": {
+				"loc": "72:23:5:2",
+				"form": "رِسَٰلَٰتِ"
+			}
+		},
+		{
+			"id": "adad",
+			"arabic": "عَدَد",
+			"root": "عدد",
+			"pos": "noun",
+			"gloss": "number, count",
+			"count": 6,
+			"rank": 1206,
+			"sample": {
+				"loc": "72:24:11:1",
+				"form": "عَدَدًا"
+			}
+		},
+		{
+			"id": "aalim",
+			"arabic": "عالِم",
+			"root": "علم",
+			"pos": "noun",
+			"gloss": "knower",
+			"count": 18,
+			"rank": 537,
+			"sample": {
+				"loc": "72:26:1:1",
+				"form": "عَٰلِمُ"
+			}
+		},
+		{
+			"id": "azhara",
+			"arabic": "أَظْهَرَ",
+			"root": "ظهر",
+			"pos": "verb",
+			"gloss": "to disclose, to make appear",
+			"count": 8,
+			"rank": 991,
+			"sample": {
+				"loc": "72:26:4:1",
+				"form": "يُظْهِرُ"
+			}
+		},
+		{
+			"id": "khalf",
+			"arabic": "خَلْف",
+			"root": "خلف",
+			"pos": "noun",
+			"gloss": "behind, back",
+			"count": 22,
+			"rank": 448,
+			"sample": {
+				"loc": "72:27:12:1",
+				"form": "خَلْفِ"
+			}
+		},
+		{
+			"id": "ahata",
+			"arabic": "أَحاطَ",
+			"root": "حوط",
+			"pos": "verb",
+			"gloss": "to encompass, to surround",
+			"count": 17,
+			"rank": 546,
+			"sample": {
+				"loc": "72:28:7:2",
+				"form": "أَحَاطَ"
+			}
+		},
+		{
+			"id": "ablagha",
+			"arabic": "أَبْلَغُ",
+			"root": "بلغ",
+			"pos": "verb",
+			"gloss": "to convey, to deliver",
+			"count": 5,
+			"rank": 1354,
+			"sample": {
+				"loc": "72:28:4:1",
+				"form": "أَبْلَغُ"
+			}
+		},
+		{
+			"id": "nuh",
+			"arabic": "نُوح",
+			"pos": "noun",
+			"gloss": "Nuh (Noah)",
+			"count": 43,
+			"rank": 258,
+			"sample": {
+				"loc": "71:1:3:1",
+				"form": "نُوحًا"
+			}
+		},
+		{
+			"id": "qawm",
+			"arabic": "قَوْم",
+			"root": "قوم",
+			"pos": "noun",
+			"gloss": "a people, nation",
+			"count": 383,
+			"rank": 25,
+			"sample": {
+				"loc": "71:1:5:1",
+				"form": "قَوْمِ"
+			}
+		},
+		{
+			"id": "qabl",
+			"arabic": "قَبْل",
+			"root": "قبل",
+			"pos": "noun",
+			"gloss": "before",
+			"count": 242,
+			"rank": 49,
+			"sample": {
+				"loc": "71:1:10:1",
+				"form": "قَبْلِ"
+			}
+		},
+		{
+			"id": "ghafara",
+			"arabic": "غَفَرَ",
+			"root": "غفر",
+			"pos": "verb",
+			"gloss": "to forgive",
+			"count": 65,
+			"rank": 169,
+			"sample": {
+				"loc": "71:4:1:1",
+				"form": "يَغْفِرْ"
+			}
+		},
+		{
+			"id": "ajal",
+			"arabic": "أَجَل",
+			"root": "أجل",
+			"pos": "noun",
+			"gloss": "term, fixed period",
+			"count": 52,
+			"rank": 214,
+			"sample": {
+				"loc": "71:4:7:1",
+				"form": "أَجَلٍ"
+			}
+		},
+		{
+			"id": "duaa",
+			"arabic": "دُعاء",
+			"root": "دعو",
+			"pos": "noun",
+			"gloss": "call, supplication",
+			"count": 22,
+			"rank": 451,
+			"sample": {
+				"loc": "71:6:3:1",
+				"form": "دُعَآءِ"
+			}
+		},
+		{
+			"id": "kullama",
+			"arabic": "كُلَّما",
+			"root": "كلل",
+			"pos": "particle",
+			"gloss": "whenever, every time that",
+			"count": 15,
+			"rank": 594,
+			"sample": {
+				"loc": "71:7:2:1",
+				"form": "كُلَّمَا"
+			}
+		},
+		{
+			"id": "udhun",
+			"arabic": "أُذُن",
+			"root": "أذن",
+			"pos": "noun",
+			"gloss": "ear",
+			"count": 18,
+			"rank": 517,
+			"sample": {
+				"loc": "71:7:9:1",
+				"form": "ءَاذَانِ"
+			}
+		},
+		{
+			"id": "alana",
+			"arabic": "أَعْلَن",
+			"root": "علن",
+			"pos": "verb",
+			"gloss": "to announce, to make public",
+			"count": 12,
+			"rank": 694,
+			"sample": {
+				"loc": "71:9:3:1",
+				"form": "أَعْلَن"
+			}
+		},
+		{
+			"id": "asarra",
+			"arabic": "أَسَرَّ",
+			"root": "سرر",
+			"pos": "verb",
+			"gloss": "to keep secret, to say in private",
+			"count": 18,
+			"rank": 519,
+			"sample": {
+				"loc": "71:9:5:2",
+				"form": "أَسْرَرْ"
+			}
+		},
+		{
+			"id": "ghaffar",
+			"arabic": "غَفّار",
+			"root": "غفر",
+			"pos": "noun",
+			"gloss": "one who forgives again and again",
+			"count": 5,
+			"rank": 1413,
+			"sample": {
+				"loc": "71:10:6:1",
+				"form": "غَفَّارًا"
+			}
+		},
+		{
+			"id": "midrar",
+			"arabic": "مِدْرار",
+			"root": "درر",
+			"pos": "noun",
+			"gloss": "pouring abundantly",
+			"count": 3,
+			"rank": 1830,
+			"sample": {
+				"loc": "71:11:4:1",
+				"form": "مِّدْرَارًا"
+			}
+		},
+		{
+			"id": "amadda",
+			"arabic": "أَمَدَّ",
+			"root": "مدد",
+			"pos": "verb",
+			"gloss": "to provide, to supply",
+			"count": 10,
+			"rank": 826,
+			"sample": {
+				"loc": "71:12:1:2",
+				"form": "يُمْدِدْ"
+			}
+		},
+		{
+			"id": "nur",
+			"arabic": "نُور",
+			"root": "نور",
+			"pos": "noun",
+			"gloss": "light",
+			"count": 43,
+			"rank": 256,
+			"sample": {
+				"loc": "71:16:4:1",
+				"form": "نُورًا"
+			}
+		},
+		{
+			"id": "bisat",
+			"arabic": "بِساط",
+			"root": "بسط",
+			"pos": "noun",
+			"gloss": "carpet, spread",
+			"count": 1,
+			"rank": 4469,
+			"sample": {
+				"loc": "71:19:5:1",
+				"form": "بِسَاطًا"
+			}
+		},
+		{
+			"id": "fijaj",
+			"arabic": "فَجّ",
+			"root": "فجج",
+			"pos": "noun",
+			"gloss": "wide path, mountain pass",
+			"count": 3,
+			"rank": 2012,
+			"sample": {
+				"loc": "71:20:4:1",
+				"form": "فِجَاجًا"
+			}
+		},
+		{
+			"id": "khasar",
+			"arabic": "خَسار",
+			"root": "خسر",
+			"pos": "noun",
+			"gloss": "loss",
+			"count": 3,
+			"rank": 1981,
+			"sample": {
+				"loc": "71:21:13:1",
+				"form": "خَسَارًا"
+			}
+		},
+		{
+			"id": "makara",
+			"arabic": "مَكَرَ",
+			"root": "مكر",
+			"pos": "verb",
+			"gloss": "to plan cunningly",
+			"count": 22,
+			"rank": 457,
+			"sample": {
+				"loc": "71:22:1:2",
+				"form": "مَكَرُ"
+			}
+		},
+		{
+			"id": "makr",
+			"arabic": "مَكْر",
+			"root": "مكر",
+			"pos": "noun",
+			"gloss": "cunning plan, scheme",
+			"count": 19,
+			"rank": 515,
+			"sample": {
+				"loc": "71:22:2:1",
+				"form": "مَكْرًا"
+			}
+		},
+		{
+			"id": "kathir",
+			"arabic": "كَثِير",
+			"root": "كثر",
+			"pos": "noun",
+			"gloss": "many, much",
+			"count": 63,
+			"rank": 179,
+			"sample": {
+				"loc": "71:24:3:1",
+				"form": "كَثِيرًا"
+			}
+		},
+		{
+			"id": "dalal",
+			"arabic": "ضَلال",
+			"root": "ضلل",
+			"pos": "noun",
+			"gloss": "error, straying",
+			"count": 38,
+			"rank": 298,
+			"sample": {
+				"loc": "71:24:8:1",
+				"form": "ضَلَٰلًا"
+			}
+		},
+		{
+			"id": "khatia",
+			"arabic": "خَطِيئَة",
+			"root": "خطأ",
+			"pos": "noun",
+			"gloss": "misdeed, fault",
+			"count": 10,
+			"rank": 798,
+			"sample": {
+				"loc": "71:25:2:1",
+				"form": "خَطِيٓـَٰٔتِ"
+			}
+		},
+		{
+			"id": "ughriqa",
+			"arabic": "أُغْرِقُ",
+			"root": "غرق",
+			"pos": "verb",
+			"gloss": "to be drowned",
+			"count": 17,
+			"rank": 545,
+			"sample": {
+				"loc": "71:25:3:1",
+				"form": "أُغْرِقُ"
+			}
+		},
+		{
+			"id": "kaffar",
+			"arabic": "كَفّار",
+			"root": "كفر",
+			"pos": "noun",
+			"gloss": "persistent disbeliever",
+			"count": 5,
+			"rank": 1281,
+			"sample": {
+				"loc": "71:27:10:1",
+				"form": "كَفَّارًا"
+			}
+		},
+		{
+			"id": "walidayn",
+			"arabic": "والِدَي",
+			"root": "ولد",
+			"pos": "noun",
+			"gloss": "both parents",
+			"count": 10,
+			"rank": 852,
+			"sample": {
+				"loc": "71:28:4:3",
+				"form": "وَٰلِدَىَّ"
+			}
+		},
+		{
+			"id": "dafi",
+			"arabic": "دافِع",
+			"root": "دفع",
+			"pos": "noun",
+			"gloss": "one who repels",
+			"count": 2,
+			"rank": 2734,
+			"sample": {
+				"loc": "70:2:4:1",
+				"form": "دَافِعٌ"
+			}
+		},
+		{
+			"id": "maarij",
+			"arabic": "مَعارِج",
+			"root": "عرج",
+			"pos": "noun",
+			"gloss": "ways of ascent, stairways",
+			"count": 2,
+			"rank": 2711,
+			"sample": {
+				"loc": "70:3:4:2",
+				"form": "مَعَارِجِ"
+			}
+		},
+		{
+			"id": "araja",
+			"arabic": "يَعْرُجُ",
+			"root": "عرج",
+			"pos": "verb",
+			"gloss": "to ascend, to go up",
+			"count": 5,
+			"rank": 1395,
+			"sample": {
+				"loc": "70:4:1:1",
+				"form": "تَعْرُجُ"
+			}
+		},
+		{
+			"id": "miqdar",
+			"arabic": "مِقْدار",
+			"root": "قدر",
+			"pos": "noun",
+			"gloss": "measure, extent",
+			"count": 3,
+			"rank": 1952,
+			"sample": {
+				"loc": "70:4:8:1",
+				"form": "مِقْدَارُ"
+			}
+		},
+		{
+			"id": "sana",
+			"arabic": "سَنَة",
+			"root": "سنو",
+			"pos": "noun",
+			"gloss": "year",
+			"count": 7,
+			"rank": 1014,
+			"sample": {
+				"loc": "70:4:11:1",
+				"form": "سَنَةٍ"
+			}
+		},
+		{
+			"id": "baeed",
+			"arabic": "بَعِيد",
+			"root": "بعد",
+			"pos": "noun",
+			"gloss": "far, distant",
+			"count": 25,
+			"rank": 413,
+			"sample": {
+				"loc": "70:6:3:1",
+				"form": "بَعِيدًا"
+			}
+		},
+		{
+			"id": "muhl",
+			"arabic": "مُهْل",
+			"root": "مهل",
+			"pos": "noun",
+			"gloss": "molten metal; dregs of oil",
+			"count": 3,
+			"rank": 1987,
+			"sample": {
+				"loc": "70:8:4:3",
+				"form": "مُهْلِ"
+			}
+		},
+		{
+			"id": "ihn",
+			"arabic": "عِهْن",
+			"root": "عهن",
+			"pos": "noun",
+			"gloss": "tufts of wool",
+			"count": 2,
+			"rank": 2779,
+			"sample": {
+				"loc": "70:9:3:3",
+				"form": "عِهْنِ"
+			}
+		},
+		{
+			"id": "wadda",
+			"arabic": "وَدَّ",
+			"root": "ودد",
+			"pos": "verb",
+			"gloss": "to wish, to long for",
+			"count": 17,
+			"rank": 547,
+			"sample": {
+				"loc": "70:11:2:1",
+				"form": "يَوَدُّ"
+			}
+		},
+		{
+			"id": "iftada",
+			"arabic": "افْتَدَى",
+			"root": "فدي",
+			"pos": "verb",
+			"gloss": "to ransom oneself",
+			"count": 7,
+			"rank": 1035,
+			"sample": {
+				"loc": "70:11:5:1",
+				"form": "يَفْتَدِى"
+			}
+		},
+		{
+			"id": "jamian",
+			"arabic": "جَمِيع",
+			"root": "جمع",
+			"pos": "noun",
+			"gloss": "all, altogether",
+			"count": 53,
+			"rank": 209,
+			"sample": {
+				"loc": "70:14:4:1",
+				"form": "جَمِيعًا"
+			}
+		},
+		{
+			"id": "anja",
+			"arabic": "أَنجَى",
+			"root": "نجو",
+			"pos": "verb",
+			"gloss": "to save, to rescue",
+			"count": 23,
+			"rank": 435,
+			"sample": {
+				"loc": "70:14:6:1",
+				"form": "يُنجِي"
+			}
+		},
+		{
+			"id": "awaa",
+			"arabic": "أَوْعَى",
+			"root": "وعي",
+			"pos": "verb",
+			"gloss": "to hoard, to store up",
+			"count": 2,
+			"rank": 2780,
+			"sample": {
+				"loc": "70:18:2:2",
+				"form": "أَوْعَىٰٓ"
+			}
+		},
+		{
+			"id": "halu",
+			"arabic": "هَلُوع",
+			"root": "هلع",
+			"pos": "noun",
+			"gloss": "anxious, restless",
+			"count": 1,
+			"rank": 4460,
+			"sample": {
+				"loc": "70:19:4:1",
+				"form": "هَلُوعًا"
+			}
+		},
+		{
+			"id": "massa",
+			"arabic": "مَسَّ",
+			"root": "مسس",
+			"pos": "verb",
+			"gloss": "to touch",
+			"count": 56,
+			"rank": 200,
+			"sample": {
+				"loc": "70:20:2:1",
+				"form": "مَسَّ"
+			}
+		},
+		{
+			"id": "jazu",
+			"arabic": "جَزُوع",
+			"root": "جزع",
+			"pos": "noun",
+			"gloss": "impatient, fretful",
+			"count": 1,
+			"rank": 4461,
+			"sample": {
+				"loc": "70:20:4:1",
+				"form": "جَزُوعًا"
+			}
+		},
+		{
+			"id": "manu",
+			"arabic": "مَنُوع",
+			"root": "منع",
+			"pos": "noun",
+			"gloss": "withholding, grudging",
+			"count": 1,
+			"rank": 4462,
+			"sample": {
+				"loc": "70:21:4:1",
+				"form": "مَنُوعًا"
+			}
+		},
+		{
+			"id": "daim",
+			"arabic": "دائِم",
+			"root": "دوم",
+			"pos": "noun",
+			"gloss": "constant, lasting",
+			"count": 2,
+			"rank": 2445,
+			"sample": {
+				"loc": "70:23:5:1",
+				"form": "دَآئِمُونَ"
+			}
+		},
+		{
+			"id": "mahrum",
+			"arabic": "مَحْرُوم",
+			"root": "حرم",
+			"pos": "noun",
+			"gloss": "deprived",
+			"count": 4,
+			"rank": 1670,
+			"sample": {
+				"loc": "70:25:2:3",
+				"form": "مَحْرُومِ"
+			}
+		},
+		{
+			"id": "mushfiq",
+			"arabic": "مُشْفِق",
+			"root": "شفق",
+			"pos": "noun",
+			"gloss": "fearful, apprehensive",
+			"count": 8,
+			"rank": 1002,
+			"sample": {
+				"loc": "70:27:6:1",
+				"form": "مُّشْفِقُونَ"
+			}
+		},
+		{
+			"id": "mamun",
+			"arabic": "مَأْمُون",
+			"root": "أمن",
+			"pos": "noun",
+			"gloss": "safe, secure from harm",
+			"count": 1,
+			"rank": 4463,
+			"sample": {
+				"loc": "70:28:5:1",
+				"form": "مَأْمُونٍ"
+			}
+		},
+		{
+			"id": "farj",
+			"arabic": "فَرْج",
+			"root": "فرج",
+			"pos": "noun",
+			"gloss": "private part",
+			"count": 8,
+			"rank": 1005,
+			"sample": {
+				"loc": "70:29:3:2",
+				"form": "فُرُوجِ"
+			}
+		},
+		{
+			"id": "amanah",
+			"arabic": "أَمانَة",
+			"root": "أمن",
+			"pos": "noun",
+			"gloss": "trust, something entrusted",
+			"count": 4,
+			"rank": 1505,
+			"sample": {
+				"loc": "70:32:3:2",
+				"form": "أَمَٰنَٰتِ"
+			}
+		},
+		{
+			"id": "ahd",
+			"arabic": "عَهْد",
+			"root": "عهد",
+			"pos": "noun",
+			"gloss": "covenant, pledge",
+			"count": 29,
+			"rank": 362,
+			"sample": {
+				"loc": "70:32:4:2",
+				"form": "عَهْدِ"
+			}
+		},
+		{
+			"id": "shahada",
+			"arabic": "شَهادَة",
+			"root": "شهد",
+			"pos": "noun",
+			"gloss": "testimony",
+			"count": 26,
+			"rank": 400,
+			"sample": {
+				"loc": "70:33:3:2",
+				"form": "شَهَٰدَٰتِ"
+			}
+		},
+		{
+			"id": "qaim",
+			"arabic": "قائِم",
+			"root": "قوم",
+			"pos": "noun",
+			"gloss": "standing, upright",
+			"count": 17,
+			"rank": 559,
+			"sample": {
+				"loc": "70:33:4:1",
+				"form": "قَآئِمُونَ"
+			}
+		},
+		{
+			"id": "qibal",
+			"arabic": "قِبَل",
+			"root": "قبل",
+			"pos": "noun",
+			"gloss": "front, direction",
+			"count": 4,
+			"rank": 1455,
+			"sample": {
+				"loc": "70:36:4:1",
+				"form": "قِبَلَ"
+			}
+		},
+		{
+			"id": "muhti",
+			"arabic": "مُهْطِع",
+			"root": "هطع",
+			"pos": "noun",
+			"gloss": "hastening, rushing",
+			"count": 3,
+			"rank": 1958,
+			"sample": {
+				"loc": "70:36:5:1",
+				"form": "مُهْطِعِينَ"
+			}
+		},
+		{
+			"id": "shimal",
+			"arabic": "شِمال",
+			"root": "شمل",
+			"pos": "noun",
+			"gloss": "left, left side",
+			"count": 8,
+			"rank": 1000,
+			"sample": {
+				"loc": "70:37:4:2",
+				"form": "شِّمَالِ"
+			}
+		},
+		{
+			"id": "masbuq",
+			"arabic": "مَسْبُوق",
+			"root": "سبق",
+			"pos": "noun",
+			"gloss": "outrun, overtaken",
+			"count": 2,
+			"rank": 2759,
+			"sample": {
+				"loc": "70:41:8:2",
+				"form": "مَسْبُوقِينَ"
+			}
+		},
+		{
+			"id": "laiba",
+			"arabic": "يَلْعَبْ",
+			"root": "لعب",
+			"pos": "verb",
+			"gloss": "to play, to amuse oneself",
+			"count": 9,
+			"rank": 908,
+			"sample": {
+				"loc": "70:42:3:2",
+				"form": "يَلْعَبُ"
+			}
+		},
+		{
+			"id": "yulaqi",
+			"arabic": "يُلاقُ",
+			"root": "لقي",
+			"pos": "verb",
+			"gloss": "to meet, to encounter",
+			"count": 3,
+			"rank": 2067,
+			"sample": {
+				"loc": "70:42:5:1",
+				"form": "يُلَٰقُ"
+			}
+		},
+		{
+			"id": "sira",
+			"arabic": "سِراع",
+			"root": "سرع",
+			"pos": "noun",
+			"gloss": "swift, hurrying",
+			"count": 2,
+			"rank": 2730,
+			"sample": {
+				"loc": "70:43:5:1",
+				"form": "سِرَاعًا"
+			}
+		},
+		{
+			"id": "dhilla",
+			"arabic": "ذِلَّة",
+			"root": "ذلل",
+			"pos": "noun",
+			"gloss": "humiliation",
+			"count": 7,
+			"rank": 1013,
+			"sample": {
+				"loc": "70:44:4:1",
+				"form": "ذِلَّةٌ"
+			}
+		},
+		{
+			"id": "haqqah",
+			"arabic": "حاقَّة",
+			"root": "حقق",
+			"pos": "noun",
+			"gloss": "the Inevitable Reality",
+			"count": 3,
+			"rank": 2079,
+			"sample": {
+				"loc": "69:1:1:2",
+				"form": "حَآقَّةُ"
+			}
+		},
+		{
+			"id": "rih",
+			"arabic": "رِيح",
+			"root": "روح",
+			"pos": "noun",
+			"gloss": "wind",
+			"count": 29,
+			"rank": 363,
+			"sample": {
+				"loc": "69:6:4:2",
+				"form": "رِيحٍ"
+			}
+		},
+		{
+			"id": "sarsar",
+			"arabic": "صَرْصَر",
+			"root": "صرصر",
+			"pos": "noun",
+			"gloss": "fierce (of wind)",
+			"count": 3,
+			"rank": 2063,
+			"sample": {
+				"loc": "69:6:5:1",
+				"form": "صَرْصَرٍ"
+			}
+		},
+		{
+			"id": "sakhkhara",
+			"arabic": "سَخَّرَ",
+			"root": "سخر",
+			"pos": "verb",
+			"gloss": "to subject, to put at service",
+			"count": 22,
+			"rank": 463,
+			"sample": {
+				"loc": "69:7:1:1",
+				"form": "سَخَّرَ"
+			}
+		},
+		{
+			"id": "thamaniya",
+			"arabic": "ثَمانِيَة",
+			"root": "ثمن",
+			"pos": "particle",
+			"gloss": "eight",
+			"count": 4,
+			"rank": 1549,
+			"sample": {
+				"loc": "69:7:5:2",
+				"form": "ثَمَٰنِيَةَ"
+			}
+		},
+		{
+			"id": "khawiya",
+			"arabic": "خاوِيَة",
+			"root": "خوي",
+			"pos": "noun",
+			"gloss": "hollow, collapsed",
+			"count": 5,
+			"rank": 1277,
+			"sample": {
+				"loc": "69:7:15:1",
+				"form": "خَاوِيَةٍ"
+			}
+		},
+		{
+			"id": "baqiya",
+			"arabic": "باقِيَة",
+			"root": "بقي",
+			"pos": "noun",
+			"gloss": "survivor, remnant",
+			"count": 4,
+			"rank": 1633,
+			"sample": {
+				"loc": "69:8:5:1",
+				"form": "بَاقِيَةٍ"
+			}
+		},
+		{
+			"id": "hamala",
+			"arabic": "حَمَلَ",
+			"root": "حمل",
+			"pos": "verb",
+			"gloss": "to carry",
+			"count": 41,
+			"rank": 270,
+			"sample": {
+				"loc": "69:11:5:1",
+				"form": "حَمَلْ"
+			}
+		},
+		{
+			"id": "waa",
+			"arabic": "تَعِيَ",
+			"root": "وعي",
+			"pos": "verb",
+			"gloss": "to retain, to keep in mind",
+			"count": 1,
+			"rank": 4440,
+			"sample": {
+				"loc": "69:12:4:2",
+				"form": "تَعِيَ"
+			}
+		},
+		{
+			"id": "nafkha",
+			"arabic": "نَفْخَة",
+			"root": "نفخ",
+			"pos": "noun",
+			"gloss": "a blast, a blowing",
+			"count": 1,
+			"rank": 4442,
+			"sample": {
+				"loc": "69:13:5:1",
+				"form": "نَفْخَةٌ"
+			}
+		},
+		{
+			"id": "dukka",
+			"arabic": "دُكَّتِ",
+			"root": "دكك",
+			"pos": "verb",
+			"gloss": "to be crushed",
+			"count": 2,
+			"rank": 2774,
+			"sample": {
+				"loc": "69:14:4:2",
+				"form": "دُكَّ"
+			}
+		},
+		{
+			"id": "waqaa",
+			"arabic": "وَقَعَ",
+			"root": "وقع",
+			"pos": "verb",
+			"gloss": "to fall, to occur",
+			"count": 12,
+			"rank": 719,
+			"sample": {
+				"loc": "69:15:2:1",
+				"form": "وَقَعَتِ"
+			}
+		},
+		{
+			"id": "arja",
+			"arabic": "أَرْجائ",
+			"root": "رجو",
+			"pos": "noun",
+			"gloss": "edges, sides",
+			"count": 1,
+			"rank": 4445,
+			"sample": {
+				"loc": "69:17:3:1",
+				"form": "أَرْجَآئِ"
+			}
+		},
+		{
+			"id": "aradha",
+			"arabic": "عَرَضَ",
+			"root": "عرض",
+			"pos": "verb",
+			"gloss": "to present, to display",
+			"count": 11,
+			"rank": 739,
+			"sample": {
+				"loc": "69:18:2:1",
+				"form": "تُعْرَضُ"
+			}
+		},
+		{
+			"id": "khafiyah",
+			"arabic": "خافِيَة",
+			"root": "خفي",
+			"pos": "noun",
+			"gloss": "a hidden thing, secret",
+			"count": 1,
+			"rank": 4446,
+			"sample": {
+				"loc": "69:18:6:1",
+				"form": "خَافِيَةٌ"
+			}
+		},
+		{
+			"id": "isha",
+			"arabic": "عِيشَة",
+			"root": "عيش",
+			"pos": "noun",
+			"gloss": "living, way of life",
+			"count": 2,
+			"rank": 2775,
+			"sample": {
+				"loc": "69:21:3:1",
+				"form": "عِيشَةٍ"
+			}
+		},
+		{
+			"id": "aliya",
+			"arabic": "عالِيَة",
+			"root": "علو",
+			"pos": "noun",
+			"gloss": "lofty, high",
+			"count": 2,
+			"rank": 2776,
+			"sample": {
+				"loc": "69:22:3:1",
+				"form": "عَالِيَةٍ"
+			}
+		},
+		{
+			"id": "aslafa",
+			"arabic": "أَسْلَفَتْ",
+			"root": "سلف",
+			"pos": "verb",
+			"gloss": "to do beforehand",
+			"count": 2,
+			"rank": 2377,
+			"sample": {
+				"loc": "69:24:5:1",
+				"form": "أَسْلَفْ"
+			}
+		},
+		{
+			"id": "khaliya",
+			"arabic": "خالِيَة",
+			"root": "خلو",
+			"pos": "noun",
+			"gloss": "empty; gone by",
+			"count": 1,
+			"rank": 4449,
+			"sample": {
+				"loc": "69:24:8:2",
+				"form": "خَالِيَةِ"
+			}
+		},
+		{
+			"id": "qadiya",
+			"arabic": "قاضِيَة",
+			"root": "قضي",
+			"pos": "noun",
+			"gloss": "the decisive end",
+			"count": 1,
+			"rank": 4450,
+			"sample": {
+				"loc": "69:27:3:2",
+				"form": "قَاضِيَةَ"
+			}
+		},
+		{
+			"id": "halaka",
+			"arabic": "هَلَكَ",
+			"root": "هلك",
+			"pos": "verb",
+			"gloss": "to perish",
+			"count": 5,
+			"rank": 1323,
+			"sample": {
+				"loc": "69:29:1:1",
+				"form": "هَلَكَ"
+			}
+		},
+		{
+			"id": "sultan",
+			"arabic": "سُلْطان",
+			"root": "سلط",
+			"pos": "noun",
+			"gloss": "authority, power",
+			"count": 37,
+			"rank": 308,
+			"sample": {
+				"loc": "69:29:3:1",
+				"form": "سُلْطَٰنِ"
+			}
+		},
+		{
+			"id": "ghalla",
+			"arabic": "غَلَّ",
+			"root": "غلل",
+			"pos": "verb",
+			"gloss": "to fetter, to shackle",
+			"count": 5,
+			"rank": 1303,
+			"sample": {
+				"loc": "69:30:2:2",
+				"form": "غُلُّ"
+			}
+		},
+		{
+			"id": "dhira",
+			"arabic": "ذِراع",
+			"root": "ذرع",
+			"pos": "noun",
+			"gloss": "cubit",
+			"count": 2,
+			"rank": 2504,
+			"sample": {
+				"loc": "69:32:6:1",
+				"form": "ذِرَاعًا"
+			}
+		},
+		{
+			"id": "hadda",
+			"arabic": "يَحُضُّ",
+			"root": "حضض",
+			"pos": "verb",
+			"gloss": "to urge, to press",
+			"count": 2,
+			"rank": 2778,
+			"sample": {
+				"loc": "69:34:2:1",
+				"form": "يَحُضُّ"
+			}
+		},
+		{
+			"id": "huna",
+			"arabic": "هُنا",
+			"pos": "particle",
+			"gloss": "here",
+			"count": 4,
+			"rank": 1491,
+			"sample": {
+				"loc": "69:35:4:2",
+				"form": "هُنَا"
+			}
+		},
+		{
+			"id": "absara",
+			"arabic": "أَبْصَرَ",
+			"root": "بصر",
+			"pos": "verb",
+			"gloss": "to perceive, to see clearly",
+			"count": 29,
+			"rank": 361,
+			"sample": {
+				"loc": "69:38:4:1",
+				"form": "تُبْصِرُ"
+			}
+		},
+		{
+			"id": "shair",
+			"arabic": "شاعِر",
+			"root": "شعر",
+			"pos": "noun",
+			"gloss": "poet",
+			"count": 5,
+			"rank": 1414,
+			"sample": {
+				"loc": "69:41:4:1",
+				"form": "شَاعِرٍ"
+			}
+		},
+		{
+			"id": "kahin",
+			"arabic": "كاهِن",
+			"root": "كهن",
+			"pos": "noun",
+			"gloss": "soothsayer, diviner",
+			"count": 2,
+			"rank": 2739,
+			"sample": {
+				"loc": "69:42:3:1",
+				"form": "كَاهِنٍ"
+			}
+		},
+		{
+			"id": "taqawwala",
+			"arabic": "تَقَوَّلَ",
+			"root": "قول",
+			"pos": "verb",
+			"gloss": "to invent sayings, to fabricate",
+			"count": 2,
+			"rank": 2740,
+			"sample": {
+				"loc": "69:44:2:1",
+				"form": "تَقَوَّلَ"
+			}
+		},
+		{
+			"id": "badh",
+			"arabic": "بَعْض",
+			"root": "بعض",
+			"pos": "noun",
+			"gloss": "some, part of",
+			"count": 157,
+			"rank": 67,
+			"sample": {
+				"loc": "69:44:4:1",
+				"form": "بَعْضَ"
+			}
+		},
+		{
+			"id": "qutia",
+			"arabic": "قُطِعَ",
+			"root": "قطع",
+			"pos": "verb",
+			"gloss": "to be cut",
+			"count": 12,
+			"rank": 689,
+			"sample": {
+				"loc": "69:46:2:2",
+				"form": "قَطَعْ"
+			}
+		},
+		{
+			"id": "hajiz",
+			"arabic": "حاجِز",
+			"root": "حجز",
+			"pos": "noun",
+			"gloss": "one who holds back, barrier",
+			"count": 2,
+			"rank": 2640,
+			"sample": {
+				"loc": "69:47:6:1",
+				"form": "حَٰجِزِينَ"
+			}
+		},
+		{
+			"id": "hasra",
+			"arabic": "حَسْرَة",
+			"root": "حسر",
+			"pos": "noun",
+			"gloss": "regret, anguish",
+			"count": 7,
+			"rank": 1023,
+			"sample": {
+				"loc": "69:50:2:2",
+				"form": "حَسْرَةٌ"
+			}
+		},
+		{
+			"id": "khuluq",
+			"arabic": "خُلُق",
+			"root": "خلق",
+			"pos": "noun",
+			"gloss": "character, moral nature",
+			"count": 2,
+			"rank": 2626,
+			"sample": {
+				"loc": "68:4:3:1",
+				"form": "خُلُقٍ"
+			}
+		},
+		{
+			"id": "dalla",
+			"arabic": "ضَلَّ",
+			"root": "ضلل",
+			"pos": "verb",
+			"gloss": "to go astray, to be lost",
+			"count": 53,
+			"rank": 211,
+			"sample": {
+				"loc": "68:7:6:1",
+				"form": "ضَلَّ"
+			}
+		},
+		{
+			"id": "maftun",
+			"arabic": "مَفْتُون",
+			"root": "فتن",
+			"pos": "noun",
+			"gloss": "one who is afflicted, put to trial",
+			"count": 1,
+			"rank": 4416,
+			"sample": {
+				"loc": "68:6:2:2",
+				"form": "مَفْتُونُ"
+			}
+		},
+		{
+			"id": "muhtadi",
+			"arabic": "مُهْتَدي",
+			"root": "هدي",
+			"pos": "noun",
+			"gloss": "one who is rightly guided",
+			"count": 17,
+			"rank": 541,
+			"sample": {
+				"loc": "68:7:11:3",
+				"form": "مُهْتَدِينَ"
+			}
+		},
+		{
+			"id": "yudhin",
+			"arabic": "يُدْهِنُ",
+			"root": "دهن",
+			"pos": "verb",
+			"gloss": "to compromise, to be lenient",
+			"count": 2,
+			"rank": 2772,
+			"sample": {
+				"loc": "68:9:3:1",
+				"form": "تُدْهِنُ"
+			}
+		},
+		{
+			"id": "hallaf",
+			"arabic": "حَلّاف",
+			"root": "حلف",
+			"pos": "noun",
+			"gloss": "one who swears much",
+			"count": 1,
+			"rank": 4417,
+			"sample": {
+				"loc": "68:10:4:1",
+				"form": "حَلَّافٍ"
+			}
+		},
+		{
+			"id": "hammaz",
+			"arabic": "هَمّاز",
+			"root": "همز",
+			"pos": "noun",
+			"gloss": "slanderer, defamer",
+			"count": 1,
+			"rank": 4418,
+			"sample": {
+				"loc": "68:11:1:1",
+				"form": "هَمَّازٍ"
+			}
+		},
+		{
+			"id": "namim",
+			"arabic": "نَمِيم",
+			"root": "نمم",
+			"pos": "noun",
+			"gloss": "tale-bearing, malicious gossip",
+			"count": 1,
+			"rank": 4420,
+			"sample": {
+				"loc": "68:11:3:2",
+				"form": "نَمِيمٍ"
+			}
+		},
+		{
+			"id": "mannaa",
+			"arabic": "مَنّاع",
+			"root": "منع",
+			"pos": "noun",
+			"gloss": "one who withholds, a hinderer",
+			"count": 2,
+			"rank": 2728,
+			"sample": {
+				"loc": "68:12:1:1",
+				"form": "مَّنَّاعٍ"
+			}
+		},
+		{
+			"id": "sarama",
+			"arabic": "يَصْرِمُ",
+			"root": "صرم",
+			"pos": "verb",
+			"gloss": "to harvest, to pick the crop",
+			"count": 1,
+			"rank": 4425,
+			"sample": {
+				"loc": "68:17:9:2",
+				"form": "يَصْرِمُ"
+			}
+		},
+		{
+			"id": "musbih",
+			"arabic": "مُصْبِح",
+			"root": "صبح",
+			"pos": "noun",
+			"gloss": "one who enters the morning",
+			"count": 5,
+			"rank": 1397,
+			"sample": {
+				"loc": "68:17:10:1",
+				"form": "مُصْبِحِينَ"
+			}
+		},
+		{
+			"id": "taif",
+			"arabic": "طائِف",
+			"root": "طوف",
+			"pos": "noun",
+			"gloss": "one that goes around; a visitation",
+			"count": 4,
+			"rank": 1448,
+			"sample": {
+				"loc": "68:19:3:1",
+				"form": "طَآئِفٌ"
+			}
+		},
+		{
+			"id": "asbaha",
+			"arabic": "أَصْبَحَ",
+			"root": "صبح",
+			"pos": "verb",
+			"gloss": "to become; to reach the morning",
+			"count": 28,
+			"rank": 380,
+			"sample": {
+				"loc": "68:20:1:2",
+				"form": "أَصْبَحَتْ"
+			}
+		},
+		{
+			"id": "ghada",
+			"arabic": "غَدَ",
+			"root": "غدو",
+			"pos": "verb",
+			"gloss": "to go out early in the morning",
+			"count": 3,
+			"rank": 1766,
+			"sample": {
+				"loc": "68:22:2:1",
+				"form": "ٱغْدُ"
+			}
+		},
+		{
+			"id": "harth",
+			"arabic": "حَرْث",
+			"root": "حرث",
+			"pos": "noun",
+			"gloss": "tilled land, crops",
+			"count": 13,
+			"rank": 661,
+			"sample": {
+				"loc": "68:22:4:1",
+				"form": "حَرْثِ"
+			}
+		},
+		{
+			"id": "yatakhafat",
+			"arabic": "يَتَخافَتُ",
+			"root": "خفت",
+			"pos": "verb",
+			"gloss": "to speak in low voices",
+			"count": 2,
+			"rank": 2558,
+			"sample": {
+				"loc": "68:23:3:1",
+				"form": "يَتَخَٰفَتُ"
+			}
+		},
+		{
+			"id": "lawla",
+			"arabic": "لَوْلا",
+			"pos": "particle",
+			"gloss": "if not; why not",
+			"count": 75,
+			"rank": 144,
+			"sample": {
+				"loc": "68:28:6:1",
+				"form": "لَوْلَا"
+			}
+		},
+		{
+			"id": "subhan",
+			"arabic": "سُبْحان",
+			"root": "سبح",
+			"pos": "noun",
+			"gloss": "glory be to (God)",
+			"count": 41,
+			"rank": 268,
+			"sample": {
+				"loc": "68:29:2:1",
+				"form": "سُبْحَٰنَ"
+			}
+		},
+		{
+			"id": "aqbala",
+			"arabic": "أَقْبَلَ",
+			"root": "قبل",
+			"pos": "verb",
+			"gloss": "to turn towards, to advance",
+			"count": 9,
+			"rank": 919,
+			"sample": {
+				"loc": "68:30:1:2",
+				"form": "أَقْبَلَ"
+			}
+		},
+		{
+			"id": "asaa",
+			"arabic": "عَسَى",
+			"root": "عسي",
+			"pos": "verb",
+			"gloss": "perhaps, it may be that",
+			"count": 30,
+			"rank": 354,
+			"sample": {
+				"loc": "68:32:1:1",
+				"form": "عَسَىٰ"
+			}
+		},
+		{
+			"id": "abdala",
+			"arabic": "يُبْدِلَ",
+			"root": "بدل",
+			"pos": "verb",
+			"gloss": "to give in exchange, to replace",
+			"count": 3,
+			"rank": 1994,
+			"sample": {
+				"loc": "68:32:4:1",
+				"form": "يُبْدِلَ"
+			}
+		},
+		{
+			"id": "hakama",
+			"arabic": "حَكَمَ",
+			"root": "حكم",
+			"pos": "verb",
+			"gloss": "to judge, to decide",
+			"count": 45,
+			"rank": 245,
+			"sample": {
+				"loc": "68:36:4:1",
+				"form": "تَحْكُمُ"
+			}
+		},
+		{
+			"id": "darasa",
+			"arabic": "دَرَسُ",
+			"root": "درس",
+			"pos": "verb",
+			"gloss": "to study, to read closely",
+			"count": 5,
+			"rank": 1293,
+			"sample": {
+				"loc": "68:37:5:1",
+				"form": "تَدْرُسُ"
+			}
+		},
+		{
+			"id": "sharik",
+			"arabic": "شَرِيك",
+			"root": "شرك",
+			"pos": "noun",
+			"gloss": "partner, associate",
+			"count": 40,
+			"rank": 283,
+			"sample": {
+				"loc": "68:41:3:1",
+				"form": "شُرَكَآءُ"
+			}
+		},
+		{
+			"id": "sadiq",
+			"arabic": "صادِق",
+			"root": "صدق",
+			"pos": "noun",
+			"gloss": "truthful",
+			"count": 59,
+			"rank": 187,
+			"sample": {
+				"loc": "68:41:8:1",
+				"form": "صَٰدِقِينَ"
+			}
+		},
+		{
+			"id": "zaim",
+			"arabic": "زَعِيم",
+			"root": "زعم",
+			"pos": "noun",
+			"gloss": "guarantor, leader",
+			"count": 2,
+			"rank": 2432,
+			"sample": {
+				"loc": "68:40:4:1",
+				"form": "زَعِيمٌ"
+			}
+		},
+		{
+			"id": "kashafa",
+			"arabic": "كَشَفَ",
+			"root": "كشف",
+			"pos": "verb",
+			"gloss": "to uncover, to remove",
+			"count": 14,
+			"rank": 651,
+			"sample": {
+				"loc": "68:42:2:1",
+				"form": "يُكْشَفُ"
+			}
+		},
+		{
+			"id": "sujud",
+			"arabic": "سُجُود",
+			"root": "سجد",
+			"pos": "noun",
+			"gloss": "prostration",
+			"count": 6,
+			"rank": 1128,
+			"sample": {
+				"loc": "68:42:7:2",
+				"form": "سُّجُودِ"
+			}
+		},
+		{
+			"id": "istataa",
+			"arabic": "اسْتَطاعَ",
+			"root": "طوع",
+			"pos": "verb",
+			"gloss": "to be able to, to manage to",
+			"count": 42,
+			"rank": 262,
+			"sample": {
+				"loc": "68:42:9:1",
+				"form": "يَسْتَطِيعُ"
+			}
+		},
+		{
+			"id": "haythu",
+			"arabic": "حَيْث",
+			"root": "حيث",
+			"pos": "noun",
+			"gloss": "where, whence",
+			"count": 31,
+			"rank": 343,
+			"sample": {
+				"loc": "68:44:8:1",
+				"form": "حَيْثُ"
+			}
+		},
+		{
+			"id": "amla",
+			"arabic": "أَمْلَى",
+			"root": "ملو",
+			"pos": "verb",
+			"gloss": "to give respite, to grant time",
+			"count": 9,
+			"rank": 896,
+			"sample": {
+				"loc": "68:45:1:2",
+				"form": "أُمْلِى"
+			}
+		},
+		{
+			"id": "kataba",
+			"arabic": "كَتَبَ",
+			"root": "كتب",
+			"pos": "verb",
+			"gloss": "to write; to prescribe",
+			"count": 49,
+			"rank": 230,
+			"sample": {
+				"loc": "68:47:5:1",
+				"form": "يَكْتُبُ"
+			}
+		},
+		{
+			"id": "hut",
+			"arabic": "حُوت",
+			"root": "حوت",
+			"pos": "noun",
+			"gloss": "large fish, whale",
+			"count": 5,
+			"rank": 1359,
+			"sample": {
+				"loc": "68:48:7:2",
+				"form": "حُوتِ"
+			}
+		},
+		{
+			"id": "tadaraka",
+			"arabic": "ادّارَكَ",
+			"root": "درك",
+			"pos": "verb",
+			"gloss": "to overtake, to reach",
+			"count": 3,
+			"rank": 1863,
+			"sample": {
+				"loc": "68:49:3:1",
+				"form": "تَدَٰرَكَ"
+			}
+		},
+		{
+			"id": "ijtaba",
+			"arabic": "اجْتَبَى",
+			"root": "جبي",
+			"pos": "verb",
+			"gloss": "to choose, to pick out",
+			"count": 10,
+			"rank": 828,
+			"sample": {
+				"loc": "68:50:1:2",
+				"form": "ٱجْتَبَٰ"
+			}
+		},
+		{
+			"id": "tabaraka",
+			"arabic": "تَبارَكَ",
+			"root": "برك",
+			"pos": "verb",
+			"gloss": "to be blessed, to be exalted",
+			"count": 9,
+			"rank": 911,
+			"sample": {
+				"loc": "67:1:1:1",
+				"form": "تَبَٰرَكَ"
+			}
+		},
+		{
+			"id": "qadeer",
+			"arabic": "قَدِير",
+			"root": "قدر",
+			"pos": "noun",
+			"gloss": "all-powerful",
+			"count": 45,
+			"rank": 243,
+			"sample": {
+				"loc": "67:1:9:1",
+				"form": "قَدِيرٌ"
+			}
+		},
+		{
+			"id": "mawt",
+			"arabic": "مَوْت",
+			"root": "موت",
+			"pos": "noun",
+			"gloss": "death",
+			"count": 50,
+			"rank": 221,
+			"sample": {
+				"loc": "67:2:3:2",
+				"form": "مَوْتَ"
+			}
+		},
+		{
+			"id": "zayyana",
+			"arabic": "زَيَّنَ",
+			"root": "زين",
+			"pos": "verb",
+			"gloss": "to adorn, to beautify",
+			"count": 26,
+			"rank": 403,
+			"sample": {
+				"loc": "67:5:2:1",
+				"form": "زَيَّ"
+			}
+		},
+		{
+			"id": "bisa",
+			"arabic": "بِئْسَ",
+			"root": "بأس",
+			"pos": "verb",
+			"gloss": "wretched is, how evil is",
+			"count": 40,
+			"rank": 277,
+			"sample": {
+				"loc": "67:6:6:2",
+				"form": "بِئْسَ"
+			}
+		},
+		{
+			"id": "masir",
+			"arabic": "مَصِير",
+			"root": "صير",
+			"pos": "noun",
+			"gloss": "destination, journey’s end",
+			"count": 28,
+			"rank": 371,
+			"sample": {
+				"loc": "67:6:7:2",
+				"form": "مَصِيرُ"
+			}
+		},
+		{
+			"id": "ghayz",
+			"arabic": "غَيْظ",
+			"root": "غيظ",
+			"pos": "noun",
+			"gloss": "rage, fury",
+			"count": 6,
+			"rank": 1157,
+			"sample": {
+				"loc": "67:8:4:2",
+				"form": "غَيْظِ"
+			}
+		},
+		{
+			"id": "aqala",
+			"arabic": "عَقَلُ",
+			"root": "عقل",
+			"pos": "verb",
+			"gloss": "to use reason, to understand",
+			"count": 49,
+			"rank": 229,
+			"sample": {
+				"loc": "67:10:6:1",
+				"form": "نَعْقِلُ"
+			}
+		},
+		{
+			"id": "itarafa",
+			"arabic": "اعْتَرَفُ",
+			"root": "عرف",
+			"pos": "verb",
+			"gloss": "to confess, to acknowledge",
+			"count": 3,
+			"rank": 1909,
+			"sample": {
+				"loc": "67:11:1:2",
+				"form": "ٱعْتَرَفُ"
+			}
+		},
+		{
+			"id": "jahara",
+			"arabic": "جَهَرَ",
+			"root": "جهر",
+			"pos": "verb",
+			"gloss": "to speak openly, to declare aloud",
+			"count": 5,
+			"rank": 1392,
+			"sample": {
+				"loc": "67:13:4:1",
+				"form": "ٱجْهَرُ"
+			}
+		},
+		{
+			"id": "latif",
+			"arabic": "لَطِيف",
+			"root": "لطف",
+			"pos": "noun",
+			"gloss": "subtle, gentle",
+			"count": 7,
+			"rank": 1073,
+			"sample": {
+				"loc": "67:14:6:2",
+				"form": "لَّطِيفُ"
+			}
+		},
+		{
+			"id": "masha",
+			"arabic": "مَشَ",
+			"root": "مشي",
+			"pos": "verb",
+			"gloss": "to walk",
+			"count": 21,
+			"rank": 468,
+			"sample": {
+				"loc": "67:15:7:2",
+				"form": "ٱمْشُ"
+			}
+		},
+		{
+			"id": "nushur",
+			"arabic": "نُشُور",
+			"root": "نشر",
+			"pos": "noun",
+			"gloss": "the raising of the dead, rising up",
+			"count": 5,
+			"rank": 1419,
+			"sample": {
+				"loc": "67:15:14:2",
+				"form": "نُّشُورُ"
+			}
+		},
+		{
+			"id": "amina",
+			"arabic": "أَمِنَ",
+			"root": "أمن",
+			"pos": "verb",
+			"gloss": "to feel safe from",
+			"count": 20,
+			"rank": 490,
+			"sample": {
+				"loc": "67:16:1:2",
+				"form": "أَمِن"
+			}
+		},
+		{
+			"id": "qabada",
+			"arabic": "قَبَضْ",
+			"root": "قبض",
+			"pos": "verb",
+			"gloss": "to fold in, to grasp",
+			"count": 5,
+			"rank": 1271,
+			"sample": {
+				"loc": "67:19:7:2",
+				"form": "يَقْبِضْ"
+			}
+		},
+		{
+			"id": "amsaka",
+			"arabic": "أَمْسَكَ",
+			"root": "مسك",
+			"pos": "verb",
+			"gloss": "to hold, to hold back",
+			"count": 18,
+			"rank": 525,
+			"sample": {
+				"loc": "67:19:9:1",
+				"form": "يُمْسِكُ"
+			}
+		},
+		{
+			"id": "hasib",
+			"arabic": "حاصِب",
+			"root": "حصب",
+			"pos": "noun",
+			"gloss": "stone-hurling wind",
+			"count": 4,
+			"rank": 1626,
+			"sample": {
+				"loc": "67:17:9:1",
+				"form": "حَاصِبًا"
+			}
+		},
+		{
+			"id": "nakir",
+			"arabic": "نَكِير",
+			"root": "نكر",
+			"pos": "noun",
+			"gloss": "disapproval, denunciation",
+			"count": 5,
+			"rank": 1417,
+			"sample": {
+				"loc": "67:18:8:1",
+				"form": "نَكِيرِ"
+			}
+		},
+		{
+			"id": "nasara",
+			"arabic": "نَصَرَ",
+			"root": "نصر",
+			"pos": "verb",
+			"gloss": "to help, to give victory",
+			"count": 59,
+			"rank": 188,
+			"sample": {
+				"loc": "67:20:7:1",
+				"form": "يَنصُرُ"
+			}
+		},
+		{
+			"id": "ghurur",
+			"arabic": "غُرُور",
+			"root": "غرر",
+			"pos": "noun",
+			"gloss": "delusion, deception",
+			"count": 9,
+			"rank": 897,
+			"sample": {
+				"loc": "67:20:15:1",
+				"form": "غُرُورٍ"
+			}
+		},
+		{
+			"id": "razaqa",
+			"arabic": "رَزَقَ",
+			"root": "رزق",
+			"pos": "verb",
+			"gloss": "to provide, to give sustenance",
+			"count": 61,
+			"rank": 185,
+			"sample": {
+				"loc": "67:21:4:1",
+				"form": "يَرْزُقُ"
+			}
+		},
+		{
+			"id": "ahda",
+			"arabic": "أَهْدَى",
+			"root": "هدي",
+			"pos": "noun",
+			"gloss": "better guided, more rightly guided",
+			"count": 7,
+			"rank": 1059,
+			"sample": {
+				"loc": "67:22:6:1",
+				"form": "أَهْدَىٰٓ"
+			}
+		},
+		{
+			"id": "sawiyy",
+			"arabic": "سَوِيّ",
+			"root": "سوي",
+			"pos": "noun",
+			"gloss": "upright, even",
+			"count": 5,
+			"rank": 1408,
+			"sample": {
+				"loc": "67:22:9:1",
+				"form": "سَوِيًّا"
+			}
+		},
+		{
+			"id": "anshaa",
+			"arabic": "أَنشَأَ",
+			"root": "نشأ",
+			"pos": "verb",
+			"gloss": "to bring into being, to produce",
+			"count": 20,
+			"rank": 498,
+			"sample": {
+				"loc": "67:23:4:1",
+				"form": "أَنشَأَ"
+			}
+		},
+		{
+			"id": "shakara",
+			"arabic": "شَكَرَ",
+			"root": "شكر",
+			"pos": "verb",
+			"gloss": "to give thanks, to be grateful",
+			"count": 46,
+			"rank": 239,
+			"sample": {
+				"loc": "67:23:12:1",
+				"form": "تَشْكُرُ"
+			}
+		},
+		{
+			"id": "dharaa",
+			"arabic": "ذَرَأَ",
+			"root": "ذرأ",
+			"pos": "verb",
+			"gloss": "to create and multiply",
+			"count": 6,
+			"rank": 1185,
+			"sample": {
+				"loc": "67:24:4:1",
+				"form": "ذَرَأَ"
+			}
+		},
+		{
+			"id": "zulfa",
+			"arabic": "زُلْفَة",
+			"root": "زلف",
+			"pos": "noun",
+			"gloss": "nearness",
+			"count": 2,
+			"rank": 2410,
+			"sample": {
+				"loc": "67:27:3:1",
+				"form": "زُلْفَةً"
+			}
+		},
+		{
+			"id": "sua",
+			"arabic": "ساءَ",
+			"root": "سوأ",
+			"pos": "verb",
+			"gloss": "to be evil; to distress",
+			"count": 30,
+			"rank": 359,
+			"sample": {
+				"loc": "67:27:4:1",
+				"form": "سِيٓـَٔتْ"
+			}
+		},
+		{
+			"id": "tawakkala",
+			"arabic": "تَوَكَّلْ",
+			"root": "وكل",
+			"pos": "verb",
+			"gloss": "to put one’s trust (in God)",
+			"count": 40,
+			"rank": 282,
+			"sample": {
+				"loc": "67:29:7:1",
+				"form": "تَوَكَّلْ"
+			}
+		},
+		{
+			"id": "main",
+			"arabic": "مَعِين",
+			"root": "عين",
+			"pos": "noun",
+			"gloss": "free-flowing (water)",
+			"count": 4,
+			"rank": 1644,
+			"sample": {
+				"loc": "67:30:10:1",
+				"form": "مَّعِينٍۭ"
+			}
 		}
 	]
 }

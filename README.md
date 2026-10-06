@@ -2,7 +2,7 @@
 
 Learn to understand the Arabic of the Quran. Words and grammar are taught from real verses, and a spaced-repetition review brings each item back just before it is forgotten.
 
-**Status:** a working early version, not yet released. It has a placement choice, the alphabet, vocabulary and root lessons from Al-Fatiha and all of Juz Amma (surahs 78 to 114), twenty-one grammar lessons, spaced-repetition review with extra practice, listening questions, streaks with a daily goal, a progress page, a list of the words and the verses a learner knows, backup and restore, and it works offline and can be installed. The English glosses and grammar explanations are **drafts that still need review by a qualified teacher** before any public release.
+**Status:** a working early version, not yet released. It has a placement choice, the alphabet, vocabulary and root lessons from Al-Fatiha, all of Juz Amma (surahs 78 to 114) and the rest of the 29th juz (surahs 67 to 77), twenty-one grammar lessons, spaced-repetition review with extra practice, listening questions, streaks with a daily goal, a progress page, a list of the words and the verses a learner knows, backup and restore, and it works offline and can be installed. The English glosses and grammar explanations are **drafts that still need review by a qualified teacher** before any public release.
 
 **Found a mistake?** Corrections are welcome: [open an issue](https://github.com/tareqmy/taysir/issues/new/choose) and say which lesson or word it is in. Please trust your teacher over this app.
 
@@ -76,6 +76,7 @@ data/lexicon-seeds.ts              English meanings, keyed by corpus location
 data/fatiha-glosses.ts             word-by-word glosses for Al-Fatiha
 data/juz-amma-glosses.ts           word-by-word glosses for surahs 105–114
 data/juz-amma/N.ts                 glosses and meanings for surahs 104 down to 78, one file per unit
+data/juz-tabarak/N.ts              the same for surahs 77 down to 67, with REVIEW-N.md listing what to check first
         │  npm run data:build  (scripts/build-corpus.ts)
         ▼
 src/lib/data/generated/*.json      what the app loads (verses.json, lexicon.json)
@@ -83,7 +84,7 @@ src/lib/data/generated/*.json      what the app loads (verses.json, lexicon.json
 
 To add a vocabulary word, add a seed with the `surah:ayah:word:segment` location of one occurrence and a short meaning, then run `npm run data:build`. The build fails loudly if a location is wrong.
 
-To add a surah, add it to `SURAHS` in `scripts/build-corpus.ts`, gloss every word in a glosses file (the build fails on a missing or stale gloss), and add its name to `src/lib/data/surahs.ts`. Lessons for surahs 78–104 are plain data in `src/lib/content/juz-amma/unit-N.ts`, built by `surah-lessons.ts`; prose there never contains hand-typed Arabic, only `{surah:ayah:word}` placeholders. Only words that recur in the Quran (plus a few that carry a famous surah) get vocabulary cards; rarer words are glossed under the verse.
+To add a surah, add it to `SURAHS` in `scripts/build-corpus.ts` (a unit under `data/juz-tabarak/` lists its own `surahs`), gloss every word in a glosses file (the build fails on a missing or stale gloss), and add its name to `src/lib/data/surahs.ts`. Lessons for surahs 78–104 are plain data in `src/lib/content/juz-amma/unit-N.ts`, built by `surah-lessons.ts`; prose there never contains hand-typed Arabic, only `{surah:ayah:word}` placeholders. Only words that recur in the Quran (plus a few that carry a famous surah) get vocabulary cards; rarer words are glossed under the verse.
 
 The generated verse data is deliberately compact, because it ships in the app: for each word it keeps the text, the gloss and the vocabulary link, and only lists the word's pieces (prefix, stem, ending) when there are several, with just the four tags the app reads (`DET`, `PREF`, `SUFF`, `PRON`). A test caps its size. The whole app is about 158 kB gzipped.
 
@@ -147,7 +148,7 @@ The app was audited with axe-core on every screen (light and dark, a phone and a
 
 ## Teacher review
 
-All the English (word glosses, card meanings, lesson text, how each letter sounds, and the lesson and unit summaries) is a draft that needs a qualified teacher. The whole course is about 20 hours of review by my rough estimate, so it is offered in five parts a reviewer can take one at a time, in the order learners meet them (parts 1 and 2 matter most). The parts are listed in `scripts/review-sheets.ts`, and a test checks they cover every course unit exactly once.
+All the English (word glosses, card meanings, lesson text, how each letter sounds, and the lesson and unit summaries) is a draft that needs a qualified teacher. The whole course is about 37 hours of review by my rough estimate, so it is offered in eight parts a reviewer can take one at a time, in the order learners meet them (parts 1 and 2 matter most; parts 6 and 7, the rest of the 29th juz, are about 7 hours each). The parts are listed in `scripts/review-sheets.ts`, and a test checks they cover every course unit exactly once.
 
 1. `npm run review:export` writes everything to `review/` (not committed): one spreadsheet per part (`Taysir-review-part-N-….xlsx`), `Taysir-review.xlsx` with everything, and `Message-to-reviewer.md`, a draft message with a table of what each part holds and a rough time for it. Use `-- --part=2` to rebuild just one part. Each spreadsheet has a sheet each for verses, words, vocabulary cards, lesson text, grammar exercises, letters (how each is described to an English speaker; Part 1 and the whole-course file only) and titles and summaries (each lesson's title and one-line summary and each unit's description), with instructions on the first sheet. Entries the authors were least sure of are marked Flagged and shaded. A part holds the verses and words of the surahs its own vocabulary lessons teach, so a grammar unit that only quotes verses taught in another part (Part 6) has none of its own, and a verse is reviewed in one place only.
 2. The reviewer marks each row OK, Change or Unsure, types replacements in Correction, and adds comments.
@@ -156,7 +157,7 @@ All the English (word glosses, card meanings, lesson text, how each letter sound
 ## Known gaps
 
 - Covered so far: Al-Fatiha and all of Juz Amma (78–114). Everything beyond Juz Amma is still to do.
-- Glosses and notes for surahs 78–104 were drafted in bulk. `data/juz-amma/REVIEW.md` lists the entries to check first with a teacher.
+- Glosses and notes for surahs 78–104 were drafted in bulk, and so were those for surahs 67–77. `data/juz-amma/REVIEW.md` and `data/juz-tabarak/REVIEW-N.md` list the entries to check first with a teacher.
 - Letter audio plays a Quran word that starts with the letter, not the letter's own name (alif, bāʾ). Recordings of the names would need a licensed source or your own.
 
 ## License and credits

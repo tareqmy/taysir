@@ -10,8 +10,11 @@ import type { Block, Chunk, Exercise, Lesson } from '../types';
 
 export type Piece = { pos: string; features: string[] };
 
-/** What the learner has studied before the later-surahs grammar unit: Al-Fatiha and Juz Amma. */
-export const studiedBeforeLaterGrammar = (surah: number) => surah === 1 || surah >= 78;
+/**
+ * What the learner has studied before the later-surahs grammar unit: Al-Fatiha, Juz Amma and the
+ * rest of the 29th juz (surahs 67 to 77).
+ */
+export const studiedBeforeLaterGrammar = (surah: number) => surah === 1 || surah >= 67;
 
 /** The corpus rows (one per piece of a word) by location `surah:ayah:word`. */
 const rows = new Map<string, Piece[]>();

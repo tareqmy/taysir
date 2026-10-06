@@ -60,8 +60,19 @@ describe('Al-Fatiha data', () => {
 	});
 });
 
-describe('Juz Amma data', () => {
+describe('Juz Amma and 29th juz data', () => {
 	const verseCounts: Record<number, number> = {
+		67: 30,
+		68: 52,
+		69: 52,
+		70: 44,
+		71: 28,
+		72: 28,
+		73: 20,
+		74: 56,
+		75: 40,
+		76: 31,
+		77: 50,
 		78: 40,
 		79: 46,
 		80: 42,
@@ -101,7 +112,7 @@ describe('Juz Amma data', () => {
 		114: 6
 	};
 
-	it('has every verse of surahs 78 to 114, each with a name', () => {
+	it('has every verse of surahs 67 to 114, each with a name', () => {
 		for (const [surah, count] of Object.entries(verseCounts)) {
 			const verses = versesOf(Number(surah));
 			expect(
@@ -155,8 +166,9 @@ describe('verse data size', () => {
 			verseData.verses.flatMap((v) => v.words.flatMap((w) => segmentsOf(w).flatMap((s) => s.tags)))
 		);
 		expect([...used].filter((tag) => !allowed.has(tag))).toEqual([]);
-		// The whole verse data, minified, was 515 kB before it was slimmed down.
-		expect(JSON.stringify(verseData).length).toBeLessThan(300_000);
+		// The whole verse data, minified, was 515 kB for Al-Fatiha and Juz Amma before it was slimmed
+		// down to 266 kB. Surahs 67 to 77 roughly double it, to about 560 kB (about 140 kB over the wire).
+		expect(JSON.stringify(verseData).length).toBeLessThan(600_000);
 	});
 });
 

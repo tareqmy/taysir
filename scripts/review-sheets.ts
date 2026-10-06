@@ -60,8 +60,10 @@ export const PARTS: Part[] = [
 	{ n: 3, slug: 'juz-amma-a', unitIds: ['juz-amma-1', 'juz-amma-2'] },
 	{ n: 4, slug: 'juz-amma-b', unitIds: ['juz-amma-3', 'juz-amma-4'] },
 	{ n: 5, slug: 'juz-amma-c', unitIds: ['juz-amma-5', 'juz-amma-6', 'juz-amma-7'] },
+	{ n: 6, slug: 'juz-29-a', unitIds: ['juz-tabarak-1', 'juz-tabarak-2'] },
+	{ n: 7, slug: 'juz-29-b', unitIds: ['juz-tabarak-3', 'juz-tabarak-4'] },
 	{
-		n: 6,
+		n: 8,
 		slug: 'grammar-later',
 		title: 'Grammar from the later surahs, and verb forms and noun patterns',
 		unitIds: ['grammar-later', 'grammar-forms']

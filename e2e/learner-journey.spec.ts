@@ -8,6 +8,9 @@ import { expect, test } from './support/test';
 // What a reader who skips the alphabet meets first.
 const first = lessons.find((lesson) => !readerSkippedLessonIds.includes(lesson.id))!;
 
+/** A count as the app writes it, with a thousands separator once it has four digits. */
+const count = (n: number) => n.toLocaleString('en-US');
+
 const escape = (text: string) => text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 test('a new learner picks a starting point, finishes a lesson, and sees it in their progress', async ({
@@ -69,10 +72,14 @@ test('a new learner picks a starting point, finishes a lesson, and sees it in th
 
 	await test.step('open the verses the lesson unlocked', async () => {
 		await page
-			.getByRole('link', { name: `Verses you know: ${verses.known} of ${verses.total}` })
+			.getByRole('link', {
+				name: `Verses you know: ${count(verses.known)} of ${count(verses.total)}`
+			})
 			.click();
 		await expect(page.getByRole('heading', { level: 1, name: 'Verses you know' })).toBeVisible();
-		await expect(page.getByText(`${verses.known} of ${verses.total} verses`).first()).toBeVisible();
+		await expect(
+			page.getByText(`${count(verses.known)} of ${count(verses.total)} verses`).first()
+		).toBeVisible();
 
 		const surah = verses.surahs.find((s) => s.known.length > 0)!;
 		await page.locator('summary', { hasText: surahName(surah.surah) }).click();
