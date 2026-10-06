@@ -2,7 +2,7 @@
 
 Learn to understand the Arabic of the Quran. Words and grammar are taught from real verses, and a spaced-repetition review brings each item back just before it is forgotten.
 
-**Status:** a working early version, not yet released. It has a placement choice, the alphabet, vocabulary and root lessons from Al-Fatiha and all of Juz Amma (surahs 78 to 114), thirteen grammar lessons, spaced-repetition review with extra practice, listening questions, streaks with a daily goal, a progress page, a list of the words and the verses a learner knows, backup and restore, and it works offline and can be installed. The English glosses and grammar explanations are **drafts that still need review by a qualified teacher** before any public release.
+**Status:** a working early version, not yet released. It has a placement choice, the alphabet, vocabulary and root lessons from Al-Fatiha and all of Juz Amma (surahs 78 to 114), fourteen grammar lessons, spaced-repetition review with extra practice, listening questions, streaks with a daily goal, a progress page, a list of the words and the verses a learner knows, backup and restore, and it works offline and can be installed. The English glosses and grammar explanations are **drafts that still need review by a qualified teacher** before any public release.
 
 **Found a mistake?** Corrections are welcome: [open an issue](https://github.com/tareqmy/taysir/issues/new/choose) and say which lesson or word it is in. Please trust your teacher over this app.
 
