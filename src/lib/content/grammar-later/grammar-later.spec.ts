@@ -1,6 +1,13 @@
 import { describe, expect, it } from 'vitest';
 import { units } from '../course';
-import { arabicIn, handTyped, studiedBeforeLaterGrammar as studied } from '../testing/corpus';
+import {
+	arabicIn,
+	handTyped,
+	neighbours,
+	sideBySide,
+	stringsOf,
+	studiedBeforeLaterGrammar as studied
+} from '../testing/corpus';
 import { grammarLaterUnit } from './index';
 
 /**
@@ -44,6 +51,19 @@ describe('the later-surahs grammar unit', () => {
 			expect(handTyped(lesson, studied), `${lesson.id}: Arabic that is not a studied word`).toEqual(
 				[]
 			);
+		}
+	});
+
+	it('only writes two Arabic words side by side when they stand so in a verse', () => {
+		for (const lesson of lessons) {
+			for (const text of stringsOf(lesson)) {
+				for (const [first, second] of sideBySide(text)) {
+					expect(
+						neighbours(first, second, studied).length,
+						`${lesson.id}: ${first} ${second} is not a pair of neighbours in any verse`
+					).toBeGreaterThan(0);
+				}
+			}
 		}
 	});
 

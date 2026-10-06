@@ -1,5 +1,6 @@
 import type { Unit } from '../types';
 import { agreementLesson } from './agreement';
+import { personsLesson } from './persons';
 
 /**
  * Unit: grammar from the later surahs. Six ideas that Juz Amma shows again and again and that earlier
@@ -14,5 +15,5 @@ export const grammarLaterUnit: Unit = {
 	title: 'Grammar from the later surahs',
 	description:
 		'Describing words matching their noun, past-tense verbs for “she” and “they”, “when”, “if”, “except” and swearing by something. Every example is a word you have already met.',
-	lessons: [agreementLesson]
+	lessons: [agreementLesson, personsLesson]
 };
