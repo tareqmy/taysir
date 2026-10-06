@@ -11,6 +11,7 @@ import {
 	vocabularyExercises
 } from './exercises';
 import { juzAmmaUnits } from './juz-amma';
+import { kindsLesson } from './grammar-kinds';
 import { grammarPatternsUnit } from './grammar-patterns';
 import { grammarStructureUnit } from './grammar-structure';
 import { withWordListening } from './listening';
@@ -298,8 +299,9 @@ const idafaRng = rngFor('grammar-idafa');
 const grammarUnit: Unit = {
 	id: 'grammar',
 	title: 'Grammar in Al-Fatiha',
-	description: 'Two core ideas, learned from real verses.',
+	description: 'Three core ideas, learned from real verses.',
 	lessons: [
+		kindsLesson,
 		{
 			id: 'grammar-definite',
 			unitId: 'grammar',

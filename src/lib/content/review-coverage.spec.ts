@@ -85,7 +85,7 @@ describe('what the review spreadsheets must cover', () => {
 	});
 
 	it('writes by hand only the kinds of grammar exercise the export reads', () => {
-		const read = ['choose', 'match', 'build'];
+		const read = ['choose', 'match', 'build', 'tap'];
 		for (const lesson of lessons.filter((l) => l.kind === 'grammar')) {
 			for (const exercise of lesson.exercises) {
 				expect(read, `${exercise.id} is a ${exercise.kind} question in a grammar lesson`).toContain(

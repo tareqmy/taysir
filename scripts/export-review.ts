@@ -335,6 +335,21 @@ function buildWorkbook(scope: Scope): { workbook: ExcelJS.Workbook; counts: Coun
 					'',
 					''
 				]);
+			} else if (ex.kind === 'tap') {
+				// The learner taps one word of a verse: the word is the answer, the rest are the choices.
+				exerciseRows.push([
+					lesson.title,
+					ex.question,
+					'',
+					ex.words.find((w) => w.id === ex.answerId)!.text,
+					ex.words
+						.filter((w) => w.id !== ex.answerId)
+						.map((w) => w.text)
+						.join(' | '),
+					ex.explanation ?? '',
+					'',
+					''
+				]);
 			}
 		}
 	}
