@@ -8,6 +8,7 @@
  *         data/fatiha-glosses.ts              (authored word glosses, Al-Fatiha)
  *         data/juz-amma-glosses.ts            (authored word glosses, surahs 105–114)
  *         data/juz-amma/*.ts                  (authored glosses and meanings, surahs 78–104)
+ *         data/juz-tabarak/*.ts               (authored glosses and meanings, surahs 67–77)
  * Output: src/lib/data/generated/verses.json
  *         src/lib/data/generated/lexicon.json
  *
@@ -17,6 +18,7 @@ import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { fatihaWordGlosses } from '../data/fatiha-glosses.ts';
 import { juzAmmaUnits } from '../data/juz-amma/index.ts';
+import { juzTabarakUnits } from '../data/juz-tabarak/index.ts';
 import { juzAmmaWordGlosses } from '../data/juz-amma-glosses.ts';
 import { lexemeSeeds as baseSeeds } from '../data/lexicon-seeds.ts';
 import type {
@@ -29,19 +31,24 @@ import type {
 	Word
 } from '../src/lib/data/types.ts';
 
-/** Surahs the app teaches from: Al-Fatiha, then all of Juz Amma (78–114). */
 /** The corpus tags the app uses when it shows a word's pieces. Everything else is left out. */
 const SEGMENT_TAGS = ['DET', 'PREF', 'SUFF', 'PRON'];
 
-const SURAHS = [1, ...Array.from({ length: 37 }, (_, i) => 78 + i)];
+/** Surahs the app teaches from: Al-Fatiha, all of Juz Amma (78–114) and the rest of the 29th juz (67–77). */
+const SURAHS = [
+	1,
+	...Array.from({ length: 37 }, (_, i) => 78 + i),
+	...juzTabarakUnits.flatMap((unit) => unit.surahs)
+];
 
-const lexemeSeeds = [...baseSeeds, ...juzAmmaUnits.flatMap((unit) => unit.seeds)];
+const authoredUnits = [...juzAmmaUnits, ...juzTabarakUnits];
+const lexemeSeeds = [...baseSeeds, ...authoredUnits.flatMap((unit) => unit.seeds)];
 
 const wordGlosses: Record<string, string> = {};
 for (const glosses of [
 	fatihaWordGlosses,
 	juzAmmaWordGlosses,
-	...juzAmmaUnits.map((u) => u.glosses)
+	...authoredUnits.map((u) => u.glosses)
 ]) {
 	for (const [loc, gloss] of Object.entries(glosses)) {
 		if (loc in wordGlosses) throw new Error(`Word ${loc} is glossed in two files`);

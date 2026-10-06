@@ -83,9 +83,11 @@ const rowsBySheet = new Map(allSheets.map((name) => [name, readRows(name)]));
 // --- Source files ---------------------------------------------------------------------
 
 const read = (path: string) => readFileSync(`${projectRoot}${path}`, 'utf8');
-const unitFiles = readdirSync(`${projectRoot}data/juz-amma`)
-	.filter((f) => /^\d+\.ts$/.test(f))
-	.map((f) => `data/juz-amma/${f}`);
+const unitFiles = ['juz-amma', 'juz-tabarak'].flatMap((dir) =>
+	readdirSync(`${projectRoot}data/${dir}`)
+		.filter((f) => /^\d+\.ts$/.test(f))
+		.map((f) => `data/${dir}/${f}`)
+);
 const glossFiles = ['data/fatiha-glosses.ts', 'data/juz-amma-glosses.ts', ...unitFiles];
 const seedFiles = ['data/lexicon-seeds.ts', ...unitFiles];
 

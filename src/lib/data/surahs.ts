@@ -1,6 +1,17 @@
 /** English names of the surahs the course teaches from. Transliterated names, not Quran text. */
 const names: Record<number, string> = {
 	1: 'Al-Fatiha',
+	67: 'Al-Mulk',
+	68: 'Al-Qalam',
+	69: 'Al-Haqqa',
+	70: 'Al-Ma’arij',
+	71: 'Nuh',
+	72: 'Al-Jinn',
+	73: 'Al-Muzzammil',
+	74: 'Al-Muddaththir',
+	75: 'Al-Qiyama',
+	76: 'Al-Insan',
+	77: 'Al-Mursalat',
 	78: 'An-Naba’',
 	79: 'An-Nazi’at',
 	80: 'Abasa',

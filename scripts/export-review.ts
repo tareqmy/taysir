@@ -14,7 +14,7 @@
  * including the Arabic that lesson prose pulls in from the corpus.
  */
 import ExcelJS from 'exceljs';
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { createServer } from 'vite';
 import type { Lesson, Letter, Unit } from '../src/lib/content/types.ts';
@@ -66,7 +66,13 @@ const alphabet = (await server.ssrLoadModule('/src/lib/content/alphabet.ts')) as
 await server.close();
 
 /** Entries the authors of the draft glosses said they were least sure of. */
-const reviewNotes = readFileSync(`${projectRoot}data/juz-amma/REVIEW.md`, 'utf8');
+const reviewNotes = ['juz-amma', 'juz-tabarak']
+	.flatMap((dir) =>
+		readdirSync(`${projectRoot}data/${dir}`)
+			.filter((f) => /^REVIEW.*\.md$/.test(f))
+			.map((f) => readFileSync(`${projectRoot}data/${dir}/${f}`, 'utf8'))
+	)
+	.join('\n');
 const flagged = new Set([...reviewNotes.matchAll(/`([^`]+)`/g)].map((m) => m[1]));
 
 const verseRef = (v: Verse) => `${data.surahName(v.surah)} ${v.surah}:${v.ayah}`;

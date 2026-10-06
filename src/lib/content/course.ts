@@ -11,6 +11,7 @@ import {
 	vocabularyExercises
 } from './exercises';
 import { juzAmmaUnits } from './juz-amma';
+import { juzTabarakUnits } from './juz-tabarak';
 import { kindsLesson } from './grammar-kinds';
 import { grammarLaterUnit } from './grammar-later';
 import { grammarPatternsUnit } from './grammar-patterns';
@@ -494,6 +495,7 @@ export const units: Unit[] = [
 	grammarPatternsUnit,
 	grammarStructureUnit,
 	...juzAmmaUnits,
+	...juzTabarakUnits,
 	grammarLaterUnit
 ].map(withVerses);
 
