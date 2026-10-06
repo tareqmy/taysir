@@ -12,6 +12,7 @@ import {
 } from './exercises';
 import { juzAmmaUnits } from './juz-amma';
 import { kindsLesson } from './grammar-kinds';
+import { grammarLaterUnit } from './grammar-later';
 import { grammarPatternsUnit } from './grammar-patterns';
 import { grammarStructureUnit } from './grammar-structure';
 import { withWordListening } from './listening';
@@ -492,7 +493,8 @@ export const units: Unit[] = [
 	shortSurahsUnit,
 	grammarPatternsUnit,
 	grammarStructureUnit,
-	...juzAmmaUnits
+	...juzAmmaUnits,
+	grammarLaterUnit
 ].map(withVerses);
 
 export const lessons: Lesson[] = units.flatMap((u) => u.lessons);
