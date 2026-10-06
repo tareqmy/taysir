@@ -17,7 +17,7 @@ import ExcelJS from 'exceljs';
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { createServer } from 'vite';
-import type { Lesson, Unit } from '../src/lib/content/types.ts';
+import type { Lesson, Letter, Unit } from '../src/lib/content/types.ts';
 import type { Lexeme, LexiconData, Verse, VerseData } from '../src/lib/data/types.ts';
 import {
 	COLUMNS,
@@ -59,6 +59,9 @@ const data = (await server.ssrLoadModule('/src/lib/data/index.ts')) as {
 	lexicon: LexiconData;
 	formatRoot: (root: string) => string;
 	surahName: (surah: number) => string;
+};
+const alphabet = (await server.ssrLoadModule('/src/lib/content/alphabet.ts')) as {
+	letters: Letter[];
 };
 await server.close();
 
@@ -102,7 +105,12 @@ function contentOf(scope: Scope) {
 	const verses = data.verseData.verses.filter((v) => surahs.has(v.surah));
 	const cardIds = new Set(lessons.flatMap((l) => l.cardIds.map((id) => id.replace(/^lx:/, ''))));
 	const lexemes = data.lexicon.lexemes.filter((l) => cardIds.has(l.id));
-	return { lessons, surahs: [...surahs].sort((a, b) => b - a), verses, lexemes };
+	// The letters the lessons show, in the order they are first shown.
+	const letterIds = [
+		...new Set(lessons.flatMap((l) => l.intro.flatMap((b) => (b.type === 'letters' ? b.ids : []))))
+	];
+	const letters = letterIds.map((id) => alphabet.letters.find((l) => l.id === id)!);
+	return { lessons, surahs: [...surahs].sort((a, b) => b - a), verses, lexemes, letters };
 }
 
 /** `Ash-Shams to Al-Humaza (surahs 91 to 104)`: the surahs in the order the sheets list them. */
@@ -151,11 +159,20 @@ interface Counts {
 	cards: number;
 	text: number;
 	exercises: number;
+	letters: number;
+	titles: number;
 }
 
 /** Rough review time in minutes: my estimate, since reviewers differ. */
 const estimateMinutes = (c: Counts) =>
-	(c.words * 8 + c.cards * 15 + c.verses * 20 + c.text * 90 + c.exercises * 45) / 60;
+	(c.words * 8 +
+		c.cards * 15 +
+		c.verses * 20 +
+		c.text * 90 +
+		c.exercises * 45 +
+		c.letters * 120 +
+		c.titles * 30) /
+	60;
 
 function buildWorkbook(scope: Scope): { workbook: ExcelJS.Workbook; counts: Counts } {
 	const workbook = new ExcelJS.Workbook();
@@ -322,12 +339,40 @@ function buildWorkbook(scope: Scope): { workbook: ExcelJS.Workbook; counts: Coun
 		}
 	}
 
+	// How each letter is described in English (the sounds), as the lessons show it.
+	const letterRows = content.letters.map((l) => [
+		l.id,
+		l.glyph,
+		l.name,
+		l.sound,
+		l.joins ? 'yes' : 'no',
+		'',
+		'',
+		''
+	]);
+
+	// The one-line summaries on the lesson list, and the description of each unit.
+	const titleRows = scope.units.flatMap((unit) => [
+		[unit.title, 'Unit', unit.title, unit.description, '', '', ''],
+		...unit.lessons.map((lesson) => [
+			unit.title,
+			'Lesson',
+			lesson.title,
+			lesson.subtitle,
+			'',
+			'',
+			''
+		])
+	]);
+
 	const counts: Counts = {
 		verses: content.verses.length,
 		words: wordRows.length,
 		cards: content.lexemes.length,
 		text: lessonTextRows.length,
-		exercises: exerciseRows.length
+		exercises: exerciseRows.length,
+		letters: letterRows.length,
+		titles: titleRows.length
 	};
 
 	// --- Start here
@@ -339,7 +384,7 @@ function buildWorkbook(scope: Scope): { workbook: ExcelJS.Workbook; counts: Coun
 		[scope.title, true],
 		['', false],
 		[
-			`In this file: ${counts.verses} verses, ${counts.words} words, ${counts.cards} vocabulary cards, ${counts.text} pieces of lesson text and ${counts.exercises} grammar exercises. ${scope.elsewhere}`,
+			`In this file: ${counts.verses} verses, ${counts.words} words, ${counts.cards} vocabulary cards, ${counts.text} pieces of lesson text, ${counts.exercises} grammar exercises${counts.letters > 0 ? `, ${counts.letters} letter descriptions` : ''} and ${counts.titles} titles and summaries. ${scope.elsewhere}`,
 			false
 		],
 		[
@@ -367,6 +412,18 @@ function buildWorkbook(scope: Scope): { workbook: ExcelJS.Workbook; counts: Coun
 		],
 		[
 			'4. “Lesson text” and “Grammar exercises”: the explanations learners read. Say in Comment what is wrong or misleading. Please flag anything that states a rule too broadly.',
+			false
+		],
+		...(counts.letters > 0
+			? ([
+					[
+						'5. “Letters”: how each letter is described to an English speaker, for example “a deep sound from the middle of the throat”. These are the first thing a learner reads, so please say whether each description would lead them to the right sound, and what you would say instead. Mark Change and put your wording in Correction.',
+						false
+					]
+				] as [string, boolean][])
+			: []),
+		[
+			`${counts.letters > 0 ? '6' : '5'}. “Titles and summaries”: the title and one-line summary of each lesson, as they appear on the lesson list, and a short description of each unit. Some summarise what the verses say, for example “A gift and two commands”. A quick skim is enough: please flag any that overstate or mislead.`,
 			false
 		],
 		[
@@ -484,6 +541,39 @@ function buildWorkbook(scope: Scope): { workbook: ExcelJS.Workbook; counts: Coun
 	);
 	addStatusDropdown(exercisesSheet, COLUMNS.status);
 
+	// --- Letters
+	const lettersSheet = addTable(
+		SHEETS.letters,
+		[
+			{ header: COLUMNS.key, width: 10 },
+			{ header: 'Letter', width: 10, arabic: true },
+			{ header: 'Name', width: 12 },
+			{ header: COLUMNS.gloss, width: 60, wrap: true },
+			{ header: 'Joins the next letter', width: 12 },
+			{ header: COLUMNS.status, width: 12 },
+			{ header: COLUMNS.correction, width: 40, wrap: true },
+			{ header: COLUMNS.comment, width: 40, wrap: true }
+		],
+		letterRows
+	);
+	addStatusDropdown(lettersSheet, COLUMNS.status);
+
+	// --- Titles and summaries
+	const titlesSheet = addTable(
+		SHEETS.titles,
+		[
+			{ header: 'Unit', width: 28, wrap: true },
+			{ header: 'Kind', width: 9 },
+			{ header: 'Title', width: 34, wrap: true },
+			{ header: 'Summary learners read', width: 70, wrap: true },
+			{ header: COLUMNS.status, width: 12 },
+			{ header: COLUMNS.correction, width: 40, wrap: true },
+			{ header: COLUMNS.comment, width: 40, wrap: true }
+		],
+		titleRows
+	);
+	addStatusDropdown(titlesSheet, COLUMNS.status);
+
 	return { workbook, counts };
 }
 
@@ -494,6 +584,14 @@ function formatDuration(minutes: number): string {
 	const whole = Math.floor(halves / 2);
 	const text = halves % 2 === 0 ? `${whole}` : whole === 0 ? '½' : `${whole}½`;
 	return `about ${text} ${halves <= 2 ? 'hour' : 'hours'}`;
+}
+
+/** What a file holds, in a line. */
+function countsText(c: Counts): string {
+	return (
+		`${c.verses} verses, ${c.words} words, ${c.cards} cards, ${c.text} lesson texts, ` +
+		`${c.exercises} exercises, ${c.letters} letters, ${c.titles} titles`
+	);
 }
 
 // --- Writing the files -------------------------------------------------------------------
@@ -508,8 +606,7 @@ for (const part of PARTS) {
 	await workbook.xlsx.writeFile(`${outputDir}/${partFileName(part)}`);
 	summary.push({ part, title: scope.title, counts, file: partFileName(part) });
 	console.log(
-		`${partFileName(part)}: ${counts.verses} verses, ${counts.words} words, ${counts.cards} cards, ` +
-			`${counts.text} lesson texts, ${counts.exercises} exercises (${formatDuration(estimateMinutes(counts))})`
+		`${partFileName(part)}: ${countsText(counts)} (${formatDuration(estimateMinutes(counts))})`
 	);
 }
 
@@ -517,13 +614,12 @@ if (onlyPart === undefined) {
 	const { workbook, counts } = buildWorkbook(wholeScope);
 	await workbook.xlsx.writeFile(`${outputDir}/${WHOLE_FILE_NAME}`);
 	console.log(
-		`${WHOLE_FILE_NAME}: ${counts.verses} verses, ${counts.words} words, ${counts.cards} cards, ` +
-			`${counts.text} lesson texts, ${counts.exercises} exercises (${formatDuration(estimateMinutes(counts))})`
+		`${WHOLE_FILE_NAME}: ${countsText(counts)} (${formatDuration(estimateMinutes(counts))})`
 	);
 
 	const rows = summary.map(
 		({ part, title, counts, file }) =>
-			`| ${part.n} | ${title} | ${counts.verses} verses, ${counts.words} words, ${counts.cards} cards, ${counts.text} pieces of lesson text, ${counts.exercises} exercises | ${formatDuration(estimateMinutes(counts))} | \`${file}\` |`
+			`| ${part.n} | ${title} | ${counts.verses} verses, ${counts.words} words, ${counts.cards} cards, ${counts.text} pieces of lesson text, ${counts.exercises} exercises${counts.letters > 0 ? `, ${counts.letters} letter descriptions` : ''}, ${counts.titles} titles and summaries | ${formatDuration(estimateMinutes(counts))} | \`${file}\` |`
 	);
 	const message = [
 		'# Draft message to a reviewer',
@@ -536,7 +632,7 @@ if (onlyPart === undefined) {
 		'',
 		'Dear [Name],',
 		'',
-		'I am building Taysir, a free, open-source app that teaches the Arabic of the Quran through real verses, starting with Juz Amma. The Arabic text, roots and grammar tags come from the Quranic Arabic Corpus. The English is a different matter: the word-by-word meanings under each verse, the vocabulary meanings and the short grammar explanations were drafted with an AI assistant, not by a teacher, so they need checking by someone qualified before anyone relies on them.',
+		'I am building Taysir, a free, open-source app that teaches the Arabic of the Quran through real verses, starting with Juz Amma. The Arabic text, roots and grammar tags come from the Quranic Arabic Corpus. The English is a different matter: the word-by-word meanings under each verse, the vocabulary meanings, the descriptions of how each letter sounds, the short grammar explanations and the one-line lesson summaries were drafted with an AI assistant, not by a teacher, so they need checking by someone qualified before anyone relies on them.',
 		'',
 		'Would you be willing to look at some of it? It is a spreadsheet. For each row you mark OK, Change or Unsure, and type a better English wording where something is wrong or misleading. The Arabic text itself is not under review (it comes from the Quranic Arabic Corpus); it is shown beside each English line so you can judge the English against it. There is no code to look at. The first sheet in each file explains it step by step.',
 		'',

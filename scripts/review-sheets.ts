@@ -6,8 +6,16 @@ export const SHEETS = {
 	words: 'Words',
 	vocabulary: 'Vocabulary',
 	lessonText: 'Lesson text',
-	exercises: 'Grammar exercises'
+	exercises: 'Grammar exercises',
+	letters: 'Letters',
+	titles: 'Titles and summaries'
 } as const;
+
+/**
+ * Sheets that an older review file may not have, because they were added later. Corrections from
+ * such a file still apply; they just have nothing to read from these.
+ */
+export const LATER_SHEETS: string[] = [SHEETS.letters, SHEETS.titles];
 
 /** What a reviewer can mark a row. Blank means not looked at yet. */
 export const STATUSES = ['OK', 'Change', 'Unsure'] as const;

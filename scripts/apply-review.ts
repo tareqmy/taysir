@@ -15,7 +15,7 @@ import { execFileSync } from 'node:child_process';
 import { mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { COLUMNS, SHEETS } from './review-sheets.ts';
+import { COLUMNS, LATER_SHEETS, SHEETS } from './review-sheets.ts';
 
 const projectRoot = fileURLToPath(new URL('..', import.meta.url));
 const args = process.argv.slice(2);
@@ -56,6 +56,8 @@ await workbook.xlsx.readFile(file);
 
 function readRows(sheetName: string): Row[] {
 	const sheet = workbook.getWorksheet(sheetName);
+	// A review file made before these sheets were added has nothing to read from them.
+	if (!sheet && LATER_SHEETS.includes(sheetName)) return [];
 	if (!sheet) throw new Error(`The spreadsheet has no sheet called “${sheetName}”`);
 	const titles = (sheet.getRow(1).values as ExcelJS.CellValue[]).map(cellText);
 	for (const needed of [COLUMNS.status, sheetName === SHEETS.vocabulary ? COLUMNS.id : undefined]) {
@@ -228,6 +230,9 @@ function describe(row: Row): string {
 	if (row.sheet === SHEETS.verses)
 		return `${c['Verse']}: ${c['Word-by-word English, in reading order']}`;
 	if (row.sheet === SHEETS.lessonText) return `${c['Lesson']}, “${c['Heading'] || c['Kind']}”`;
+	if (row.sheet === SHEETS.letters) return `${c['Letter']} ${c['Name']}: “${c[COLUMNS.gloss]}”`;
+	if (row.sheet === SHEETS.titles)
+		return `${c['Kind']} “${c['Title']}”: ${c['Summary learners read']}`;
 	return `${c['Lesson']}: ${c['Question']}`;
 }
 
