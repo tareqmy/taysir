@@ -1,9 +1,18 @@
-import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { verseData } from '../data';
 import { units } from './course';
 import { kindsLesson } from './grammar-kinds';
-import type { Block, Chunk, ChooseExercise, Exercise, TapExercise } from './types';
+import {
+	arabicIn,
+	chunksOf,
+	handTyped,
+	hasArticle,
+	kindOf,
+	pieces as piecesOf,
+	refOf as refOfIn,
+	stringsOf
+} from './testing/corpus';
+import type { ChooseExercise, TapExercise } from './types';
 
 /**
  * The lesson on the three kinds of word says which words are nouns, verbs and small words. Those
@@ -11,79 +20,9 @@ import type { Block, Chunk, ChooseExercise, Exercise, TapExercise } from './type
  * and its Arabic is checked to be real corpus words from Al-Fatiha, the only surah met so far.
  */
 
-type Row = { pos: string; features: string[] };
-
-/** The corpus rows (one per piece of a word) by location `surah:ayah:word`. */
-const rows = new Map<string, Row[]>();
-for (const line of readFileSync(
-	new URL('../../../data/source/quran-morphology.txt', import.meta.url),
-	'utf8'
-).split('\n')) {
-	const [location, , pos, features] = line.split('\t');
-	if (!features) continue;
-	const ref = location.split(':').slice(0, 3).join(':');
-	rows.set(ref, [...(rows.get(ref) ?? []), { pos, features: features.split('|') }]);
-}
-
-const piecesOf = (ref: string) => {
-	const found = rows.get(ref);
-	if (!found) throw new Error(`No corpus word ${ref}`);
-	return found;
-};
-
-/** What the word itself is: its stem, not a prefix or a joined ending. */
-const kindOf = (ref: string): 'noun' | 'verb' | 'small word' => {
-	const stems = piecesOf(ref).filter(
-		(p) => !p.features.includes('PREF') && !p.features.includes('SUFF')
-	);
-	expect(stems, `${ref} has one stem`).toHaveLength(1);
-	return { N: 'noun', V: 'verb', P: 'small word' }[stems[0].pos] as 'noun' | 'verb' | 'small word';
-};
-
-const hasArticle = (ref: string) => piecesOf(ref).some((p) => p.features.includes('DET'));
-
-/** Every place in Al-Fatiha a word's text appears; the lesson only uses words that appear once. */
-const fatiha = verseData.verses
-	.filter((v) => v.surah === 1)
-	.flatMap((v) => v.words.map((w) => ({ ref: `1:${v.ayah}:${w.n}`, text: w.text })));
-
-function refOf(text: string): string {
-	const found = fatiha.filter((w) => w.text === text);
-	expect(found, `${text} is one word of Al-Fatiha`).toHaveLength(1);
-	return found[0].ref;
-}
-
-const named = new Set(['ال']);
-const arabicIn = (text: string) =>
-	(text.match(/[\p{scx=Arabic}\p{M}]+/gu) ?? []).filter((word) => !named.has(word));
-
-function textOf(block: Block): string[] {
-	switch (block.type) {
-		case 'text':
-		case 'rule':
-			return [block.title ?? '', block.body];
-		case 'phrase':
-			return [block.translation, block.note ?? ''];
-		case 'verse':
-			return [block.title ?? '', block.note ?? ''];
-		default:
-			return [];
-	}
-}
-
-const chunksOf = (exercise: Exercise): Chunk[] => {
-	switch (exercise.kind) {
-		case 'choose':
-			return [
-				...(exercise.prompt ? [exercise.prompt] : []),
-				...exercise.choices.map((c) => c.chunk)
-			];
-		case 'tap':
-			return exercise.words.map((w) => ({ text: w.text, lang: 'ar' as const }));
-		default:
-			return [];
-	}
-};
+/** Al-Fatiha: the only surah the learner has met before this lesson. */
+const studied = (surah: number) => surah === 1;
+const refOf = (text: string) => refOfIn(text, studied);
 
 const choose = (id: string) => {
 	const found = kindsLesson.exercises.find((e) => e.id === id);
@@ -130,20 +69,8 @@ describe('the lesson on the three kinds of word', () => {
 	});
 
 	it('uses only Arabic words from Al-Fatiha, so none is typed by hand', () => {
-		const known = new Set(fatiha.map((w) => w.text));
-		const strings = [
-			kindsLesson.title,
-			kindsLesson.subtitle,
-			...kindsLesson.intro.flatMap(textOf),
-			...kindsLesson.exercises.flatMap((e) => [
-				e.question,
-				e.explanation ?? '',
-				...chunksOf(e).map((c) => c.text)
-			])
-		];
-		const unknown = strings.flatMap(arabicIn).filter((word) => !known.has(word));
-		expect(unknown).toEqual([]);
-		expect(strings.flatMap(arabicIn).length).toBeGreaterThan(20);
+		expect(handTyped(kindsLesson, studied)).toEqual([]);
+		expect(stringsOf(kindsLesson).flatMap(arabicIn).length).toBeGreaterThan(20);
 	});
 
 	it('calls a word what the corpus calls it', () => {
