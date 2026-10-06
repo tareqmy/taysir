@@ -2,8 +2,12 @@ import { describe, expect, it } from 'vitest';
 import { units } from '../course';
 import {
 	arabicIn,
+	glossAt,
+	glossClaims,
 	handTyped,
 	neighbours,
+	plainEnglish,
+	refsOf,
 	sideBySide,
 	stringsOf,
 	studiedBeforeLaterGrammar as studied
@@ -65,6 +69,24 @@ describe('the later-surahs grammar unit', () => {
 				}
 			}
 		}
+	});
+
+	it('only glosses a word, as in “word (“meaning”)”, with a meaning its verse gives it', () => {
+		let checked = 0;
+		for (const lesson of lessons) {
+			for (const text of stringsOf(lesson)) {
+				for (const [word, meaning] of glossClaims(text)) {
+					const glosses = refsOf(word, studied).map((ref) => plainEnglish(glossAt(ref)));
+					const claimed = plainEnglish(meaning);
+					checked++;
+					expect(
+						glosses.some((g) => g.includes(claimed) || claimed.includes(g)),
+						`${lesson.id}: ${word} is not “${meaning}” in any verse (its glosses: ${glosses.join(' | ')})`
+					).toBe(true);
+				}
+			}
+		}
+		expect(checked).toBeGreaterThan(8);
 	});
 
 	it('has some Arabic to check, so the test above is not passing for nothing', () => {

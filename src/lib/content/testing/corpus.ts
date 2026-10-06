@@ -65,6 +65,12 @@ const allWords: Located[] = verseData.verses.flatMap((v) =>
 );
 
 const textByRef = new Map(allWords.map((w) => [w.ref, w.text]));
+const glossByRef = new Map(
+	verseData.verses.flatMap((v) => v.words.map((w) => [at(v.surah, v.ayah, w.n), w.gloss] as const))
+);
+
+/** The English the app shows under the word at `surah:ayah:word`. */
+export const glossAt = (ref: string) => glossByRef.get(ref) ?? '';
 
 /** The Arabic text of the word at `surah:ayah:word`. */
 export function textAt(ref: string): string {
@@ -176,3 +182,21 @@ export function choice(lesson: Lesson, id: string) {
 	const others = found.choices.filter((c) => c.id !== found.answerId).map((c) => c.chunk);
 	return { exercise: found, answer, others };
 }
+
+/** Every `Arabic word (“meaning”)` a piece of lesson text gives, as the word and its meaning. */
+export const glossClaims = (text: string) =>
+	[...text.matchAll(/([\p{scx=Arabic}\p{M}]+) \(“([^”]+)”\)/gu)].map((m) => [m[1], m[2]] as const);
+
+const PRONOUNS = new Set(['i', 'we', 'you', 'he', 'she', 'it', 'they', 'him', 'her', 'them', 'us']);
+
+/**
+ * Lower case, letters and spaces only, without pronouns, so “Will see it” and “will see” compare
+ * equal, and so does “and they did” with the app's “and did”: a verb's ending already says who.
+ */
+export const plainEnglish = (text: string) =>
+	text
+		.toLowerCase()
+		.replace(/[^a-z ]/g, '')
+		.split(/\s+/)
+		.filter((word) => word && !PRONOUNS.has(word))
+		.join(' ');
