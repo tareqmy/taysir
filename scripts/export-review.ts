@@ -97,10 +97,15 @@ interface Scope {
 /** The verses, words, cards and so on that belong to a scope. */
 function contentOf(scope: Scope) {
 	const lessons = scope.units.flatMap((u) => u.lessons);
+	// A part holds the verses of the surahs its own vocabulary lessons teach. A grammar unit that
+	// only borrows verses from surahs taught elsewhere does not repeat them, so a reviewer reads
+	// each verse once and a correction is made in one place.
 	const surahs = new Set(
-		lessons.flatMap((l) =>
-			l.intro.flatMap((b) => (b.type === 'verse' || b.type === 'phrase' ? [b.surah] : []))
-		)
+		lessons
+			.filter((l) => l.kind === 'vocabulary')
+			.flatMap((l) =>
+				l.intro.flatMap((b) => (b.type === 'verse' || b.type === 'phrase' ? [b.surah] : []))
+			)
 	);
 	const verses = data.verseData.verses.filter((v) => surahs.has(v.surah));
 	const cardIds = new Set(lessons.flatMap((l) => l.cardIds.map((id) => id.replace(/^lx:/, ''))));
@@ -402,6 +407,14 @@ function buildWorkbook(scope: Scope): { workbook: ExcelJS.Workbook; counts: Coun
 			`In this file: ${counts.verses} verses, ${counts.words} words, ${counts.cards} vocabulary cards, ${counts.text} pieces of lesson text, ${counts.exercises} grammar exercises${counts.letters > 0 ? `, ${counts.letters} letter descriptions` : ''} and ${counts.titles} titles and summaries. ${scope.elsewhere}`,
 			false
 		],
+		...(counts.verses === 0
+			? ([
+					[
+						'This part has no verses or words of its own. The verses its lessons show are in the other parts, where they are reviewed once, so here there is only lesson text and the questions, and a lesson quotes its Arabic words in place.',
+						false
+					]
+				] as [string, boolean][])
+			: []),
 		[
 			`A rough estimate of the time is ${formatDuration(minutes)}, but it varies a great deal from person to person, and you are welcome to review only part of it.`,
 			false

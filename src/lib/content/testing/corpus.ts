@@ -188,7 +188,7 @@ export function choice(lesson: Lesson, id: string) {
  * the word and its meaning.
  */
 export const glossClaims = (text: string) =>
-	[...text.matchAll(/([\p{scx=Arabic}\p{M}]+)(?: \(| means )“([^”]+)”/gu)].map(
+	[...text.matchAll(/([\p{scx=Arabic}\p{M}]+)(?: \(| means | is )“([^”]+)”/gu)].map(
 		(m) => [m[1], m[2]] as const
 	);
 
