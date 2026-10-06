@@ -1,8 +1,8 @@
 import { studiedBeforeLaterGrammar } from '../testing/corpus';
 import { describeGrammarUnit } from '../testing/unit-rules';
-import { grammarLaterUnit } from './index';
+import { grammarFormsUnit } from './index';
 
-describeGrammarUnit(grammarLaterUnit, {
+describeGrammarUnit(grammarFormsUnit, {
 	studied: studiedBeforeLaterGrammar,
-	after: 'juz-amma-7'
+	after: 'grammar-later'
 });

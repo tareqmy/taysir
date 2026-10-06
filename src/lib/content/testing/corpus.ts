@@ -56,6 +56,19 @@ export const anyPiece = (ref: string, tag: string) =>
 
 export const hasArticle = (ref: string) => anyPiece(ref, 'DET');
 
+/** The value of a tag with a name, such as `ROOT:علم` or `VF:2`, on the stem: `علم` or `2`. */
+const valueOf = (ref: string, name: string) =>
+	stem(ref)
+		.features.find((f) => f.startsWith(`${name}:`))
+		?.slice(name.length + 1);
+
+/** The three letters a word is built on. */
+export const rootOf = (ref: string) => valueOf(ref, 'ROOT');
+/** The verb form, `1` for the plain verb up to `10`. */
+export const formOf = (ref: string) => valueOf(ref, 'VF');
+/** The dictionary form the corpus files the word under. */
+export const lemmaOf = (ref: string) => valueOf(ref, 'LEM');
+
 // --- The words the app ships --------------------------------------------------------------
 
 type Located = { ref: string; text: string };
@@ -115,7 +128,16 @@ export function refOf(text: string, studied: (surah: number) => boolean): string
  * The article, which lessons write on its own when they name it, is not a corpus word.
  */
 export const arabicIn = (text: string) =>
-	(text.match(/[\p{scx=Arabic}\p{M}]+/gu) ?? []).filter((word) => word !== 'ال');
+	(withoutRoots(text).match(/[\p{scx=Arabic}\p{M}]+/gu) ?? []).filter((word) => word !== 'ال');
+
+/** A root as the lessons write it, with hyphens between its letters: `ع-ل-م`. */
+const ROOT = /[\p{scx=Arabic}](?:-[\p{scx=Arabic}])+/gu;
+
+/** The roots in a piece of text, as written with hyphens. */
+export const rootsIn = (text: string) => text.match(ROOT) ?? [];
+
+/** The text without its roots, which are letters, not words, and are checked on their own. */
+const withoutRoots = (text: string) => text.replace(ROOT, ' ');
 
 /** The words a learner reads in a block, apart from the verse text the block shows. */
 export function textOf(block: Block): string[] {

@@ -63,8 +63,8 @@ export const PARTS: Part[] = [
 	{
 		n: 6,
 		slug: 'grammar-later',
-		title: 'Grammar from the later surahs',
-		unitIds: ['grammar-later']
+		title: 'Grammar from the later surahs, and verb forms and noun patterns',
+		unitIds: ['grammar-later', 'grammar-forms']
 	}
 ];
 

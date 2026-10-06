@@ -12,6 +12,7 @@ import {
 } from './exercises';
 import { juzAmmaUnits } from './juz-amma';
 import { juzTabarakUnits } from './juz-tabarak';
+import { grammarFormsUnit } from './grammar-forms';
 import { kindsLesson } from './grammar-kinds';
 import { grammarLaterUnit } from './grammar-later';
 import { grammarPatternsUnit } from './grammar-patterns';
@@ -496,7 +497,8 @@ export const units: Unit[] = [
 	grammarStructureUnit,
 	...juzAmmaUnits,
 	...juzTabarakUnits,
-	grammarLaterUnit
+	grammarLaterUnit,
+	grammarFormsUnit
 ].map(withVerses);
 
 export const lessons: Lesson[] = units.flatMap((u) => u.lessons);
