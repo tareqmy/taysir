@@ -18,6 +18,9 @@ test('a tab that is out of date does not wipe the lesson another tab finished', 
 	page: tabA,
 	context
 }) => {
+	// A whole lesson and part of another, in two tabs: more than the usual time when run alongside
+	// the rest of the suite.
+	test.slow();
 	await startAsReader(tabA);
 
 	// A second tab (an installed window, or an old tab left open) loads before anything is done.

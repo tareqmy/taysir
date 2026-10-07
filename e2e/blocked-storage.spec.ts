@@ -2,7 +2,7 @@ import { readFile } from 'node:fs/promises';
 import type { Page } from '@playwright/test';
 import { lessons, readerSkippedLessonIds } from '../src/lib/content/course';
 import { audit } from './support/axe';
-import { answerAll, startAsReader } from './support/learner';
+import { answerAll, runSession, startAsReader } from './support/learner';
 import { expect, test } from './support/test';
 
 /**
@@ -64,6 +64,50 @@ test('starts, warns, and works for the visit when the browser refuses all storag
 	// And the warning told the truth: a fresh page has forgotten it.
 	await page.reload();
 	await expect(page.getByRole('heading', { name: 'Where would you like to start?' })).toBeVisible();
+});
+
+test('keeps the visit’s progress through “Practise more”, which opens the same page again', async ({
+	page
+}) => {
+	await page.addInitScript(() => {
+		Object.defineProperty(window, 'indexedDB', {
+			get() {
+				throw new DOMException('The operation is insecure.', 'SecurityError');
+			}
+		});
+	});
+	// A lesson and two or three sessions of questions: more than the usual time in a full run.
+	test.slow();
+	await startAsReader(page);
+	await finishFirstLesson(page);
+	// A mark on this page, which a fresh load would not have.
+	await page.evaluate(() => Object.assign(window, { visit: 'this one' }));
+
+	// To extra practice by the app's own links, through a review if anything is due.
+	await page
+		.getByRole('navigation', { name: 'Main' })
+		.getByRole('link', { name: /^Review/ })
+		.click();
+	const choices = page.getByRole('group', { name: 'Choices' });
+	const practise = page.getByRole('link', { name: /^Practise (your weakest words|more)$/ });
+	await expect(choices.or(practise)).toBeVisible();
+	if (await choices.isVisible()) await runSession(page, 'Review complete');
+	await practise.click();
+	await runSession(page, 'Practice complete');
+
+	await page.getByRole('link', { name: 'Practise more' }).click();
+	await expect(choices).toBeVisible();
+	expect(await page.evaluate(() => (window as { visit?: string }).visit)).toBe('this one');
+
+	// The lesson finished this visit is still there to download.
+	await page
+		.getByRole('navigation', { name: 'Main' })
+		.getByRole('link', { name: 'Settings' })
+		.click();
+	const download = page.waitForEvent('download');
+	await page.getByRole('button', { name: 'Download backup' }).click();
+	const saved = JSON.parse(await readFile((await (await download).path())!, 'utf8'));
+	expect(saved.meta.completedLessons).toEqual([first.id]);
 });
 
 test('keeps going, and warns, when saving starts to fail partway', async ({ page }) => {

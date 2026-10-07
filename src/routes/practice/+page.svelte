@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { afterNavigate } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import { reviewExercise } from '#lib/content/exercises';
 	import type { RunSummary } from '#lib/content/session';
@@ -9,14 +10,28 @@
 
 	const BATCH = 10;
 
-	// Chosen once when the page opens, so answering does not reshuffle it. Listening questions need
-	// the audio, which is streamed, so they are only offered online.
-	const online = navigator.onLine !== false;
-	const exercises = weakestCards(app.cards, Math.random, BATCH).map((card) =>
-		reviewExercise(card.id, lexicon.lexemes, Math.random, online)
-	);
+	/**
+	 * A batch of the weakest words, chosen once so that answering does not reshuffle it. Listening
+	 * questions need the audio, which is streamed, so they are only offered online.
+	 */
+	function nextBatch() {
+		const online = navigator.onLine !== false;
+		return weakestCards(app.cards, Math.random, BATCH).map((card) =>
+			reviewExercise(card.id, lexicon.lexemes, Math.random, online)
+		);
+	}
 
+	let exercises = $state.raw(nextBatch());
 	let summary = $state<RunSummary>();
+
+	// "Practise more" opens this same page, where SvelteKit keeps the page as it is, so start a new
+	// batch here. Loading the page afresh instead would lose the visit's progress when the browser
+	// is not saving it.
+	afterNavigate(({ from, to }) => {
+		if (from?.url.pathname !== to?.url.pathname) return;
+		exercises = nextBatch();
+		summary = undefined;
+	});
 
 	/** Moves focus to an element when it appears, so keyboard users land on the new content. */
 	function focusOnMount(node: HTMLElement) {
@@ -49,15 +64,17 @@
 			<p>{summary.firstTryCorrect} of {summary.total} right first time.</p>
 			<div class="buttons">
 				<a class="btn btn-quiet" href={resolve('/')}>Back to lessons</a>
-				<a class="btn" href={resolve('/practice')} data-sveltekit-reload>Practise more</a>
+				<a class="btn" href={resolve('/practice')}>Practise more</a>
 			</div>
 		</section>
 	{:else}
-		<ExerciseRunner
-			{exercises}
-			onanswer={(_exercise, correct) => app.answer(undefined, correct)}
-			onfinish={(result) => (summary = result)}
-		/>
+		{#key exercises}
+			<ExerciseRunner
+				{exercises}
+				onanswer={(_exercise, correct) => app.answer(undefined, correct)}
+				onfinish={(result) => (summary = result)}
+			/>
+		{/key}
 	{/if}
 </main>
 
