@@ -4,7 +4,7 @@ import { seeded } from '../random';
 import { letterById, letterExample, letters } from './alphabet';
 import { parseCardId } from './cards';
 import { lessons, readerSkippedLessonIds, units } from './course';
-import { reviewExercise } from './exercises';
+import { reviewExercise, shareMeaning } from './exercises';
 import type { Exercise } from './types';
 
 /** Fails with a readable message if an exercise could not be answered or is ambiguous. */
@@ -17,12 +17,27 @@ function problemsWith(exercise: Exercise): string[] {
 		if (new Set(ids).size !== ids.length) problems.push('duplicate choice ids');
 		if (new Set(texts).size !== texts.length) problems.push('duplicate choice text');
 		if (exercise.choices.length < 2) problems.push('fewer than two choices');
+		// A vocabulary question's choices are words: none of the wrong ones may share a meaning with
+		// the right one, or a learner who picks it is marked wrong for a right answer.
+		if (/^(meaning|arabic|listen):/.test(exercise.id)) {
+			const gloss = lexemeById(exercise.answerId).gloss;
+			for (const choice of exercise.choices) {
+				const other = lexemeById(choice.id).gloss;
+				if (choice.id !== exercise.answerId && shareMeaning(other, gloss)) {
+					problems.push(`“${other}” is offered as wrong, but shares a meaning with “${gloss}”`);
+				}
+			}
+		}
 	} else if (exercise.kind === 'match') {
 		const left = exercise.pairs.map((p) => p.left.text);
 		const right = exercise.pairs.map((p) => p.right.text);
 		if (exercise.pairs.length < 2) problems.push('fewer than two pairs');
 		if (new Set(left).size !== left.length) problems.push('duplicate left side');
 		if (new Set(right).size !== right.length) problems.push('duplicate right side');
+		right.forEach((a, i) => {
+			const twin = right.slice(i + 1).find((b) => shareMeaning(a, b));
+			if (twin) problems.push(`“${a}” and “${twin}” share a meaning, so either could match`);
+		});
 	} else if (exercise.kind === 'tap') {
 		const ids = exercise.words.map((w) => w.id);
 		if (!ids.includes(exercise.answerId)) problems.push('answer is not among the words');

@@ -47,12 +47,44 @@ function uniqueBy<T>(items: readonly T[], key: (item: T) => string): T[] {
 
 // --- Vocabulary -------------------------------------------------------------
 
+/**
+ * The separate meanings in a gloss, in a form that can be compared: “to throw, to cast” is
+ * `throw` and `cast`. A note in brackets is left out, so “not (negative particle)” is `not`.
+ */
+export function sensesOf(gloss: string): string[] {
+	return gloss
+		.toLowerCase()
+		.replace(/\([^)]*\)/g, '')
+		.split(/[,;]/)
+		.map((sense) => sense.trim().replace(/^(to|the|a|an) /, ''))
+		.filter(Boolean);
+}
+
+/**
+ * Two glosses that could both be the right answer to a question about either: the same gloss, or
+ * a meaning in common, as “heart” and “heart, inner heart” have. A wrong answer must not be one.
+ */
+export function shareMeaning(a: string, b: string): boolean {
+	if (a === b) return true;
+	const senses = sensesSet(a);
+	return [...sensesSet(b)].some((sense) => senses.has(sense));
+}
+
+/** `sensesOf`, worked out once per gloss: a question compares one gloss with every other word's. */
+const senseCache = new Map<string, Set<string>>();
+function sensesSet(gloss: string): Set<string> {
+	let senses = senseCache.get(gloss);
+	if (!senses) senseCache.set(gloss, (senses = new Set(sensesOf(gloss))));
+	return senses;
+}
+
 /** Arabic word → English meaning. */
 export function meaningChoice(lexeme: Lexeme, pool: readonly Lexeme[], rng: Rng): ChooseExercise {
 	const wrong = distractors(
 		lexeme,
-		// A word spelled the same as this one (such as the two uses of ما) would be a right answer too.
-		pool.filter((l) => l.gloss !== lexeme.gloss && l.arabic !== lexeme.arabic),
+		// A word with a meaning in common, or spelled the same (such as the two uses of ما), would be a
+		// right answer too.
+		pool.filter((l) => !shareMeaning(l.gloss, lexeme.gloss) && l.arabic !== lexeme.arabic),
 		3,
 		rng,
 		(l) => l.pos === lexeme.pos
@@ -86,7 +118,8 @@ export function arabicChoice(lexeme: Lexeme, pool: readonly Lexeme[], rng: Rng):
 	const wrong = distractors(
 		lexeme,
 		uniqueBy(
-			pool.filter((l) => l.arabic !== lexeme.arabic),
+			// A word that also means this, even in part, would be a right answer too.
+			pool.filter((l) => l.arabic !== lexeme.arabic && !shareMeaning(l.gloss, lexeme.gloss)),
 			(l) => l.arabic
 		),
 		3,

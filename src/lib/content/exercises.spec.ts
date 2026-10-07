@@ -9,6 +9,8 @@ import {
 	listenMeaning,
 	meaningChoice,
 	reviewExercise,
+	sensesOf,
+	shareMeaning,
 	ar,
 	en
 } from './exercises';
@@ -47,6 +49,47 @@ describe('meaningChoice', () => {
 		const exercise = meaningChoice(rabb, lexicon.lexemes, seeded(3));
 		const glosses = exercise.choices.map((c) => c.chunk.text);
 		expect(new Set(glosses).size).toBe(glosses.length);
+	});
+});
+
+describe('glosses with a meaning in common', () => {
+	it('are split into their meanings, without “to”, “the” or a note in brackets', () => {
+		expect(sensesOf('to throw, to cast')).toEqual(['throw', 'cast']);
+		expect(sensesOf('not (negative particle)')).toEqual(['not']);
+		expect(sensesOf('the Day; the Hour')).toEqual(['day', 'hour']);
+	});
+
+	it('are told apart from ones that only look alike', () => {
+		// Pairs of the course's own cards, which lessons once offered against each other.
+		expect(shareMeaning('heart', 'heart, inner heart')).toBe(true);
+		expect(shareMeaning('not (negative particle)', 'not, no')).toBe(true);
+		expect(shareMeaning('to gather, to collect', 'to gather, to assemble')).toBe(true);
+		expect(shareMeaning('news, tidings', 'report, news')).toBe(true);
+		expect(shareMeaning('heart', 'heart')).toBe(true);
+		expect(shareMeaning('Lord, master, sustainer', 'praise')).toBe(false);
+		expect(shareMeaning('to throw, to cast', 'to throw away')).toBe(false);
+	});
+
+	it('are never offered against each other', () => {
+		const pairs = [
+			['qalb', 'fuad'],
+			['manafiya', 'la'],
+			['jamaa', 'hashara']
+		];
+		for (const [one, other] of pairs) {
+			expect(shareMeaning(lexemeById(one).gloss, lexemeById(other).gloss)).toBe(true);
+			for (const [a, b] of [
+				[one, other],
+				[other, one]
+			]) {
+				// Only the other twin left to choose from, as wrong answers.
+				const pool = [lexemeById(a), lexemeById(b), lexemeById('rabb'), lexemeById('hamd')];
+				for (const make of [meaningChoice, arabicChoice]) {
+					const ids = make(lexemeById(a), pool, seeded(1)).choices.map((c) => c.id);
+					expect(ids, `${a} against ${b}`).not.toContain(b);
+				}
+			}
+		}
 	});
 });
 
