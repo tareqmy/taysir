@@ -97,6 +97,12 @@ export class AppState {
 
 	async setDailyGoal(dailyGoal: number) {
 		this.meta.dailyGoal = dailyGoal;
+		// A lower goal can already be met by what was done today, and the day then counts for the
+		// streak, as it would have after one more answer. A higher goal takes no met day away: a day
+		// counts by the goal that applied at the time.
+		if (this.goalMet && !this.meta.metDays.includes(this.today)) {
+			this.meta.metDays.push(this.today);
+		}
 		await this.persistMeta({ settings: true });
 	}
 

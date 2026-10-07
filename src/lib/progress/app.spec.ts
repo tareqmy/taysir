@@ -132,6 +132,41 @@ describe('practice', () => {
 		expect(app.streak.current).toBe(2);
 	});
 
+	it('counts today for the streak when the goal is lowered to what was done already', async () => {
+		const app = await create();
+		await app.setPlacement('beginner', 10);
+		for (let i = 0; i < 7; i++) await app.answer(undefined, true);
+		expect(app.streak.current).toBe(0);
+
+		await app.setDailyGoal(5);
+		expect(app.goalMet).toBe(true);
+		expect(app.streak.current).toBe(1);
+
+		// Saved, so the next day carries the streak on even with nothing more done today.
+		now = new Date(2026, 9, 4, 9, 0, 0);
+		expect((await create()).streak.current).toBe(1);
+	});
+
+	it('does not take a met day away when the goal is raised', async () => {
+		const app = await create();
+		await app.setPlacement('beginner', 2);
+		await app.answer(undefined, true);
+		await app.answer(undefined, true);
+		await app.setDailyGoal(20);
+		expect(app.goalMet).toBe(false);
+		expect(app.streak.current).toBe(1);
+		expect((await create()).streak.current).toBe(1);
+	});
+
+	it('does not count today when the goal is lowered but still not met', async () => {
+		const app = await create();
+		await app.setPlacement('beginner', 10);
+		await app.answer(undefined, true);
+		await app.setDailyGoal(5);
+		expect(app.goalMet).toBe(false);
+		expect(app.meta.metDays).toEqual([]);
+	});
+
 	it('brings cards back when they fall due', async () => {
 		const app = await create();
 		await app.setPlacement('beginner', 10);
