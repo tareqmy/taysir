@@ -35,6 +35,17 @@ async function previewSizes(page: Page) {
 	});
 }
 
+/** Every piece of Arabic in the page's main content, with its size. */
+async function arabicSizes(page: Page) {
+	return page.evaluate(() =>
+		[...document.querySelectorAll('main .ar')].map((el) => ({
+			text: el.textContent!.trim(),
+			kind: el.className,
+			px: parseFloat(getComputedStyle(el).fontSize)
+		}))
+	);
+}
+
 test.describe('the Arabic text size', () => {
 	test('makes the Arabic bigger or smaller, leaves the English alone, and stays after a reload', async ({
 		page
@@ -73,6 +84,46 @@ test.describe('the Arabic text size', () => {
 			document.documentElement.style.getPropertyValue('--ar-scale')
 		);
 		expect(scale).toBe('1.5');
+	});
+
+	test('reaches every piece of Arabic in a lesson, the root letters and the Arabic in explanations too', async ({
+		page
+	}) => {
+		// A lesson on a root, whose letters are shown large, and one whose rules quote Arabic words.
+		const picked = ['root-rhm', 'grammar-definite'].map((id) => lessons.find((l) => l.id === id)!);
+		const lessonsDone = Math.max(...picked.map((lesson) => lessons.indexOf(lesson))) + 1;
+		await startWithProgress(page, seededLearner({ lessonsDone }).backup);
+
+		const sizesAt = async (size: string | undefined) => {
+			await page.evaluate((size) => {
+				if (size) localStorage.setItem('taysir.arabicSize', size);
+				else localStorage.removeItem('taysir.arabicSize');
+			}, size);
+			const sizes: (Awaited<ReturnType<typeof arabicSizes>>[number] & { where: string })[] = [];
+			for (const lesson of picked) {
+				await page.goto(`/lesson/${lesson.id}`);
+				await expect(page.getByRole('heading', { level: 1, name: lesson.title })).toBeVisible();
+				for (let step = 0; step < lesson.intro.length; step++) {
+					const where = `${lesson.id}, reading step ${step + 1}`;
+					sizes.push(...(await arabicSizes(page)).map((found) => ({ ...found, where })));
+					if (step < lesson.intro.length - 1) {
+						await page.getByRole('button', { name: 'Continue' }).click();
+					}
+				}
+			}
+			return sizes;
+		};
+		const standard = await sizesAt(undefined);
+		const largest = await sizesAt('largest');
+
+		expect(largest.map((found) => found.text)).toEqual(standard.map((found) => found.text));
+		// Both kinds were found, so this cannot pass by measuring nothing.
+		expect(standard.filter((found) => found.kind.includes('big'))).not.toHaveLength(0);
+		expect(standard.filter((found) => found.kind.includes('inline-ar'))).not.toHaveLength(0);
+		const unscaled = standard
+			.filter((found, i) => Math.abs(largest[i].px / found.px - 1.5) > 0.01)
+			.map((found) => `${found.where}: ${found.text} (${found.kind})`);
+		expect(unscaled, 'Arabic that stays the same size at Largest').toEqual([]);
 	});
 
 	test('belongs to the device: a backup neither holds it nor changes it', async ({ page }) => {
@@ -138,7 +189,7 @@ test.describe('at the largest Arabic size on a phone', () => {
 			...new Set([
 				...showWidest.slice(0, 4),
 				...lessons.filter((l) =>
-					['letters-1', 'letters-4', 'fatiha-1', 'grammar-prepositions'].includes(l.id)
+					['letters-1', 'letters-4', 'root-rhm', 'fatiha-1', 'grammar-prepositions'].includes(l.id)
 				)
 			])
 		];

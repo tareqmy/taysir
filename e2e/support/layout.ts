@@ -13,9 +13,19 @@ export async function layoutProblems(page: Page, width: number): Promise<string[
 		if (root.scrollWidth > limit) {
 			problems.push(`the page scrolls sideways by ${root.scrollWidth - limit}px`);
 		}
+		// The lines a piece of text is drawn on. The text's own boxes, not the element's: a block
+		// element is one box however many lines its text wraps onto.
+		const linesOf = (el: HTMLElement) => {
+			const range = document.createRange();
+			range.selectNodeContents(el);
+			const tops = [...range.getClientRects()].filter((r) => r.width > 0).map((r) => r.top);
+			const half = parseFloat(getComputedStyle(el).fontSize) / 2;
+			return tops.filter((top, i) => tops.slice(0, i).every((t) => Math.abs(t - top) > half))
+				.length;
+		};
 		for (const el of document.querySelectorAll<HTMLElement>('.ar')) {
 			const word = el.textContent?.trim() ?? '';
-			if (word && !/\s/.test(word) && el.getClientRects().length > 1) {
+			if (word && !/\s/.test(word) && linesOf(el) > 1) {
 				problems.push(`an Arabic word breaks across lines: ${word}`);
 			}
 		}

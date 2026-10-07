@@ -9,8 +9,9 @@
 		>{:else}{part.text}{/if}{/each}
 
 <style>
+	/* A little larger than the English around it, and as large again as the learner's Arabic size. */
 	.inline-ar {
-		font-size: 1.3em;
+		font-size: calc(1.3em * var(--ar-scale, 1));
 		line-height: 1;
 		color: var(--primary);
 	}

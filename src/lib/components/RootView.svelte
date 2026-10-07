@@ -24,8 +24,9 @@
 </section>
 
 <style>
+	/* The learner's Arabic size applies, with a limit like the .ar-* sizes have: a root cannot wrap. */
 	.big {
-		font-size: 3.5rem;
+		font-size: min(calc(3.5rem * var(--ar-scale, 1)), 22vw);
 		text-align: center;
 		color: var(--primary);
 		background: var(--primary-soft);
@@ -56,7 +57,7 @@
 		border-top: 0;
 	}
 	.family .ar {
-		flex: 0 0 min(8rem, 100%);
+		flex: 0 0 min(calc(8rem * var(--ar-scale, 1)), 100%);
 		text-align: right;
 	}
 	.meaning {
