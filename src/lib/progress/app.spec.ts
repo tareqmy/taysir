@@ -1,8 +1,9 @@
+import 'fake-indexeddb/auto';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { lessonById } from '../content/course';
 import { AppState } from './app.svelte';
 import { parseBackup } from './backup';
-import { defaultMeta, MemoryStore, type ProgressStore } from './store';
+import { defaultMeta, IndexedDbStore, MemoryStore, type Meta, type ProgressStore } from './store';
 
 let now: Date;
 let store: MemoryStore;
@@ -253,7 +254,7 @@ class RefusingStore implements ProgressStore {
 	async saveCards() {
 		throw refused();
 	}
-	async saveMeta() {
+	async saveMeta(): Promise<Meta> {
 		throw refused();
 	}
 	async replaceAll() {
@@ -343,5 +344,65 @@ describe('when the browser will not keep anything', () => {
 		await app.init();
 		await expect(app.restore(backup)).rejects.toThrow();
 		expect(app.meta.completedLessons).toEqual([]);
+	});
+});
+
+describe('two tabs of the app on one device', () => {
+	// Each tab has its own AppState and its own connection to the same saved data.
+	let dbCount = 0;
+	const tabs = async () => {
+		const name = `two-tabs-${dbCount++}`;
+		const open = async () => {
+			const app = new AppState(new IndexedDbStore(name), () => now);
+			await app.init();
+			return app;
+		};
+		const first = await open();
+		await first.setPlacement('beginner', 10);
+		return { first, second: await open(), open };
+	};
+
+	it('does not lose a lesson, or the exercises, that the other tab saved', async () => {
+		const { first, second, open } = await tabs();
+		await first.completeLesson('letters-1');
+		await first.answer(undefined, true);
+		await first.answer(undefined, true);
+
+		// The second tab was open before any of that and has not heard of it.
+		expect(second.lessonStatus('letters-1')).toBe('next');
+		await second.answer(undefined, true);
+
+		const reloaded = await open();
+		expect(reloaded.lessonStatus('letters-1')).toBe('done');
+		expect(reloaded.lessonStatus('letters-2')).toBe('next');
+		expect(reloaded.todayCount).toBe(2);
+		expect(reloaded.cards).toHaveLength(lessonById('letters-1')!.cardIds.length);
+		// And having saved, the second tab now knows too.
+		expect(second.lessonStatus('letters-1')).toBe('done');
+		expect(second.todayCount).toBe(2);
+	});
+
+	it('does not give a card the other tab reviewed back as new', async () => {
+		const { first, second, open } = await tabs();
+		await first.completeLesson('letters-1', { 'lt:ba': true });
+		// The second tab finishes the same lesson without having seen the first one do it.
+		await second.completeLesson('letters-1');
+		expect((await open()).cards.find((c) => c.id === 'lt:ba')!.reps).toBe(1);
+	});
+
+	it('does not put back a daily goal that was changed in the other tab', async () => {
+		const { first, second, open } = await tabs();
+		await first.setDailyGoal(5);
+		await second.answer(undefined, true);
+		expect(second.meta.dailyGoal).toBe(5);
+		expect((await open()).meta.dailyGoal).toBe(5);
+	});
+
+	it('lets a tab change a setting that the other tab changed before', async () => {
+		const { first, second, open } = await tabs();
+		await first.setDailyGoal(5);
+		await second.setDailyGoal(20);
+		expect((await open()).meta.dailyGoal).toBe(20);
+		expect(second.meta.dailyGoal).toBe(20);
 	});
 });

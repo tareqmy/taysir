@@ -50,6 +50,74 @@ describe.each(stores)('%s', (_name, create) => {
 		expect(await store.loadMeta()).toEqual(meta);
 	});
 
+	describe('when a copy of the progress is out of date', () => {
+		// What two tabs of the app do: both start from the same saved state, one moves on, then the
+		// other, which has not heard about it, saves too.
+		const saved = {
+			...defaultMeta(),
+			placement: 'beginner' as const,
+			completedLessons: ['letters-1'],
+			activity: { '2026-10-03': 3 },
+			metDays: ['2026-10-02']
+		};
+
+		it('keeps the lessons, days and counts the other copy saved', async () => {
+			const store = create();
+			await store.saveMeta(saved);
+			await store.saveMeta({
+				...saved,
+				completedLessons: ['letters-1', 'letters-2'],
+				activity: { '2026-10-03': 7, '2026-10-04': 1 },
+				metDays: ['2026-10-02', '2026-10-03']
+			});
+
+			const result = await store.saveMeta({ ...saved, activity: { '2026-10-03': 4 } });
+			expect(result.completedLessons).toEqual(['letters-1', 'letters-2']);
+			expect(result.activity).toEqual({ '2026-10-03': 7, '2026-10-04': 1 });
+			expect(result.metDays).toEqual(['2026-10-02', '2026-10-03']);
+			expect(await store.loadMeta()).toEqual(result);
+		});
+
+		it('keeps the stored settings unless the save changes them', async () => {
+			const store = create();
+			await store.saveMeta(saved);
+			await store.saveMeta({ ...saved, dailyGoal: 5 }, { settings: true });
+
+			// Answering a question in a tab that still thinks the goal is 10.
+			const result = await store.saveMeta({ ...saved, activity: { '2026-10-03': 4 } });
+			expect(result.dailyGoal).toBe(5);
+			expect((await store.loadMeta()).dailyGoal).toBe(5);
+
+			// Choosing a goal is a change, and wins.
+			await store.saveMeta({ ...saved, dailyGoal: 20 }, { settings: true });
+			expect((await store.loadMeta()).dailyGoal).toBe(20);
+		});
+
+		it('takes the settings of a save when nothing has chosen a starting point yet', async () => {
+			const store = create();
+			await store.saveMeta(defaultMeta());
+			await store.saveMeta({ ...saved, dailyGoal: 15 });
+			const meta = await store.loadMeta();
+			expect(meta.placement).toBe('beginner');
+			expect(meta.dailyGoal).toBe(15);
+		});
+
+		it('does not let a card that is behind replace the stored one', async () => {
+			const store = create();
+			const reviewed = { ...newCard('lx:rabb', now), reps: 3 };
+			await store.saveCards([reviewed]);
+
+			// A fresh card for a lesson finished in two tabs, and a card reviewed from an older copy.
+			await store.saveCards([newCard('lx:rabb', now)]);
+			await store.saveCards([{ ...reviewed, reps: 2 }]);
+			expect((await store.loadCards())[0].reps).toBe(3);
+
+			// One reviewed as often is the latest answer, and does replace it.
+			await store.saveCards([{ ...reviewed, stability: 9 }]);
+			expect((await store.loadCards())[0].stability).toBe(9);
+		});
+	});
+
 	it('clears everything', async () => {
 		const store = create();
 		await store.saveCards([newCard('lx:rabb', now)]);

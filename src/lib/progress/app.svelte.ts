@@ -4,7 +4,14 @@ import { createBackup, type Backup, type KnownIds } from './backup';
 import { gradeAnswer } from './grading';
 import { dueCards, newCard, reviewCard, type StoredCard } from './scheduler';
 import { computeStreak, dayKey, type DayKey, type StreakResult } from './streak';
-import { defaultMeta, MemoryStore, type Meta, type Placement, type ProgressStore } from './store';
+import {
+	defaultMeta,
+	MemoryStore,
+	type Meta,
+	type Placement,
+	type ProgressStore,
+	type SaveMetaOptions
+} from './store';
 
 export type LessonStatus = 'done' | 'skipped' | 'next' | 'locked';
 
@@ -85,12 +92,12 @@ export class AppState {
 		this.meta.placement = placement;
 		this.meta.dailyGoal = dailyGoal;
 		this.meta.skippedLessons = placement === 'reader' ? [...readerSkippedLessonIds] : [];
-		await this.persistMeta();
+		await this.persistMeta({ settings: true });
 	}
 
 	async setDailyGoal(dailyGoal: number) {
 		this.meta.dailyGoal = dailyGoal;
-		await this.persistMeta();
+		await this.persistMeta({ settings: true });
 	}
 
 	/**
@@ -181,8 +188,41 @@ export class AppState {
 		this.tick++;
 	}
 
-	private persistMeta() {
-		return this.save(() => this.store.saveMeta($state.snapshot(this.meta)));
+	/**
+	 * Saves the meta, which the store joins with what another tab may have saved meanwhile (see
+	 * `mergeMeta`), and takes up what that other tab did. `settings` says this save changes the
+	 * learner's settings, which are otherwise left as they are stored.
+	 */
+	private persistMeta(options?: SaveMetaOptions) {
+		return this.save(async () => {
+			const sent = $state.snapshot(this.meta);
+			this.adopt(sent, await this.store.saveMeta(sent, options));
+		});
+	}
+
+	/**
+	 * Takes what is stored into the copy on screen without taking anything away from it: lessons
+	 * and days saved by another tab appear, and a count of exercises goes up to the larger one.
+	 * Settings follow the store unless they were changed here after `sent` was taken.
+	 */
+	private adopt(sent: Meta, stored: Meta) {
+		const meta = this.meta;
+		for (const id of stored.completedLessons) {
+			if (!meta.completedLessons.includes(id)) meta.completedLessons.push(id);
+		}
+		for (const day of stored.metDays) if (!meta.metDays.includes(day)) meta.metDays.push(day);
+		for (const [day, count] of Object.entries(stored.activity)) {
+			if (count > (meta.activity[day] ?? 0)) meta.activity[day] = count;
+		}
+		const unchanged =
+			meta.placement === sent.placement &&
+			meta.dailyGoal === sent.dailyGoal &&
+			meta.skippedLessons.join() === sent.skippedLessons.join();
+		if (unchanged) {
+			meta.placement = stored.placement;
+			meta.dailyGoal = stored.dailyGoal;
+			meta.skippedLessons = [...stored.skippedLessons];
+		}
 	}
 
 	/**
