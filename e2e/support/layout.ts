@@ -3,7 +3,8 @@ import { verseData } from '../../src/lib/data';
 
 /**
  * What makes a screen hard to use when its text is big: the page scrolling sideways, an Arabic word
- * breaking across lines (it cannot be read that way), or a button whose contents spill out of it.
+ * breaking across lines (it cannot be read that way), a bar fixed to the screen that is taller than
+ * it, or a button whose contents spill out of it.
  * Returns a plain description of each, or nothing when the screen is fine.
  */
 export async function layoutProblems(page: Page, width: number): Promise<string[]> {
@@ -27,6 +28,17 @@ export async function layoutProblems(page: Page, width: number): Promise<string[
 			const word = el.textContent?.trim() ?? '';
 			if (word && !/\s/.test(word) && linesOf(el) > 1) {
 				problems.push(`an Arabic word breaks across lines: ${word}`);
+			}
+		}
+		// A bar fixed to the screen cannot be scrolled, so any of it off the screen cannot be read.
+		for (const el of document.querySelectorAll<HTMLElement>('body *')) {
+			if (getComputedStyle(el).position !== 'fixed') continue;
+			const box = el.getBoundingClientRect();
+			if (box.height > 0 && (box.top < -1 || box.bottom > innerHeight + 1)) {
+				const label = el.textContent?.trim().slice(0, 24);
+				problems.push(
+					`a fixed bar does not fit on the screen (${Math.round(box.height)}px): ${label}`
+				);
 			}
 		}
 		for (const el of document.querySelectorAll<HTMLElement>('button')) {

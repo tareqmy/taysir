@@ -188,7 +188,6 @@
 		display: flex;
 		flex-direction: column;
 		gap: 1.25rem;
-		padding-bottom: 7rem;
 	}
 	.bar {
 		height: 0.6rem;
@@ -211,20 +210,35 @@
 	.question h2 {
 		margin: 0;
 	}
+	/* Under the question, where it can be scrolled to whatever its length; Continue takes focus,
+	   which brings it into view. */
 	.feedback {
-		position: fixed;
-		/* Above the update banner, which sticks to the bottom of the page too. */
-		z-index: 2;
-		left: 0;
-		right: 0;
-		bottom: 0;
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
 		justify-content: space-between;
 		gap: 1rem;
-		padding: 1rem max(1rem, calc((100vw - 44rem) / 2 + 1rem));
+		padding: 1rem;
 		border-top: 2px solid;
+	}
+	/* Fixed to the bottom of the screen when the screen is tall enough for the text, as the update
+	   banner is. With large text on a phone a long explanation made it taller than the screen, and
+	   a fixed bar cannot be scrolled, so the top of it could not be read. */
+	@media (min-height: 36rem) {
+		.runner {
+			padding-bottom: 7rem;
+		}
+		.feedback {
+			position: fixed;
+			/* Above the update banner, which sticks to the bottom of the page too. */
+			z-index: 2;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			max-height: 100dvh;
+			overflow-y: auto;
+			padding: 1rem max(1rem, calc((100vw - 44rem) / 2 + 1rem));
+		}
 	}
 	.feedback.good {
 		background: var(--good-soft);

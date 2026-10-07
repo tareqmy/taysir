@@ -8,7 +8,8 @@ import {
 	chooseBackupFile,
 	continueButton,
 	runSession,
-	startAsReader
+	startAsReader,
+	startWithProgress
 } from './support/learner';
 import { seededLearner } from './support/seed';
 import { expect, test } from './support/test';
@@ -208,3 +209,41 @@ for (const size of SIZES) {
 		});
 	});
 }
+
+// The question whose explanation is longest: its answer feedback is the tallest bar the app shows.
+const [longest] = lessons
+	.flatMap((lesson) => lesson.exercises.map((exercise, at) => ({ lesson, exercise, at })))
+	.sort((a, b) => (b.exercise.explanation?.length ?? 0) - (a.exercise.explanation?.length ?? 0));
+
+test.describe('a short phone', () => {
+	test.use({ viewport: { width: 375, height: 667 } });
+
+	test('shows all of the longest answer feedback, at normal and at double text size', async ({
+		page
+	}) => {
+		const { lesson, exercise, at } = longest;
+		await useWideFonts(page);
+		await startWithProgress(page, seededLearner({ lessonsDone: lessons.indexOf(lesson) }).backup);
+		await page.goto(`/lesson/${lesson.id}`);
+		for (let step = 1; step < lesson.intro.length; step++) {
+			await page.getByRole('button', { name: 'Continue' }).click();
+		}
+		await page.getByRole('button', { name: 'Start practice' }).click();
+		await answerAll(page, lesson.exercises.slice(0, at));
+		await answerExercise(page, exercise);
+		await expect(continueButton(page)).toBeFocused();
+		await fits(page, `${lesson.id}: the feedback on ${exercise.id}`);
+
+		// With big text it is taller than the screen, so it sits under the question, where every part
+		// of it can be scrolled to: its first line, then the Continue button.
+		await withBigText(page, async () => {
+			const feedback = page.locator('.feedback');
+			expect(await feedback.evaluate((el) => getComputedStyle(el).position)).toBe('static');
+			const verdict = feedback.getByText(/^(Correct|Not quite)$/);
+			await verdict.scrollIntoViewIfNeeded();
+			await expect(verdict).toBeInViewport();
+			await continueButton(page).scrollIntoViewIfNeeded();
+			await expect(continueButton(page)).toBeInViewport();
+		});
+	});
+});
