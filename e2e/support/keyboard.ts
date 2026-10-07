@@ -30,7 +30,7 @@ interface TabAudit {
 
 /**
  * The most Tab presses a screen is given before it counts as a trap. The longest page audited is
- * the home screen, with a stop for each of about a hundred and fifty lessons; the words page is
+ * the home screen, with a stop for each of about two hundred and fifty lessons; the words page is
  * audited a third at a time (two stops for each word, the word and its speaker).
  */
 const MAX_STOPS = 800;

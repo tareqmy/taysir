@@ -18,9 +18,10 @@
 			review brings each item back just before you would forget it.
 		</p>
 		<p class="muted">
-			This is an early version. So far it covers Al-Fatiha and all of Juz Amma (surahs 78 to 114),
-			and the explanations and word meanings are drafts that still need review by a qualified
-			teacher. If you notice a mistake, please trust your teacher over this app.
+			This is an early version. So far it covers Al-Fatiha, all of Juz Amma (surahs 78 to 114) and
+			the rest of the 29th juz (surahs 67 to 77), and the explanations and word meanings are drafts
+			that still need review by a qualified teacher. If you notice a mistake, please trust your
+			teacher over this app.
 		</p>
 	</section>
 

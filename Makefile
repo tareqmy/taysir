@@ -19,7 +19,7 @@ TUNNEL ?= cloudflared tunnel --url http://localhost:$(PREVIEW_PORT)
 .PHONY: help install dev preview tunnel tunnel-check build test test-watch e2e e2e-install check lint format data data-check hosting-check ci clean distclean
 
 help: ## List the targets
-	@awk -F ':.*## ' '/^[a-zA-Z_-]+:.*## / { printf "  make %-11s %s\n", $$1, $$2 }' $(MAKEFILE_LIST)
+	@awk -F ':.*## ' '/^[a-zA-Z0-9_-]+:.*## / { printf "  make %-11s %s\n", $$1, $$2 }' $(MAKEFILE_LIST)
 
 # Installs again only when the dependency list has changed.
 node_modules: package.json package-lock.json

@@ -36,8 +36,10 @@ Cloudflare Pages sends it to `/`, and redirects are applied before header rules.
 
 **If a Cache-Control rule turns out not to be applied** (the first trial deploy will show it, in
 `hosting:check`), here is what matters. Browsers fetch a service worker's own script around the HTTP
-cache by default, so updates are still found whatever is sent for `/service-worker.js`; the app does not
-read `/_app/version.json` at all; the manifest could be out of date for a few hours; and built files
+cache by default, so updates are still found whatever is sent for `/service-worker.js`; the app's update
+prompt works from the service worker, and SvelteKit's own check of `/_app/version.json` (when a tab
+comes back into view, and when a page fails to load) asks for a fresh copy, so only a copy kept by
+the host's own cache would delay it; the manifest could be out of date for a few hours; and built files
 kept for less than a year only cost the learner some data. What must hold is that the home page is
 checked on every visit and the routes answer with the app. Do not loosen the checker to hide a failure;
 decide whether it matters, and if it does, a Pages Function or a different host can set the header.

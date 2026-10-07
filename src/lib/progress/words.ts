@@ -89,7 +89,7 @@ for (const verse of verseData.verses) {
 /**
  * Where to show a word being used. Every word has a real example from the corpus, but a dozen of
  * them are from surahs the app does not have, so those are shown in the first verse the app does
- * have that holds the word, and four have none (they are only named by their reference).
+ * have that holds the word, and one has none (it is only named by its reference).
  */
 export function wordExample({ id, sample }: Lexeme): WordExample {
 	const [surah, ayah] = sample.loc.split(':').map(Number);
