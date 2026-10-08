@@ -9,6 +9,12 @@ const CACHE = `taysir-${version}`;
 /** Manifest paths are relative to the worker, so resolve them against its own URL. */
 const resolveHere = (path: string) => new URL(path, sw.location.href).pathname;
 const SHELL = resolveHere('./');
+/**
+ * How long opening a page waits for the network before showing the copy kept for offline use. A
+ * connection that fails is noticed at once, but one that hangs (a weak signal, a wifi login page)
+ * would otherwise leave the app blank until the browser itself gives up, which takes far longer.
+ */
+const NAVIGATION_WAIT_MS = 4000;
 // Built JS/CSS and everything in `static/`: all that is needed to run offline.
 const ASSETS = new Set<string>([...immutable, ...assets].map((file) => resolveHere(file.path)));
 
@@ -49,15 +55,24 @@ sw.addEventListener('fetch', (event) => {
 				const hit = await cache.match(url.pathname);
 				if (hit) return hit;
 			}
-			try {
-				return await fetch(request);
-			} catch (error) {
-				if (request.mode === 'navigate') {
-					const shell = await cache.match(SHELL);
-					if (shell) return shell;
-				}
-				throw error;
-			}
+			if (request.mode === 'navigate') return open(request, cache);
+			return fetch(request);
 		})()
 	);
 });
+
+/** A page from the network when it comes in time, otherwise the app's own copy. */
+async function open(request: Request, cache: Cache): Promise<Response> {
+	const network = fetch(request);
+	// If the wait runs out, the network may still fail later, with no one to hear it.
+	network.catch(() => {});
+	const late = new Promise<undefined>((resolve) => setTimeout(resolve, NAVIGATION_WAIT_MS));
+	try {
+		const response = await Promise.race([network, late]);
+		if (response) return response;
+	} catch {
+		// No connection: the copy below.
+	}
+	// Before the first install there is no copy, so all there is to do is wait for the network.
+	return (await cache.match(SHELL)) ?? network;
+}

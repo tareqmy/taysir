@@ -38,6 +38,8 @@ export interface Site {
 	down(): Promise<void>;
 	/** Start answering again at the same address. */
 	up(): Promise<void>;
+	/** Take requests and never answer them, as a connection that hangs does. */
+	stall(): void;
 	close(): Promise<void>;
 }
 
@@ -61,8 +63,10 @@ export async function startSite(): Promise<Site> {
 
 	let version = built;
 	let root = await publish(version);
+	let stalled = false;
 
 	const server = createServer(async (request, response) => {
+		if (stalled) return; // left open, unanswered, until the server closes
 		const { pathname } = new URL(request.url ?? '/', 'http://localhost');
 		let file = path.join(root, decodeURIComponent(pathname));
 		if (!file.startsWith(root)) {
@@ -108,6 +112,9 @@ export async function startSite(): Promise<Site> {
 		},
 		async up() {
 			await new Promise<void>((resolve) => server.listen(port, resolve));
+		},
+		stall() {
+			stalled = true;
 		},
 		async close() {
 			await site.down();

@@ -194,3 +194,20 @@ test('looking for a new version with no connection is not an error, and finds it
 	await page.evaluate(() => document.dispatchEvent(new Event('visibilitychange')));
 	await expect(banner).toBeVisible({ timeout: 15_000 });
 });
+
+test('opens from its own copy when the connection hangs rather than fails', async ({
+	page,
+	site
+}) => {
+	await startWithProgress(page, learner().backup);
+	await installed(page);
+
+	// The server takes the request and never answers, as a weak signal or a wifi login page does.
+	// The browser would wait far longer than a learner will before it gives up on its own.
+	site.stall();
+	const started = Date.now();
+	await page.reload({ timeout: 15_000 });
+	await expect(page.getByRole('heading', { name: 'Your lessons' })).toBeAttached();
+	await expect(page.getByRole('link', { name: `Continue: ${lesson.title}` })).toBeVisible();
+	expect(Date.now() - started).toBeLessThan(10_000);
+});
