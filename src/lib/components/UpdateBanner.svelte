@@ -5,6 +5,14 @@
 	let { busy = false }: { busy?: boolean } = $props();
 
 	const shown = $derived(appUpdate.available && !appUpdate.dismissed);
+
+	/** How tall the offer is, which the page keeps clear of focus while it sticks to the bottom. */
+	let height = $state(0);
+	$effect(() => {
+		const root = document.documentElement;
+		root.style.setProperty('--update-height', `${height}px`);
+		return () => root.style.removeProperty('--update-height');
+	});
 </script>
 
 <!-- Always on the page, so that a screen reader announces the text when it appears. -->
@@ -13,7 +21,7 @@
 </span>
 
 {#if shown}
-	<aside class="update card" aria-label="Update available">
+	<aside class="update card" aria-label="Update available" bind:offsetHeight={height}>
 		<p>
 			<strong>A new version of Taysir is ready.</strong>
 			{#if busy}
@@ -48,6 +56,10 @@
 		.update {
 			position: sticky;
 			bottom: 0.75rem;
+		}
+		/* A control that Tab moves to under the offer is scrolled up clear of it, not left hidden. */
+		:global(html:has(.update)) {
+			scroll-padding-bottom: calc(var(--update-height, 0px) + 1.5rem);
 		}
 	}
 	/* The answer feedback bar takes the bottom of the screen and hides the lower half of this card,

@@ -1,6 +1,7 @@
 import type { Page } from '@playwright/test';
 import { audit } from './support/axe';
 import { layoutProblems, useWideFonts, withBigText } from './support/layout';
+import { auditTabOrder } from './support/keyboard';
 import { startAsReader } from './support/learner';
 import { expect, test } from './support/served';
 import type { Site } from './support/site';
@@ -209,4 +210,21 @@ test('at twice the text size on a phone, the offer fits and leaves the page to b
 	};
 	await fits();
 	await withBigText(page, fits);
+});
+
+test('never hides the control that has keyboard focus under the offer', async ({ page, site }) => {
+	// The offer sticks to the bottom of the screen over the long list of lessons, on a phone and in
+	// a window, and Tab walks down the list behind it.
+	for (const size of [
+		{ width: 375, height: 812 },
+		{ width: 1280, height: 800 }
+	]) {
+		await page.setViewportSize(size);
+		if (size.width === 375) {
+			await openInstalled(page, site);
+			await deployAndNotice(page, site);
+		}
+		await expect(banner(page)).toBeVisible();
+		await auditTabOrder(page, `the lesson list, ${size.width}px, with the update offer`);
+	}
 });
