@@ -419,3 +419,69 @@ test.describe('doing things by keyboard', () => {
 		await chooser;
 	});
 });
+
+test.describe('when the control that was pressed goes away', () => {
+	const focusedIn = (page: Page) =>
+		page.evaluate(() => {
+			const el = document.activeElement as HTMLButtonElement | null;
+			return {
+				text: el?.textContent?.trim() ?? '',
+				group: el?.closest('[aria-label]')?.getAttribute('aria-label') ?? '',
+				disabled: el?.disabled ?? false
+			};
+		});
+
+	test('the welcome questions put focus on the new question, both ways', async ({ page }) => {
+		await page.goto('/');
+		await press(page, page.getByRole('button', { name: /I can read the Quran/ }));
+		await expect(
+			page.getByRole('heading', { name: 'How much would you like to do each day?' })
+		).toBeFocused();
+		await press(page, page.getByRole('button', { name: 'Back' }));
+		await expect(
+			page.getByRole('heading', { name: 'Where would you like to start?' })
+		).toBeFocused();
+	});
+
+	test('restoring a backup puts focus back on the file chooser, or on what happened', async ({
+		page
+	}) => {
+		const backup = JSON.stringify(seededLearner({ lessonsDone: 3 }).backup);
+		await startAsReader(page);
+		await chooseBackupFile(page, backup);
+		await press(page, page.getByRole('button', { name: 'Cancel' }));
+		await expect(page.locator('input[type=file]')).toBeFocused();
+
+		await chooseBackupFile(page, backup);
+		await press(page, page.getByRole('button', { name: 'Replace my progress with this backup' }));
+		await expect(page.getByText('Your progress has been restored.')).toBeFocused();
+	});
+
+	test('a word-building question moves on to the next free word, and back', async ({ page }) => {
+		const at = grammar.exercises.findIndex((exercise) => exercise.kind === 'build');
+		const build = grammar.exercises[at];
+		if (build.kind !== 'build') throw new Error('no word-building question');
+		await startWithProgress(page, seededLearner({ lessonsDone: lessons.indexOf(grammar) }).backup);
+		await page.goto(`/lesson/${grammar.id}`);
+		await readByKeyboard(page, grammar);
+		await answerAll(page, grammar.exercises.slice(0, at));
+
+		const first = build.answer[0].chunk.text;
+		await press(
+			page,
+			page
+				.getByRole('group', { name: 'Word bank' })
+				.getByRole('button', { name: first, exact: true })
+		);
+		const next = await focusedIn(page);
+		expect(next.group).toBe('Word bank');
+		expect(next.disabled).toBe(false);
+		expect(next.text).not.toBe(first);
+
+		await press(
+			page,
+			page.getByLabel('Your answer').getByRole('button', { name: first, exact: true })
+		);
+		expect(await focusedIn(page)).toEqual({ text: first, group: 'Word bank', disabled: false });
+	});
+});

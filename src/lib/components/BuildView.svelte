@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { tick } from 'svelte';
 	import type { BuildExercise } from '../content/types';
 	import { isCorrect } from '../content/exercises';
 	import { hashString, seeded, shuffle } from '../random';
@@ -17,14 +18,29 @@
 
 	const byId = $derived(new Map(tokens.map((t) => [t.id, t])));
 
-	function add(id: string) {
+	// A word that is used is switched off in the word bank, and one taken out of the answer goes away,
+	// and either drops focus. These are where it goes instead.
+	let pool = $state<HTMLElement>();
+	let checkButton = $state<HTMLButtonElement>();
+
+	async function add(id: string) {
 		if (checked || chosen.includes(id)) return;
 		chosen = [...chosen, id];
+		await tick();
+		// On to the next word still free in the bank, or to Check once every word is used.
+		const order = (button: HTMLButtonElement) =>
+			tokens.findIndex((t) => t.id === button.dataset.id);
+		const free = [...pool!.querySelectorAll<HTMLButtonElement>('button:not(:disabled)')];
+		const used = tokens.findIndex((t) => t.id === id);
+		(free.find((button) => order(button) > used) ?? free[0] ?? checkButton)?.focus();
 	}
 
-	function remove(id: string) {
+	async function remove(id: string) {
 		if (checked) return;
 		chosen = chosen.filter((c) => c !== id);
+		await tick();
+		// Back to the word in the bank, which can be used again.
+		pool?.querySelector<HTMLButtonElement>(`button[data-id="${id}"]`)?.focus();
 	}
 
 	function check() {
@@ -58,11 +74,12 @@
 		{/each}
 	</div>
 
-	<div class="pool" dir="rtl" role="group" aria-label="Word bank">
+	<div class="pool" dir="rtl" role="group" aria-label="Word bank" bind:this={pool}>
 		{#each tokens as token (token.id)}
 			<button
 				type="button"
 				class="token"
+				data-id={token.id}
 				disabled={checked || chosen.includes(token.id)}
 				class:used={chosen.includes(token.id)}
 				onclick={() => add(token.id)}
@@ -77,6 +94,7 @@
 		class="btn btn-block"
 		disabled={checked || chosen.length === 0}
 		onclick={check}
+		bind:this={checkButton}
 	>
 		Check
 	</button>

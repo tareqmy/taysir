@@ -7,6 +7,18 @@
 	let placement = $state<Placement>();
 	let goal = $state(10);
 	let saving = $state(false);
+	/** The learner has moved from one question to the other, so the new one takes focus. */
+	let moved = false;
+
+	function choose(next: Placement | undefined) {
+		placement = next;
+		moved = true;
+	}
+
+	/** The button that was pressed has gone, so focus starts again at the new question. */
+	function focusIfMoved(node: HTMLElement) {
+		if (moved) node.focus();
+	}
 
 	const goals = [
 		{ value: 5, name: 'Relaxed', detail: '5 exercises a day, about 2 minutes' },
@@ -37,21 +49,21 @@
 
 	{#if !placement}
 		<section class="stack" aria-labelledby="where">
-			<h2 id="where">Where would you like to start?</h2>
-			<button type="button" class="choice card" onclick={() => (placement = 'beginner')}>
+			<h2 id="where" tabindex="-1" use:focusIfMoved>Where would you like to start?</h2>
+			<button type="button" class="choice card" onclick={() => choose('beginner')}>
 				<strong>I am new to Arabic letters</strong>
 				<span class="muted"
 					>Start with the alphabet and its sounds, then move into Al-Fatiha and Juz Amma.</span
 				>
 			</button>
-			<button type="button" class="choice card" onclick={() => (placement = 'reader')}>
+			<button type="button" class="choice card" onclick={() => choose('reader')}>
 				<strong>I can read the Quran, but I do not understand it</strong>
 				<span class="muted">Skip the alphabet and go straight to words and meaning.</span>
 			</button>
 		</section>
 	{:else}
 		<section class="stack" aria-labelledby="pace">
-			<h2 id="pace">How much would you like to do each day?</h2>
+			<h2 id="pace" tabindex="-1" use:focusIfMoved>How much would you like to do each day?</h2>
 			<div class="goals" role="radiogroup" aria-labelledby="pace">
 				{#each goals as option (option.value)}
 					<label class="goal card" class:chosen={goal === option.value}>
@@ -63,9 +75,7 @@
 			</div>
 			<p class="muted">You can change this any time in Settings.</p>
 			<div class="buttons">
-				<button type="button" class="btn btn-quiet" onclick={() => (placement = undefined)}
-					>Back</button
-				>
+				<button type="button" class="btn btn-quiet" onclick={() => choose(undefined)}>Back</button>
 				<button type="button" class="btn" onclick={start} disabled={saving}>Start learning</button>
 			</div>
 		</section>

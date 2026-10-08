@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
+	import { tick } from 'svelte';
 	import { ARABIC_SIZES } from '#lib/arabic-size';
 	import { arabicSize } from '#lib/arabic-size.svelte';
 	import InstallOffer from '#lib/components/InstallOffer.svelte';
@@ -19,6 +20,9 @@
 	// Raw state: the parsed backup is read-only, so it needs no reactive proxy.
 	let pending = $state.raw<Accepted>();
 	let restored = $state(false);
+	// Where focus goes when the restore question it was on goes away.
+	let messageEl = $state<HTMLElement>();
+	let fileInput = $state<HTMLInputElement>();
 
 	function backUp() {
 		const now = new Date();
@@ -60,14 +64,20 @@
 		if (!pending) return;
 		try {
 			await app.restore(pending.backup);
+			restored = true;
+			message = { kind: 'good', text: 'Your progress has been restored.' };
 		} catch {
-			pending = undefined;
 			message = { kind: 'bad', text: 'Your progress could not be restored. Nothing was changed.' };
-			return;
 		}
 		pending = undefined;
-		restored = true;
-		message = { kind: 'good', text: 'Your progress has been restored.' };
+		// The button that was pressed has gone: focus the outcome, which says what happened.
+		await tick();
+		messageEl?.focus();
+	}
+
+	function cancelRestore() {
+		pending = undefined;
+		fileInput?.focus();
 	}
 
 	const dateFormat = new Intl.DateTimeFormat(undefined, { dateStyle: 'long' });
@@ -154,12 +164,22 @@
 			<button type="button" class="btn" onclick={backUp}>Download backup</button>
 			<label class="btn btn-quiet file">
 				Restore from a backup
-				<input type="file" accept="application/json,.json" onchange={chooseFile} />
+				<input
+					type="file"
+					accept="application/json,.json"
+					onchange={chooseFile}
+					bind:this={fileInput}
+				/>
 			</label>
 		</div>
 
 		{#if message}
-			<p class="message {message.kind}" role={message.kind === 'bad' ? 'alert' : 'status'}>
+			<p
+				class="message {message.kind}"
+				role={message.kind === 'bad' ? 'alert' : 'status'}
+				tabindex="-1"
+				bind:this={messageEl}
+			>
 				{message.text}
 				{#if restored}<a href={resolve('/')}>Back to lessons</a>{/if}
 			</p>
@@ -190,9 +210,7 @@
 					<button type="button" class="btn" onclick={restore}>
 						Replace my progress with this backup
 					</button>
-					<button type="button" class="btn btn-quiet" onclick={() => (pending = undefined)}>
-						Cancel
-					</button>
+					<button type="button" class="btn btn-quiet" onclick={cancelRestore}>Cancel</button>
 				</div>
 			</div>
 		{/if}
