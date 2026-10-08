@@ -64,7 +64,7 @@
 		<section class="card stack">
 			<h2>All caught up</h2>
 			{#if nextDue}
-				<p>Your next review is due {formatRelative(nextDue, new Date())}.</p>
+				<p>Your next review is due {formatRelative(nextDue, app.now)}.</p>
 			{:else}
 				<p>Finish a lesson and the words and letters you learn will appear here.</p>
 			{/if}

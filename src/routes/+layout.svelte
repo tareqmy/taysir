@@ -27,6 +27,22 @@
 		void appUpdate.start();
 	});
 
+	/** How often a page left open looks at the clock again. */
+	const CLOCK_EVERY_MS = 60_000;
+
+	// A page left open moves on with the clock: cards fall due, and a new day starts at midnight.
+	onMount(() => {
+		const timer = setInterval(() => app.refreshTime(), CLOCK_EVERY_MS);
+		const shown = () => {
+			if (document.visibilityState === 'visible') app.refreshTime();
+		};
+		document.addEventListener('visibilitychange', shown);
+		return () => {
+			clearInterval(timer);
+			document.removeEventListener('visibilitychange', shown);
+		};
+	});
+
 	$effect(() => {
 		if (app.needsPlacement && !openPaths.includes(page.url.pathname)) {
 			goto(resolve('/welcome'), { replace: true });

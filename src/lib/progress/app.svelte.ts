@@ -25,7 +25,7 @@ export class AppState {
 	storageProblem = $state(false);
 	meta = $state<Meta>(defaultMeta());
 	cards = $state<StoredCard[]>([]);
-	/** Bumped after each change so time-based values (due cards, today) recompute. */
+	/** Bumped after each change, and as time passes, so time-based values (due cards, today) recompute. */
 	private tick = $state(0);
 	private store: ProgressStore;
 	private clock: () => Date;
@@ -53,9 +53,14 @@ export class AppState {
 		return this.ready && !this.meta.placement;
 	}
 
-	get today(): DayKey {
+	/** The time now, as far as what is on screen knows: it moves on with `refreshTime`. */
+	get now(): Date {
 		void this.tick;
-		return dayKey(this.clock());
+		return this.clock();
+	}
+
+	get today(): DayKey {
+		return dayKey(this.now);
 	}
 
 	get todayCount(): number {
@@ -71,8 +76,15 @@ export class AppState {
 	}
 
 	get dueCards(): StoredCard[] {
-		void this.tick;
-		return dueCards(this.cards, this.clock());
+		return dueCards(this.cards, this.now);
+	}
+
+	/**
+	 * Time has passed. A page left open calls this now and then, so that cards that have fallen due
+	 * are offered and a new day starts with a new count at midnight.
+	 */
+	refreshTime() {
+		this.tick++;
 	}
 
 	get nextLesson(): Lesson | undefined {
