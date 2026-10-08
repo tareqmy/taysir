@@ -252,8 +252,15 @@
 		.today {
 			grid-template-columns: 1fr;
 		}
+		/* No room to show it, but a screen reader still says whether a lesson is done or next, as the
+		   ✓ and → beside it are only a picture. The same as .visually-hidden in app.css. */
 		.tag {
-			display: none;
+			position: absolute;
+			width: 1px;
+			height: 1px;
+			overflow: hidden;
+			clip: rect(0 0 0 0);
+			white-space: nowrap;
 		}
 	}
 </style>

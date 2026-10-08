@@ -183,3 +183,15 @@ for (const mode of modes) {
 		});
 	});
 }
+
+test('on a phone, each lesson in the list still says whether it is done, skipped or next', async ({
+	page
+}) => {
+	await page.setViewportSize({ width: 375, height: 812 });
+	await startAsReader(page);
+	await page.goto('/');
+	// The words are not shown on a phone, where there is no room, but a screen reader still reads them.
+	await expect(page.locator('.lessons .tag').first()).not.toBeInViewport();
+	await expect(page.getByRole('link', { name: /Skipped$/ }).first()).toBeAttached();
+	await expect(page.getByRole('link', { name: /Up next$/ })).toHaveCount(1);
+});
