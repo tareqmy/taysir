@@ -20,11 +20,14 @@ let current: HTMLAudioElement | undefined;
 export async function playAudio(url: string): Promise<boolean> {
 	if (typeof Audio === 'undefined') return false;
 	current?.pause();
-	current = new Audio(url);
+	const clip = new Audio(url);
+	current = clip;
 	try {
-		await current.play();
+		await clip.play();
 		return true;
-	} catch {
-		return false;
+	} catch (error) {
+		// A clip still loading when another is started is stopped on purpose, which the browser
+		// reports as an interrupted play. That is not a clip that cannot be played.
+		return clip !== current || (error instanceof DOMException && error.name === 'AbortError');
 	}
 }
