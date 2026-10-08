@@ -39,12 +39,10 @@ export class AppUpdate {
 		const registration = await container.ready;
 		this.registration = registration;
 		this.noteWaiting();
-		registration.addEventListener('updatefound', () => {
-			const worker = registration.installing;
-			worker?.addEventListener('statechange', () => {
-				if (worker.state === 'installed') this.noteWaiting();
-			});
-		});
+		// The browser looks for a new version as the page loads, so one may already be downloading,
+		// its `updatefound` gone by before this started listening. Follow that one too.
+		this.follow(registration.installing);
+		registration.addEventListener('updatefound', () => this.follow(registration.installing));
 
 		// Browsers look for a new worker when a page loads. A page left open needs to ask.
 		if (typeof document !== 'undefined') {
@@ -78,6 +76,13 @@ export class AppUpdate {
 
 	dismiss() {
 		this.dismissed = true;
+	}
+
+	/** Watches a new version that is downloading, to offer it once it is ready. */
+	private follow(worker: ServiceWorker | null) {
+		worker?.addEventListener('statechange', () => {
+			if (worker.state === 'installed') this.noteWaiting();
+		});
 	}
 
 	/** A downloaded version is only an update if there is an older one on screen to replace. */

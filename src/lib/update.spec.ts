@@ -55,9 +55,11 @@ class FakeContainer extends EventTarget {
 	}
 }
 
-async function setup({ controlled = true, waiting = false } = {}) {
+async function setup({ controlled = true, waiting = false, installing = false } = {}) {
 	const registration = new FakeRegistration();
 	if (waiting) registration.waiting = new FakeWorker();
+	// A new version the browser started downloading before the app began to listen.
+	if (installing) registration.installing = new FakeWorker();
 	const container = new FakeContainer(registration, controlled);
 	const reload = vi.fn();
 	const update = new AppUpdate(container as unknown as ServiceWorkerContainer, reload);
@@ -72,6 +74,13 @@ describe('AppUpdate', () => {
 		await update.start();
 		await update.check();
 		expect(update.available).toBe(false);
+	});
+
+	it('offers a new version that was already downloading when the page started', async () => {
+		const { registration, update } = await setup({ installing: true });
+		expect(update.available).toBe(false);
+		registration.finishInstall(registration.installing!);
+		expect(update.available).toBe(true);
 	});
 
 	it('has nothing to offer when the page opens on the current version', async () => {
