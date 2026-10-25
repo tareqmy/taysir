@@ -55,17 +55,31 @@
 	const isHome = $derived(page.route.id === '/');
 
 	let topEl = $state<HTMLElement>();
+	let isDesktop = $state(false);
 
 	onMount(() => {
-		if (!topEl) return;
+		const mql = window.matchMedia('(min-width: 56rem)');
+		isDesktop = mql.matches;
+		const onMedia = (e: MediaQueryListEvent) => {
+			isDesktop = e.matches;
+		};
+		mql.addEventListener('change', onMedia);
+
 		const sync = () => {
 			if (topEl) document.documentElement.style.setProperty('--top-h', `${topEl.offsetHeight}px`);
 		};
 		sync();
-		const ro = new ResizeObserver(sync);
-		ro.observe(topEl);
-		return () => ro.disconnect();
+		const ro = topEl ? new ResizeObserver(sync) : undefined;
+		if (topEl && ro) ro.observe(topEl);
+		return () => {
+			mql.removeEventListener('change', onMedia);
+			ro?.disconnect();
+		};
 	});
+
+	function openMobileContents() {
+		document.querySelector<HTMLDialogElement>('dialog.contents')?.showModal();
+	}
 </script>
 
 <svelte:head>
@@ -124,6 +138,25 @@
 			</a>
 			<a href={resolve('/about')} class:active={page.route.id === '/about'}>About</a>
 			<a href={resolve('/settings')} class:active={page.route.id === '/settings'}>Settings</a>
+			{#if isHome && !isDesktop}
+				<button
+					type="button"
+					class="contents-btn"
+					aria-label="Contents"
+					title="Contents"
+					onclick={openMobileContents}
+				>
+					<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+						<path
+							d="M9 6h11M9 12h11M9 18h11M4.5 6h.01M4.5 12h.01M4.5 18h.01"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2.2"
+							stroke-linecap="round"
+						/>
+					</svg>
+				</button>
+			{/if}
 		</nav>
 	</div>
 </header>
@@ -239,6 +272,28 @@
 	nav a.active {
 		background: var(--primary-soft);
 		color: var(--primary);
+	}
+	.contents-btn {
+		width: 2.35rem;
+		height: 2.35rem;
+		padding: 0;
+		margin-left: 0.15rem;
+		display: grid;
+		place-items: center;
+		border-radius: 10px;
+		border: 1px solid var(--line);
+		background: var(--surface);
+		color: var(--ink);
+		cursor: pointer;
+		transition:
+			background-color 0.15s,
+			border-color 0.15s,
+			color 0.15s;
+	}
+	.contents-btn:hover {
+		border-color: var(--primary);
+		color: var(--primary);
+		background: var(--primary-soft);
 	}
 	.badge {
 		display: inline-block;

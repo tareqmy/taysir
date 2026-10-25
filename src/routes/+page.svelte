@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { tick } from 'svelte';
+	import { onMount, tick } from 'svelte';
 	import { SvelteSet } from 'svelte/reactivity';
 	import { resolve } from '$app/paths';
 	import InstallOffer from '#lib/components/InstallOffer.svelte';
@@ -27,7 +27,19 @@
 	const statusLabel = { done: 'Completed', skipped: 'Skipped', next: 'Up next', locked: '' };
 
 	let contentsOpen = $state(true);
+	let isDesktop = $state(false);
+	let contentsDialog = $state<HTMLDialogElement>();
 	let openUnits = new SvelteSet(units.map((u) => u.id));
+
+	onMount(() => {
+		const mql = window.matchMedia('(min-width: 56rem)');
+		isDesktop = mql.matches;
+		const onMedia = (e: MediaQueryListEvent) => {
+			isDesktop = e.matches;
+		};
+		mql.addEventListener('change', onMedia);
+		return () => mql.removeEventListener('change', onMedia);
+	});
 
 	const tocGroups = [
 		{
@@ -122,12 +134,76 @@
 			openUnits.add(unitId);
 			await tick();
 		}
+		contentsDialog?.close();
 		const el = document.getElementById(`unit-sec-${unitId}`);
 		if (!el) return;
 		const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 		el.scrollIntoView({ behavior: still ? 'auto' : 'smooth', block: 'start' });
 	}
 </script>
+
+{#snippet tocGroupsList(idPrefix: string)}
+	{#each groupedToc as group (group.id)}
+		{@const isGroupOpen = openGroups.has(group.id)}
+		<div class="contents-group" class:folded={!isGroupOpen} class:here={!isGroupOpen && group.here}>
+			<button
+				type="button"
+				class="contents-group-head"
+				aria-expanded={isGroupOpen}
+				aria-controls="{idPrefix}-group-{group.id}"
+				onclick={() => toggleGroup(group.id)}
+			>
+				<span class="contents-group-name">
+					{group.title}
+					{#if !isGroupOpen && group.here}
+						<b> · Here</b>
+					{/if}
+				</span>
+				<span class="toc-count" class:finished={group.finished}>
+					{group.done}/{group.total}
+				</span>
+				<svg class="chevron" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+					<path
+						d="M6 9l6 6 6-6"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2.2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+					/>
+				</svg>
+			</button>
+			<ol id="{idPrefix}-group-{group.id}" class="toc-list" hidden={!isGroupOpen}>
+				{#each group.items as { unit, done, total, pct, isCurrent, finished } (unit.id)}
+					<li>
+						<a
+							class="toc-row"
+							class:here={isCurrent}
+							href="#unit-sec-{unit.id}"
+							onclick={(e) => {
+								e.preventDefault();
+								void jumpToUnit(unit.id);
+							}}
+						>
+							<span class="toc-name">
+								{unit.title}
+								{#if isCurrent}
+									<b> · You are here</b>
+								{/if}
+							</span>
+							<span class="toc-count" class:finished>
+								{done}/{total}
+							</span>
+							<span class="toc-bar" aria-hidden="true">
+								<i style:width="{pct}%"></i>
+							</span>
+						</a>
+					</li>
+				{/each}
+			</ol>
+		</div>
+	{/each}
+{/snippet}
 
 <svelte:head>
 	<title>Your lessons · Taysir</title>
@@ -140,17 +216,6 @@
 	<aside class="home-sidebar" aria-label="Overview and contents">
 		{#if next}
 			<section class="continue-hero" aria-label="Current lesson">
-				<svg class="hero-arch" viewBox="0 0 120 120" aria-hidden="true">
-					<path d="M20 116V58C20 34 38 18 60 6C82 18 100 34 100 58V116Z" class="arch-niche" />
-					<path
-						d="M36 104V62a24 24 0 0 1 48 0v42"
-						fill="none"
-						stroke="currentColor"
-						stroke-width="7"
-						stroke-linecap="round"
-						opacity="0.35"
-					/>
-				</svg>
 				<div class="hero-eyebrow">
 					Up next{#if nextUnit}
 						· {nextUnit.title}{/if}
@@ -235,139 +300,78 @@
 			</section>
 		{/if}
 
-		<nav class="contents-inline" class:folded={!contentsOpen} aria-label="Contents">
-			<div class="contents-head">
-				<button
-					type="button"
-					class="contents-collapse-btn"
-					aria-expanded={contentsOpen}
-					aria-controls="contents-inline-body"
-					onclick={() => (contentsOpen = !contentsOpen)}
-				>
-					<span class="contents-title">Contents</span>
-					<svg class="chevron" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
-						<path
-							d="M6 9l6 6 6-6"
-							fill="none"
-							stroke="currentColor"
-							stroke-width="2.2"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-						/>
-					</svg>
-				</button>
-				{#if contentsOpen}
-					<div class="fold-actions" role="group" aria-label="Expand or collapse parts">
-						<button
-							type="button"
-							class="icon-fold-btn"
-							aria-label="Expand all parts"
-							title="Expand all parts"
-							disabled={openGroups.size === groupedToc.length}
-							onclick={() => {
-								for (const g of groupedToc) openGroups.add(g.id);
-							}}
-						>
-							<svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true">
-								<path
-									d="M7 9l5-5 5 5M7 15l5 5 5-5"
-									fill="none"
-									stroke="currentColor"
-									stroke-width="2.2"
-									stroke-linecap="round"
-									stroke-linejoin="round"
-								/>
-							</svg>
-						</button>
-						<button
-							type="button"
-							class="icon-fold-btn"
-							aria-label="Collapse all parts"
-							title="Collapse all parts"
-							disabled={openGroups.size === 0}
-							onclick={() => openGroups.clear()}
-						>
-							<svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true">
-								<path
-									d="M7 4l5 5 5-5M7 20l5-5 5 5"
-									fill="none"
-									stroke="currentColor"
-									stroke-width="2.2"
-									stroke-linecap="round"
-									stroke-linejoin="round"
-								/>
-							</svg>
-						</button>
-					</div>
-				{/if}
-			</div>
-			<div id="contents-inline-body" class="contents-body" hidden={!contentsOpen}>
-				{#each groupedToc as group (group.id)}
-					{@const isGroupOpen = openGroups.has(group.id)}
-					<div
-						class="contents-group"
-						class:folded={!isGroupOpen}
-						class:here={!isGroupOpen && group.here}
+		{#if isDesktop}
+			<nav class="contents-inline" class:folded={!contentsOpen} aria-label="Contents">
+				<div class="contents-head">
+					<button
+						type="button"
+						class="contents-collapse-btn"
+						aria-expanded={contentsOpen}
+						aria-controls="contents-inline-body"
+						onclick={() => (contentsOpen = !contentsOpen)}
 					>
-						<button
-							type="button"
-							class="contents-group-head"
-							aria-expanded={isGroupOpen}
-							aria-controls="toc-group-{group.id}"
-							onclick={() => toggleGroup(group.id)}
-						>
-							<span class="contents-group-name">
-								{group.title}
-								{#if !isGroupOpen && group.here}
-									<b> · Here</b>
-								{/if}
-							</span>
-							<span class="toc-count" class:finished={group.finished}>
-								{group.done}/{group.total}
-							</span>
-							<svg class="chevron" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
-								<path
-									d="M6 9l6 6 6-6"
-									fill="none"
-									stroke="currentColor"
-									stroke-width="2.2"
-									stroke-linecap="round"
-									stroke-linejoin="round"
-								/>
-							</svg>
-						</button>
-						<ol id="toc-group-{group.id}" class="toc-list" hidden={!isGroupOpen}>
-							{#each group.items as { unit, done, total, pct, isCurrent, finished } (unit.id)}
-								<li>
-									<a
-										class="toc-row"
-										class:here={isCurrent}
-										href="#unit-sec-{unit.id}"
-										onclick={(e) => {
-											e.preventDefault();
-											void jumpToUnit(unit.id);
-										}}
-									>
-										<span class="toc-name">
-											{unit.title}
-											{#if isCurrent}
-												<b> · You are here</b>
-											{/if}
-										</span>
-										<span class="toc-count" class:finished>
-											{done}/{total}
-										</span>
-										<span class="toc-bar" aria-hidden="true">
-											<i style:width="{pct}%"></i>
-										</span>
-									</a>
-								</li>
-							{/each}
-						</ol>
-					</div>
-				{/each}
-			</div>
-		</nav>
+						<span class="contents-title">Contents</span>
+						<svg class="chevron" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+							<path
+								d="M6 9l6 6 6-6"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2.2"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+							/>
+						</svg>
+					</button>
+					{#if contentsOpen}
+						<div class="fold-actions" role="group" aria-label="Expand or collapse parts">
+							<button
+								type="button"
+								class="icon-fold-btn"
+								aria-label="Expand all parts"
+								title="Expand all parts"
+								disabled={openGroups.size === groupedToc.length}
+								onclick={() => {
+									for (const g of groupedToc) openGroups.add(g.id);
+								}}
+							>
+								<svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true">
+									<path
+										d="M7 9l5-5 5 5M7 15l5 5 5-5"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2.2"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+									/>
+								</svg>
+							</button>
+							<button
+								type="button"
+								class="icon-fold-btn"
+								aria-label="Collapse all parts"
+								title="Collapse all parts"
+								disabled={openGroups.size === 0}
+								onclick={() => openGroups.clear()}
+							>
+								<svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true">
+									<path
+										d="M7 4l5 5 5-5M7 20l5-5 5 5"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2.2"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+									/>
+								</svg>
+							</button>
+						</div>
+					{/if}
+				</div>
+				<div id="contents-inline-body" class="contents-body" hidden={!contentsOpen}>
+					{@render tocGroupsList('toc-inline')}
+				</div>
+			</nav>
+		{/if}
 	</aside>
 
 	<div class="home-main">
@@ -478,6 +482,87 @@
 			</section>
 		{/each}
 	</div>
+
+	{#if !isDesktop}
+		<dialog
+			bind:this={contentsDialog}
+			class="contents"
+			aria-labelledby="contents-dialog-title"
+			onclick={(e) => {
+				if (e.target === e.currentTarget) contentsDialog?.close();
+			}}
+		>
+			<div class="contents-inner">
+				<div class="contents-head">
+					<h2 id="contents-dialog-title">Contents</h2>
+					<div class="contents-head-right">
+						<div class="fold-actions" role="group" aria-label="Expand or collapse parts">
+							<button
+								type="button"
+								class="icon-fold-btn"
+								aria-label="Expand all parts"
+								title="Expand all parts"
+								disabled={openGroups.size === groupedToc.length}
+								onclick={() => {
+									for (const g of groupedToc) openGroups.add(g.id);
+								}}
+							>
+								<svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true">
+									<path
+										d="M7 9l5-5 5 5M7 15l5 5 5-5"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2.2"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+									/>
+								</svg>
+							</button>
+							<button
+								type="button"
+								class="icon-fold-btn"
+								aria-label="Collapse all parts"
+								title="Collapse all parts"
+								disabled={openGroups.size === 0}
+								onclick={() => openGroups.clear()}
+							>
+								<svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true">
+									<path
+										d="M7 4l5 5 5-5M7 20l5-5 5 5"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2.2"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+									/>
+								</svg>
+							</button>
+						</div>
+						<button
+							type="button"
+							class="icon-fold-btn close-dialog-btn"
+							aria-label="Close"
+							title="Close"
+							onclick={() => contentsDialog?.close()}
+						>
+							<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+								<path
+									d="M6 6l12 12M18 6L6 18"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="2.2"
+									stroke-linecap="round"
+								/>
+							</svg>
+						</button>
+					</div>
+				</div>
+				<div class="contents-body">
+					{@render tocGroupsList('toc-modal')}
+				</div>
+			</div>
+		</dialog>
+	{/if}
 </main>
 
 <style>
@@ -492,31 +577,14 @@
 		color: #f4f1ea;
 		box-shadow: var(--shadow);
 	}
-	.continue-hero > :not(.hero-arch) {
-		position: relative;
-	}
-	.hero-arch {
-		position: absolute;
-		right: -18px;
-		top: -14px;
-		width: 124px;
-		height: 124px;
-		color: #e7a72a;
-		pointer-events: none;
-	}
-	.arch-niche {
-		fill: rgba(10, 32, 25, 0.45);
-	}
 	.hero-eyebrow {
 		font-size: 0.82rem;
 		font-weight: 600;
 		color: #cfe0d8;
-		padding-right: 4.5rem;
 	}
 	.hero-title {
 		display: grid;
 		gap: 0.15rem;
-		padding-right: 4.5rem;
 	}
 	.hero-title strong {
 		font-family: var(--font-display);
@@ -692,6 +760,38 @@
 		align-items: center;
 		justify-content: space-between;
 		gap: 0.5rem;
+	}
+	.contents-head h2 {
+		margin: 0;
+		font-size: 1.25rem;
+	}
+	.contents-head-right {
+		display: flex;
+		align-items: center;
+		gap: 0.4rem;
+	}
+	.contents {
+		width: 100%;
+		max-width: 520px;
+		max-height: 85dvh;
+		margin: auto auto 0;
+		padding: 0;
+		border: 0;
+		border-radius: 24px 24px 0 0;
+		background: var(--surface);
+		color: var(--ink);
+		box-shadow: 0 -10px 32px rgba(0, 0, 0, 0.25);
+	}
+	.contents::backdrop {
+		background: rgba(0, 0, 0, 0.42);
+	}
+	.contents-inner {
+		display: grid;
+		gap: 1rem;
+		padding: 0.9rem 1rem max(1.5rem, env(safe-area-inset-bottom));
+	}
+	.close-dialog-btn {
+		color: var(--ink-soft);
 	}
 	.contents-collapse-btn {
 		display: inline-flex;
