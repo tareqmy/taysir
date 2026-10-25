@@ -10,6 +10,9 @@ export default defineConfig({
 				runes: ({ filename }) =>
 					filename.split(/[/\\]/).includes('node_modules') ? undefined : true
 			},
+			paths: {
+				base: (process.env.BASE_PATH || '') as '' | `/${string}`
+			},
 			// A single-page app: progress lives in the browser, so every route is rendered client-side.
 			adapter: adapter({ fallback: 'index.html' })
 		})

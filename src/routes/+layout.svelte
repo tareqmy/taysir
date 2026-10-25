@@ -45,7 +45,7 @@
 	});
 
 	$effect(() => {
-		if (app.needsPlacement && !openPaths.includes(page.url.pathname)) {
+		if (app.needsPlacement && !openPaths.includes(page.route.id ?? '')) {
 			goto(resolve('/welcome'), { replace: true });
 		}
 	});
