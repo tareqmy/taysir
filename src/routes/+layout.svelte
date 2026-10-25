@@ -50,8 +50,22 @@
 	});
 
 	const dueCount = $derived(app.ready ? app.dueCards.length : 0);
-	/** Updating reloads the page, which would start a lesson or review again. */
-	const busy = $derived(page.route.id === '/lesson/[id]' || page.route.id === '/review');
+	/** Updating reloads the page, which would start a lesson, a review or a practice session again. */
+	const busy = $derived(['/lesson/[id]', '/review', '/practice'].includes(page.route.id ?? ''));
+	const isHome = $derived(page.route.id === '/');
+
+	let topEl = $state<HTMLElement>();
+
+	onMount(() => {
+		if (!topEl) return;
+		const sync = () => {
+			if (topEl) document.documentElement.style.setProperty('--top-h', `${topEl.offsetHeight}px`);
+		};
+		sync();
+		const ro = new ResizeObserver(sync);
+		ro.observe(topEl);
+		return () => ro.disconnect();
+	});
 </script>
 
 <svelte:head>
@@ -63,22 +77,55 @@
 
 <a class="skip" href="#main">Skip to content</a>
 
-<header class="top">
-	<a class="brand" href={resolve('/')}>
-		<span class="ar" lang="ar">تيسير</span>
-		<span class="name">Taysir</span>
-	</a>
-	<nav aria-label="Main">
-		<a href={resolve('/review')}>
-			Review
-			{#if dueCount > 0}
-				<span class="badge" aria-hidden="true">{dueCount}</span>
-				<span class="visually-hidden">({dueCount} due)</span>
-			{/if}
+<header class="top" bind:this={topEl}>
+	<div class="top-inner" class:wide={isHome}>
+		<a class="brand" href={resolve('/')}>
+			<svg class="logo" viewBox="0 0 120 120" width="42" height="42" aria-hidden="true">
+				<defs>
+					<radialGradient id="taysir-glow" cx="50%" cy="48%" r="42%">
+						<stop offset="0%" stop-color="#e7a72a" stop-opacity="0.42" />
+						<stop offset="100%" stop-color="#e7a72a" stop-opacity="0" />
+					</radialGradient>
+				</defs>
+				<rect width="120" height="120" rx="27" fill="#1d5a48" />
+				<path d="M24 106V60C24 38 40 24 60 12C80 24 96 38 96 60V106Z" fill="#123f33" />
+				<circle cx="60" cy="58" r="34" fill="url(#taysir-glow)" />
+				<path
+					d="M36 92V60a24 24 0 0 1 48 0v32"
+					fill="none"
+					stroke="#e7a72a"
+					stroke-width="7.5"
+					stroke-linecap="round"
+				/>
+				<path
+					d="M48 92V62a12 12 0 0 1 24 0v30"
+					fill="none"
+					stroke="#f7ebcf"
+					stroke-width="5.5"
+					stroke-linecap="round"
+					opacity="0.85"
+				/>
+			</svg>
+			<span class="brand-text">
+				<span class="brand-title">
+					<span class="name">Taysir</span>
+					<span class="ar" lang="ar">تيسير</span>
+				</span>
+				<span class="brand-sub">Quranic Arabic step by step</span>
+			</span>
 		</a>
-		<a href={resolve('/about')}>About</a>
-		<a href={resolve('/settings')}>Settings</a>
-	</nav>
+		<nav aria-label="Main">
+			<a href={resolve('/review')} class:active={page.route.id === '/review'}>
+				Review
+				{#if dueCount > 0}
+					<span class="badge" aria-hidden="true">{dueCount}</span>
+					<span class="visually-hidden">({dueCount} due)</span>
+				{/if}
+			</a>
+			<a href={resolve('/about')} class:active={page.route.id === '/about'}>About</a>
+			<a href={resolve('/settings')} class:active={page.route.id === '/settings'}>Settings</a>
+		</nav>
+	</div>
 </header>
 
 <StorageNotice />
@@ -93,47 +140,77 @@
 
 <style>
 	.top {
+		position: sticky;
+		top: 0;
+		z-index: 30;
+		background: var(--bg);
+		border-bottom: 1px solid var(--line);
+	}
+	.top-inner {
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
 		justify-content: space-between;
-		gap: 0 1rem;
+		gap: 0.5rem 1rem;
 		max-width: 44rem;
 		margin: 0 auto;
-		padding: 0.75rem 1rem;
+		padding: 0.65rem 1rem;
+	}
+	@media (min-width: 56rem) {
+		.top-inner.wide {
+			max-width: 70rem;
+			padding: 0.75rem 2rem;
+		}
 	}
 	.brand {
 		display: inline-flex;
-		align-items: baseline;
-		gap: 0.6rem;
-		color: var(--primary);
+		align-items: center;
+		gap: 0.65rem;
+		color: var(--ink);
 		text-decoration: none;
 	}
-	.brand .ar {
-		font-size: 1.9rem;
-		line-height: 1.2;
+	.logo {
+		flex: none;
+		width: 2.65rem;
+		height: 2.65rem;
+		border-radius: 0.65rem;
+	}
+	.brand-text {
+		display: grid;
+		gap: 0.05rem;
+	}
+	.brand-title {
+		display: inline-flex;
+		align-items: baseline;
+		gap: 0.45rem;
 	}
 	.brand .name {
 		font-family: var(--font-display);
-		font-size: 1.15rem;
-		font-weight: 600;
-		letter-spacing: 0.02em;
+		font-size: 1.3rem;
+		font-weight: 700;
+		line-height: 1.15;
+		color: var(--ink);
 	}
-	/* On a narrow phone the Arabic wordmark is enough; the name stays for screen readers. */
-	@media (max-width: 26rem) {
-		.brand .name {
-			position: absolute;
-			width: 1px;
-			height: 1px;
-			overflow: hidden;
-			clip: rect(0 0 0 0);
-			white-space: nowrap;
+	.brand .ar {
+		font-size: 1.25rem;
+		line-height: 1;
+		color: var(--primary);
+	}
+	.brand-sub {
+		font-size: 0.76rem;
+		line-height: 1.2;
+		color: var(--ink-soft);
+	}
+	/* On a narrow phone keep the header compact. */
+	@media (max-width: 28rem) {
+		.brand-sub {
+			display: none;
 		}
 	}
 	nav {
 		display: flex;
 		flex-wrap: wrap;
-		gap: 0 0.25rem;
+		gap: 0.25rem;
 		align-items: center;
 		margin-left: auto;
 	}
@@ -141,24 +218,37 @@
 	nav a {
 		display: inline-flex;
 		align-items: center;
-		min-height: 2.75rem;
-		padding: 0 0.5rem;
+		min-height: 2.35rem;
+		padding: 0 0.7rem;
+		border-radius: 10px;
+		border: 1px solid transparent;
 		color: var(--ink-soft);
 		text-decoration: none;
-		font-size: 0.95rem;
+		font-size: 0.9rem;
+		font-weight: 600;
+		transition:
+			background-color 0.15s,
+			color 0.15s,
+			border-color 0.15s;
 	}
 	nav a:hover {
+		background: var(--surface);
+		border-color: var(--line);
+		color: var(--primary);
+	}
+	nav a.active {
+		background: var(--primary-soft);
 		color: var(--primary);
 	}
 	.badge {
 		display: inline-block;
-		min-width: 1.4rem;
-		padding: 0 0.4rem;
-		margin-left: 0.2rem;
+		min-width: 1.35rem;
+		padding: 0.05rem 0.4rem;
+		margin-left: 0.3rem;
 		border-radius: 999px;
 		background: var(--accent-ink);
 		color: var(--bg);
-		font-size: 0.75rem;
+		font-size: 0.74rem;
 		font-weight: 700;
 		text-align: center;
 	}
