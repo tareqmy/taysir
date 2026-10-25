@@ -8,6 +8,7 @@
 	import { arabicSize } from '#lib/arabic-size.svelte';
 	import StorageNotice from '#lib/components/StorageNotice.svelte';
 	import UpdateBanner from '#lib/components/UpdateBanner.svelte';
+	import { lessonById } from '#lib/content/course';
 	import { appInstall } from '#lib/install.svelte';
 	import { app } from '#lib/progress/instance';
 	import { appUpdate } from '#lib/update.svelte';
@@ -80,14 +81,96 @@
 	function openMobileContents() {
 		document.querySelector<HTMLDialogElement>('dialog.contents')?.showModal();
 	}
-</script>
 
-<svelte:head>
-	<meta
-		name="description"
-		content="Learn the vocabulary and grammar of Quranic Arabic through real verses, with spaced repetition."
-	/>
-</svelte:head>
+	const DEFAULT_DESCRIPTION =
+		'Learn Quranic Arabic vocabulary, grammar, and morphology step by step through real verses from Al-Fatiha, Juz Amma, and Juz Tabarak with spaced repetition.';
+
+	const routeSeo = $derived.by(() => {
+		const routeId = page.route.id;
+		if (routeId === '/lesson/[id]') {
+			const lesson = lessonById(page.params.id ?? '');
+			if (lesson) {
+				return {
+					title: `${lesson.title} · Taysir`,
+					description: `${lesson.title}: ${lesson.subtitle}. Learn Quranic Arabic vocabulary, grammar, and morphology through real Quran verses in Taysir.`
+				};
+			}
+		}
+		if (routeId === '/about') {
+			return {
+				title: 'About · Taysir',
+				description:
+					'About Taysir (تيسير): a free, offline-capable Quranic Arabic learning app teaching vocabulary, grammar, and 3-letter roots from Surahs 1 and 67–114.'
+			};
+		}
+		if (routeId === '/welcome') {
+			return {
+				title: 'Welcome · Taysir',
+				description:
+					'Start learning Quranic Arabic with Taysir. Choose your starting point—from the Arabic alphabet or straight into Al-Fatiha—and set your daily goal.'
+			};
+		}
+		if (routeId === '/words') {
+			return {
+				title: 'Your words · Taysir',
+				description:
+					'Browse and search your learned Quranic Arabic vocabulary words, roots, meanings, and memory strength in Taysir.'
+			};
+		}
+		if (routeId === '/verses') {
+			return {
+				title: 'Verses you know · Taysir',
+				description:
+					'Track every Quran verse you understand word for word across Al-Fatiha, Juz Amma, and Juz Tabarak in Taysir.'
+			};
+		}
+		if (routeId === '/progress') {
+			return {
+				title: 'Your progress · Taysir',
+				description:
+					'View your Quranic Arabic learning progress, daily streak, vocabulary mastery, and surah-by-surah coverage in Taysir.'
+			};
+		}
+		if (routeId === '/review') {
+			return {
+				title: 'Review · Taysir',
+				description:
+					'Review due Quranic Arabic vocabulary and grammar cards with FSRS spaced repetition in Taysir.'
+			};
+		}
+		if (routeId === '/practice') {
+			return {
+				title: 'Extra practice · Taysir',
+				description:
+					'Practise your weakest Quranic Arabic vocabulary words and listening exercises in Taysir.'
+			};
+		}
+		if (routeId === '/settings') {
+			return {
+				title: 'Settings · Taysir',
+				description:
+					'Adjust your daily goal, Arabic font size, offline installation, and progress backup settings in Taysir.'
+			};
+		}
+		return {
+			title: 'Your lessons · Taysir',
+			description: DEFAULT_DESCRIPTION
+		};
+	});
+
+	$effect(() => {
+		const { title, description } = routeSeo;
+		const setMeta = (selector: string, content: string) => {
+			const el = document.querySelector<HTMLMetaElement>(selector);
+			if (el) el.content = content;
+		};
+		setMeta('meta[name="description"]', description);
+		setMeta('meta[property="og:title"]', title);
+		setMeta('meta[property="og:description"]', description);
+		setMeta('meta[name="twitter:title"]', title);
+		setMeta('meta[name="twitter:description"]', description);
+	});
+</script>
 
 <a class="skip" href="#main">Skip to content</a>
 

@@ -5,6 +5,81 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="text-scale" content="scale" />
 		<meta name="theme-color" content="#1f5c4a" />
+		<title>Taysir · Learn Quranic Arabic</title>
+		<meta
+			name="description"
+			content="Learn Quranic Arabic vocabulary, grammar, and morphology step by step through real verses from Al-Fatiha, Juz Amma, and Juz Tabarak with spaced repetition."
+		/>
+		<meta
+			name="keywords"
+			content="Quranic Arabic, learn Arabic, Quran vocabulary, Arabic grammar, Juz Amma, Juz Tabarak, Al-Fatiha, spaced repetition, FSRS, Arabic roots, sarf, nahw, Taysir"
+		/>
+		<meta name="author" content="Tareq Mohammad Yousuf" />
+		<meta name="robots" content="index, follow" />
+
+		<!-- Open Graph / Facebook -->
+		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content="Taysir" />
+		<meta property="og:title" content="Taysir · Learn Quranic Arabic" />
+		<meta
+			property="og:description"
+			content="Learn Quranic Arabic vocabulary, grammar, and morphology step by step through real verses from Al-Fatiha, Juz Amma, and Juz Tabarak with spaced repetition."
+		/>
+		<meta property="og:image" content="%sveltekit.assets%/icon-512.png" />
+		<meta property="og:image:width" content="512" />
+		<meta property="og:image:height" content="512" />
+		<meta property="og:image:alt" content="Taysir · Learn Quranic Arabic" />
+		<meta property="og:locale" content="en_US" />
+
+		<!-- Twitter -->
+		<meta name="twitter:card" content="summary" />
+		<meta name="twitter:title" content="Taysir · Learn Quranic Arabic" />
+		<meta
+			name="twitter:description"
+			content="Learn Quranic Arabic vocabulary, grammar, and morphology step by step through real verses from Al-Fatiha, Juz Amma, and Juz Tabarak with spaced repetition."
+		/>
+		<meta name="twitter:image" content="%sveltekit.assets%/icon-512.png" />
+
+		<!-- JSON-LD Structured Data Schema -->
+		<script type="application/ld+json">
+			{
+				"@context": "https://schema.org",
+				"@graph": [
+					{
+						"@type": "SoftwareApplication",
+						"name": "Taysir",
+						"alternateName": ["Taysir: understand the Arabic of the Quran", "تيسير"],
+						"operatingSystem": "All",
+						"applicationCategory": "EducationalApplication",
+						"inLanguage": ["en", "ar"],
+						"description": "Learn Quranic Arabic vocabulary, grammar, and morphology step by step through real verses from Al-Fatiha, Juz Amma, and Juz Tabarak with spaced repetition.",
+						"offers": {
+							"@type": "Offer",
+							"price": "0.00",
+							"priceCurrency": "USD"
+						},
+						"author": {
+							"@type": "Person",
+							"name": "Tareq Mohammad Yousuf",
+							"url": "https://tareqmy.com"
+						}
+					},
+					{
+						"@type": "Course",
+						"name": "Taysir Quranic Arabic Course",
+						"description": "A step-by-step Quranic Arabic course covering the Arabic alphabet, Al-Fatiha, Juz Amma (Surahs 78–114), the 29th Juz (Surahs 67–77), Quranic syntax, verb forms, weak roots, broken plurals, and FSRS spaced-repetition vocabulary review.",
+						"inLanguage": ["en", "ar"],
+						"isAccessibleForFree": true,
+						"provider": {
+							"@type": "Person",
+							"name": "Tareq Mohammad Yousuf",
+							"url": "https://tareqmy.com"
+						}
+					}
+				]
+			}
+		</script>
+
 		<link rel="icon" href="%sveltekit.assets%/icon.svg" type="image/svg+xml" />
 		<link rel="apple-touch-icon" href="%sveltekit.assets%/apple-touch-icon.png" />
 		<!-- With credentials, so the manifest still loads when the site sits behind a login such as
@@ -26,5 +101,15 @@
 	</head>
 	<body data-sveltekit-preload-data="hover">
 		<div style="display: contents">%sveltekit.body%</div>
+		<noscript>
+			<main>
+				<h1>Taysir (تيسير) · Learn Quranic Arabic Step by Step</h1>
+				<p>
+					Learn the vocabulary, grammar, and morphology of the Quran through real verses from
+					Al-Fatiha, Juz Amma (Surahs 78–114), and the 29th Juz (Surahs 67–77), with audio
+					recitation and spaced-repetition review.
+				</p>
+			</main>
+		</noscript>
 	</body>
 </html>
