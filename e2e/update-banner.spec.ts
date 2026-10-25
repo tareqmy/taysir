@@ -228,3 +228,24 @@ test('never hides the control that has keyboard focus under the offer', async ({
 		await auditTabOrder(page, `the lesson list, ${size.width}px, with the update offer`);
 	}
 });
+
+test('warns that updating restarts a lesson, a review or practice, and nothing else', async ({
+	page,
+	site
+}) => {
+	await openInstalled(page, site);
+	await deployAndNotice(page, site);
+	const warning = 'Updating restarts what you are doing now.';
+	for (const [path, busy] of [
+		['/', false],
+		['/lesson/fatiha-1', true],
+		['/review', true],
+		['/practice', true],
+		['/settings', false]
+	] as const) {
+		await page.goto(path);
+		await expect(banner(page), path).toBeVisible();
+		if (busy) await expect(banner(page), path).toContainText(warning);
+		else await expect(banner(page), path).not.toContainText(warning);
+	}
+});

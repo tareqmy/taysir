@@ -5,7 +5,7 @@
 # `HOST=0.0.0.0` makes a server reachable from a phone on the same network, but note that a
 # service worker only runs on localhost or HTTPS, so offline and update behaviour cannot be
 # tried that way.
-PORT ?= 5173
+PORT ?= 5174
 PREVIEW_PORT ?= 4173
 HOST ?= localhost
 # What opens a tunnel to the preview server. Cloudflare's quick tunnel needs no account
