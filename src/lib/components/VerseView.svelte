@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { playAudio, verseAudioUrl, wordAudioUrl } from '../audio';
-	import { surahName, verse as verseData } from '../data';
+	import { isSajdahVerse, surahName, verse as verseData } from '../data';
 	import AudioButton from './AudioButton.svelte';
 
 	let { surah, ayah, title, note }: { surah: number; ayah: number; title?: string; note?: string } =
@@ -8,6 +8,7 @@
 
 	const verse = $derived(verseData(surah, ayah));
 	const name = $derived(surahName(surah));
+	const sajdah = $derived(isSajdahVerse(surah, ayah));
 	let offline = $state(false);
 
 	async function playWord(n: number) {
@@ -19,7 +20,12 @@
 	<header>
 		<div>
 			{#if title}<h3>{title}</h3>{/if}
-			<span class="pill">{name} {surah}:{ayah}</span>
+			<div class="pills">
+				<span class="pill">{name} {surah}:{ayah}</span>
+				{#if sajdah}
+					<span class="pill">Verse of prostration</span>
+				{/if}
+			</div>
 		</div>
 		<AudioButton url={verseAudioUrl(surah, ayah)} label="Listen to the whole verse" />
 	</header>
@@ -41,6 +47,14 @@
 		{/each}
 	</ol>
 
+	{#if sajdah}
+		<p class="sajdah small">
+			<strong>Prostration of recitation (sajdah tilāwah):</strong> Reciting or hearing this verse in Arabic
+			requires one prostration to Allah. With wuḍūʾ, face the qiblah, say Allāhu akbar without raising
+			your hands, prostrate once and say Subḥāna Rabbiyal-Aʿlā three times, then say Allāhu akbar as you
+			rise (without taslīm).
+		</p>
+	{/if}
 	{#if offline}
 		<p class="muted small" role="status">Audio needs an internet connection.</p>
 	{/if}
@@ -57,6 +71,20 @@
 	}
 	header h3 {
 		margin-bottom: 0.25rem;
+	}
+	.pills {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.4rem;
+	}
+	.sajdah {
+		margin: 0.5rem 0 0;
+		padding: 0.6rem 0.75rem;
+		border-left: 4px solid var(--accent);
+		border-radius: 0 8px 8px 0;
+		background: var(--surface-2);
+		color: var(--ink);
+		overflow-wrap: anywhere;
 	}
 	.words {
 		display: flex;

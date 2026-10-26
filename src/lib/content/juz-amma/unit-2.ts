@@ -76,6 +76,11 @@ export const unitSpec: UnitSpec = {
 					type: 'rule',
 					title: 'Saying “do not”',
 					body: 'Before a verb, {96:19:2} means “do not” and forbids something, as in {96:19:3}, “do not obey him”. Two more commands follow, {96:19:4} and {96:19:5}, each joined to “and”.'
+				},
+				{
+					type: 'text',
+					title: 'Verse 19 requires a prostration',
+					body: 'Verse 19 ends with {96:19:4} (“and prostrate”) and {96:19:5} (“and draw near”), and is one of the verses of prostration (sajdah tilāwah) in the Quran. Reciting this verse in Arabic or hearing it recited requires one prostration to Allah: with wuḍūʾ, face the qiblah, say Allāhu akbar without raising your hands, prostrate once and say Subḥāna Rabbiyal-Aʿlā (“Glory be to my Lord, the Most High”) three times, then say Allāhu akbar and rise without taslīm.'
 				}
 			]
 		},

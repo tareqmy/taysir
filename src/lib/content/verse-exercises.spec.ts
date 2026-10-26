@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { verse } from '../data';
+import { isSajdahVerse, verse } from '../data';
 import { lessons } from './course';
 import { verseExercises } from './verse-exercises';
 import type { Exercise, Lesson } from './types';
@@ -55,6 +55,22 @@ describe('verse-level exercises', () => {
 	it('use all five kinds of question across the course', () => {
 		for (const kind of ['build', 'which', 'fill', 'tap', 'listen'])
 			expect(ofKind(kind).length).toBeGreaterThan(20);
+	});
+
+	it('leave out verses of prostration from questions and wrong choices', () => {
+		for (const { lesson, exercise } of all) {
+			const v = verseOf(exercise);
+			expect(isSajdahVerse(v.surah, v.ayah), `${lesson.id} ${exercise.id}`).toBe(false);
+			if (exercise.kind === 'choose') {
+				for (const choice of exercise.choices) {
+					if (!choice.id.startsWith('v:')) continue;
+					const [, surah, ayah] = choice.id.split(':').map(Number);
+					expect(isSajdahVerse(surah, ayah), `${lesson.id} ${exercise.id} ${choice.id}`).toBe(
+						false
+					);
+				}
+			}
+		}
 	});
 });
 

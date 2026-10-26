@@ -1,5 +1,5 @@
 import { verseAudioUrl } from '../audio';
-import { verse as findVerse, verseData } from '../data';
+import { isSajdahVerse, verse as findVerse, verseData } from '../data';
 import type { Verse, Word } from '../data/types';
 import { rngFor, shuffle, type Rng } from '../random';
 import { ar, en } from './exercises';
@@ -39,12 +39,15 @@ interface Context {
 	rng: Rng;
 }
 
-/** The verses a lesson shows, in order and without repeats. */
+/**
+ * The verses a lesson shows, in order and without repeats, leaving out verses of prostration so
+ * practice drills do not repeatedly play or ask learners to read a sajdah verse.
+ */
 function shownVerses(lesson: Lesson): Verse[] {
 	const seen = new Set<string>();
 	const verses: Verse[] = [];
 	for (const block of lesson.intro) {
-		if (block.type !== 'verse') continue;
+		if (block.type !== 'verse' || isSajdahVerse(block.surah, block.ayah)) continue;
 		const found = findVerse(block.surah, block.ayah);
 		if (seen.has(refOf(found))) continue;
 		seen.add(refOf(found));
@@ -111,6 +114,7 @@ function decoyVerses(v: Verse, ctx: Context): Verse[] | undefined {
 		verseData.verses.filter(
 			(o) =>
 				o !== v &&
+				!isSajdahVerse(o.surah, o.ayah) &&
 				o.words.length >= 2 &&
 				o.words.length <= 9 &&
 				englishLine(o) !== line &&

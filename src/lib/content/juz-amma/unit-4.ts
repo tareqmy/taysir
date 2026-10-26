@@ -239,6 +239,11 @@ export const unitSpec: UnitSpec = {
 			notes: [
 				{
 					type: 'text',
+					title: 'Verse 21 requires a prostration',
+					body: 'Verse 21 ({84:21:5} {84:21:6}, “they do not prostrate”) is a verse of prostration (sajdah tilāwah). As at the end of Al-Alaq, reciting this verse in Arabic or hearing it recited requires one prostration to Allah: with wuḍūʾ, face the qiblah, say Allāhu akbar without raising your hands, prostrate once and say Subḥāna Rabbiyal-Aʿlā three times, then say Allāhu akbar and rise without taslīm.'
+				},
+				{
+					type: 'text',
 					title: 'A phrase you have met',
 					body: 'The three words {84:25:3} {84:25:4} {84:25:5} (“believed and did the righteous deeds”) also appear in Al-Buruj, verse 11, as {85:11:3} {85:11:4} {85:11:5}.'
 				}

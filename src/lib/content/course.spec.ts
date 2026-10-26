@@ -1,5 +1,14 @@
 import { describe, expect, it } from 'vitest';
-import { lexemeById, lexicon, phraseWords, segmentsOf, surahName, verse, verseData } from '../data';
+import {
+	isSajdahVerse,
+	lexemeById,
+	lexicon,
+	phraseWords,
+	segmentsOf,
+	surahName,
+	verse,
+	verseData
+} from '../data';
 import { seeded } from '../random';
 import { letterById, letterExample, letters } from './alphabet';
 import { parseCardId } from './cards';
@@ -284,6 +293,24 @@ describe('course', () => {
 			expect(root).toBeDefined();
 			if (root?.type !== 'root') continue;
 			for (const id of root.ids) expect(lexemeById(id).root).toBe(root.root);
+		}
+	});
+
+	it('explains the prostration of recitation in every lesson that shows a sajdah verse', () => {
+		const sajdahRefs = verseData.verses
+			.filter((v) => isSajdahVerse(v.surah, v.ayah))
+			.map((v) => `${v.surah}:${v.ayah}`);
+		expect(sajdahRefs).toEqual(['84:21', '96:19']);
+
+		const lessonsWithSajdah = lessons.filter((l) =>
+			l.intro.some((b) => b.type === 'verse' && isSajdahVerse(b.surah, b.ayah))
+		);
+		expect(lessonsWithSajdah.map((l) => l.id)).toEqual(['alaq-5', 'inshiqaq-5']);
+		for (const lesson of lessonsWithSajdah) {
+			const hasNote = lesson.intro.some(
+				(b) => (b.type === 'text' || b.type === 'rule') && b.body.includes('sajdah tilāwah')
+			);
+			expect(hasNote, lesson.id).toBe(true);
 		}
 	});
 });

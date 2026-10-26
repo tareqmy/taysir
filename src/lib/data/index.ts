@@ -47,7 +47,7 @@ export function formatRoot(root: string): string {
 	return [...root].join('-');
 }
 
-export { surahName } from './surahs';
+export { isSajdahVerse, surahName } from './surahs';
 
 export const DATA_ATTRIBUTION = {
 	corpus: 'Quranic Arabic Corpus v0.4 by Kais Dukes (GNU GPL), https://corpus.quran.com',

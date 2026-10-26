@@ -56,3 +56,13 @@ export function surahName(surah: number): string {
 	if (!name) throw new Error(`No name for surah ${surah}`);
 	return name;
 }
+
+/**
+ * Verses of prostration (sajdah tilāwah) in the surahs the course covers: Al-Inshiqaq 84:21 and
+ * Al-Alaq 96:19. Reciting or hearing one requires a prostration of recitation.
+ */
+const sajdahVerses: ReadonlySet<string> = new Set(['84:21', '96:19']);
+
+export function isSajdahVerse(surah: number, ayah: number): boolean {
+	return sajdahVerses.has(`${surah}:${ayah}`);
+}
