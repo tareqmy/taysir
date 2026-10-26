@@ -139,12 +139,13 @@ Not covered yet: layout at zoom levels (a narrower window at the same font size)
 The app was audited with axe-core on every screen (light and dark, a phone and a desktop window), by keyboard, and with text scaled to 200%. Each part is now automated: axe by `e2e/accessibility.spec.ts`, text size and phone width by `e2e/layout.spec.ts`, and the keyboard by `e2e/keyboard.spec.ts`. A new screen belongs in all three. To keep it that way:
 
 - Text colours are checked against the 4.5:1 contrast rule by `src/lib/colors.spec.ts`. Use `--accent-ink`, not `--accent`, for gold text.
-- Every route sets its own page title, has one `h1`, and the layout has a skip link to `#main`.
+- Every route sets its own page title, has one `h1`, and the layout has a skip link to `#main`. The header sticks to the top of the screen; on a phone its links are icons, with their names kept for screen readers, so it takes one row. A lesson has its own slim bar instead (a way back to the lessons, and one progress bar for the reading and the questions), and the skip link sits above both.
 - Interactive things are native buttons and links, at least 44 px tall on a phone, with a visible focus ring. Answer state is never colour alone: choices carry hidden text ("correct answer"), the matching screen uses `aria-pressed` and announces matches.
 - Things that are drawn rather than written (the progress bars and calendar cells) must reach 3:1 against their background, which `colors.spec.ts` checks. Bars are decoration with the numbers written beside them, and the calendar is a table that describes each day in text: outlined means practised, filled means goal met.
 - After each question, keyboard focus moves to the new question heading, so the next Tab reaches its first answer.
 - A listening question never depends on hearing alone: it has a skip button, and the answer shows the Arabic and its meaning in writing.
 - Layouts reflow rather than scroll sideways: no fixed multi-column grids; use `repeat(auto-fit, minmax(min(100%, Nrem), 1fr))`, `flex-wrap` and `min-width: 0`. Arabic sizes stop growing at very large text, because an Arabic word cannot be broken across lines. Use `.ar-md`, `.ar-lg` or `.ar-xl` for Arabic so the learner's Arabic size applies, and give any grid that holds Arabic tiles a column width derived from `--ar-scale`, as the choice and match views do.
+- Amiri Quran's tails and marks reach almost 0.9em below the baseline, well outside the line the browser lays out. Where English sits under Arabic (a verse word's meaning, a letter's name), give the Arabic that room as padding, as `VerseView` and `LetterFigure` do; `inkTouching` in `e2e/support/layout.ts` measures the real ink against what is under it.
 
 ## Teacher review
 

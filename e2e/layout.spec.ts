@@ -100,7 +100,10 @@ for (const size of SIZES) {
 					await page.getByRole('button', { name: 'Continue' }).click();
 				}
 				await page.getByRole('button', { name: 'Start practice' }).click();
-				await expect(page.getByRole('progressbar', { name: 'Progress' })).toBeVisible();
+				await expect(page.getByRole('progressbar', { name: 'Progress' })).toHaveAttribute(
+					'aria-valuetext',
+					/^Question 1 of/
+				);
 				await fits(page, 'lesson: first question');
 
 				await answerAll(page, listening.exercises.slice(0, listenAt));
@@ -245,5 +248,52 @@ test.describe('a short phone', () => {
 			await continueButton(page).scrollIntoViewIfNeeded();
 			await expect(continueButton(page)).toBeInViewport();
 		});
+	});
+});
+
+test.describe('the bars at the top of a phone screen', () => {
+	test.use({ viewport: { width: 375, height: 812 } });
+
+	test('leave room for the page: one row of menu, and only a slim bar in a lesson', async ({
+		page
+	}) => {
+		await useWideFonts(page);
+		// Something due, so the Review link carries its count.
+		await startWithProgress(page, seededLearner({ dueWords: 3 }).backup);
+
+		// Every link of the menu sits in one row beside the logo, and is still a thumb-sized target.
+		const header = page.getByRole('banner');
+		const logo = await header.getByRole('link', { name: /^Taysir/ }).boundingBox();
+		const menu = page.getByRole('navigation', { name: 'Main' });
+		const controls = await menu.getByRole('link').or(menu.getByRole('button')).all();
+		expect(controls).toHaveLength(4);
+		for (const control of controls) {
+			const box = (await control.boundingBox())!;
+			expect(box.y, `${await control.textContent()} is below the logo`).toBeLessThan(
+				logo!.y + logo!.height / 2
+			);
+			expect(box.width).toBeGreaterThanOrEqual(44);
+			expect(box.height).toBeGreaterThanOrEqual(44);
+		}
+		await expect(menu.getByRole('link', { name: /^Review \(\d+ due\)$/ })).toBeVisible();
+		expect((await header.boundingBox())!.height).toBeLessThanOrEqual(64);
+
+		// The bar of buttons over the lesson list goes up with the page instead of staying under it.
+		const units = page.getByRole('group', { name: 'Unit actions' });
+		await page.mouse.wheel(0, 1500);
+		await expect(units).not.toBeInViewport();
+
+		// A lesson has its own bar instead of the menu: a way back, and how far there is to go.
+		await page.getByRole('link', { name: /^Continue:/ }).click();
+		await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+		await expect(page.getByRole('navigation', { name: 'Main' })).toHaveCount(0);
+		const bar = page.getByRole('banner');
+		await expect(bar.getByRole('progressbar', { name: 'Progress' })).toHaveAttribute(
+			'aria-valuetext',
+			/^Step 1 of \d+$/
+		);
+		expect((await bar.boundingBox())!.height).toBeLessThanOrEqual(60);
+		await bar.getByRole('link', { name: 'All lessons' }).click();
+		await expect(page.getByRole('heading', { name: 'Your lessons' })).toBeAttached();
 	});
 });

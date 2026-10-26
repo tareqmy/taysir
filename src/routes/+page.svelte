@@ -941,7 +941,7 @@
 		background: var(--primary);
 	}
 	.unit-sec {
-		scroll-margin-top: calc(var(--top-h, 4rem) + 3.5rem);
+		scroll-margin-top: calc(var(--top-h, 4rem) + 0.75rem);
 		display: grid;
 		gap: 0.35rem;
 	}
@@ -952,9 +952,6 @@
 		padding: 0.15rem 0.75rem;
 	}
 	.units-bar {
-		position: sticky;
-		top: calc(var(--top-h, 4rem) - 1px);
-		z-index: 20;
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
@@ -1077,6 +1074,16 @@
 			flex-direction: column;
 			gap: 1.25rem;
 			min-width: 0;
+		}
+		/* Kept in view on a wide screen only: on a phone it would take a row of a small screen for
+		   two buttons, and each unit opens and closes on its own heading anyway. */
+		.units-bar {
+			position: sticky;
+			top: calc(var(--top-h, 4rem) - 1px);
+			z-index: 20;
+		}
+		.unit-sec {
+			scroll-margin-top: calc(var(--top-h, 4rem) + 3.5rem);
 		}
 	}
 	@media (max-width: 30rem) {

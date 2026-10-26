@@ -112,6 +112,12 @@
 	.word:hover {
 		background: var(--surface-2);
 	}
+	/* Amiri Quran's tails and marks reach almost 0.9em below the line, far past the bottom of an
+	   ordinary line, so the room below is padding and the meaning under a word never touches it. */
+	.word > .ar {
+		line-height: 1.8;
+		padding-bottom: 0.65em;
+	}
 	/* Plain inline spans, so letters still join across the split; only the colour changes. */
 	.parts {
 		direction: rtl;
@@ -120,7 +126,7 @@
 		color: var(--accent-ink);
 	}
 	.legend {
-		margin-top: 0.5rem;
+		margin-top: 0.35rem;
 		display: inline-flex;
 		flex-direction: row-reverse;
 		gap: 0.5rem;
@@ -133,7 +139,7 @@
 		font-weight: 600;
 	}
 	.gloss {
-		margin-top: 0.5rem;
+		margin-top: 0.35rem;
 		font-family: var(--font-ui);
 		font-size: 0.85rem;
 		color: var(--ink-soft);

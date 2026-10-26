@@ -5,6 +5,7 @@
 	import { app } from '../progress/instance';
 	import BlockView from './BlockView.svelte';
 	import ExerciseRunner from './ExerciseRunner.svelte';
+	import LessonBar, { type LessonProgress } from './LessonBar.svelte';
 
 	let { lesson }: { lesson: Lesson } = $props();
 
@@ -21,6 +22,27 @@
 	const percent = $derived(
 		summary && summary.total > 0 ? Math.round((summary.firstTryCorrect / summary.total) * 100) : 0
 	);
+
+	/** Questions answered and how many there are, as the runner reports them. */
+	// svelte-ignore state_referenced_locally
+	let practice = $state({ done: 0, total: lesson.exercises.length });
+	/** One bar for the whole lesson: the reading steps first, then the questions. */
+	const progress = $derived.by((): LessonProgress => {
+		const reading = lesson.intro.length;
+		const total = reading + practice.total;
+		if (phase === 'learn') {
+			return { done: step, total, text: `Step ${step + 1} of ${reading}` };
+		}
+		if (phase === 'practice') {
+			const question = Math.min(practice.done + 1, practice.total);
+			return {
+				done: reading + practice.done,
+				total,
+				text: `Question ${question} of ${practice.total}`
+			};
+		}
+		return { done: total, total, text: 'Lesson complete' };
+	});
 
 	function forward() {
 		if (last) phase = 'practice';
@@ -44,15 +66,15 @@
 	}
 </script>
 
-<div class="stack">
+<LessonBar {progress} step={phase === 'learn' ? progress.text : undefined} />
+
+<main id="main" class="page stack">
 	<header class="head">
-		<a class="back muted" href={resolve('/')}>← All lessons</a>
 		<h1>{lesson.title}</h1>
 		<p class="muted">{lesson.subtitle}</p>
 	</header>
 
 	{#if phase === 'learn'}
-		<p class="muted steps" aria-live="polite">Step {step + 1} of {lesson.intro.length}</p>
 		{#key step}
 			<BlockView {block} />
 		{/key}
@@ -68,7 +90,9 @@
 		{#key attempt}
 			<ExerciseRunner
 				exercises={lesson.exercises}
+				progressBar={false}
 				onanswer={(_exercise, correct) => app.answer(undefined, correct)}
+				onprogress={(done, total) => (practice = { done, total })}
 				onfinish={finished}
 			/>
 		{/key}
@@ -103,23 +127,9 @@
 			</div>
 		</section>
 	{/if}
-</div>
+</main>
 
 <style>
-	.head h1 {
-		margin-top: 0.25rem;
-	}
-	.back {
-		display: inline-flex;
-		align-items: center;
-		min-height: 2.75rem;
-		font-size: 0.9rem;
-		text-decoration: none;
-	}
-	.steps {
-		margin: 0;
-		font-size: 0.9rem;
-	}
 	.nav {
 		display: flex;
 		gap: 0.75rem;

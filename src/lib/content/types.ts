@@ -65,8 +65,18 @@ export type Exercise = ChooseExercise | MatchExercise | BuildExercise | TapExerc
 
 // --- Teaching blocks --------------------------------------------------------
 
+/** A picture beside a text block's words, drawn from letters and the corpus: it has no English. */
+export type Figure =
+	/** Letters side by side, each with its name, so their shapes can be compared. */
+	| { type: 'letters'; ids: string[] }
+	/**
+	 * A word with an arrow showing which way it is read, then its letters one by one in that order.
+	 * `word` comes from the corpus; `ids` are its letters, first to last.
+	 */
+	| { type: 'direction'; word: string; ids: string[] };
+
 export type Block =
-	| { type: 'text'; title?: string; body: string }
+	| { type: 'text'; title?: string; body: string; figure?: Figure }
 	| { type: 'rule'; title: string; body: string }
 	| { type: 'letters'; title?: string; ids: string[] }
 	| { type: 'lexemes'; title?: string; ids: string[] }

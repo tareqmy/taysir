@@ -12,8 +12,9 @@ import { letters } from './alphabet';
 
 /** The fields each kind of teaching block may have, and what the export does with the English in them. */
 const BLOCK_FIELDS: Record<string, string[]> = {
-	// “Lesson text”: title and body.
-	text: ['type', 'title', 'body'],
+	// “Lesson text”: title and body. A figure shows letters (their names are in “Letters”) or a word
+	// from the corpus, and has no English of its own.
+	text: ['type', 'title', 'body', 'figure'],
 	// “Lesson text”: a grammar rule's title and body.
 	rule: ['type', 'title', 'body'],
 	// “Letters”: the letters' own descriptions. The block's `title` is never used (checked below).

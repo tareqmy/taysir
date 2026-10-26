@@ -49,7 +49,9 @@ test('starts, warns, and works for the visit when the browser refuses all storag
 	await finishFirstLesson(page);
 
 	// What was done this visit can still be kept, by downloading it. The learner moves around the
-	// app by its links: loading a page afresh would lose it, as the warning says.
+	// app by its links: loading a page afresh would lose it, as the warning says. A lesson has only
+	// its own bar, so the way to the menu is out of the lesson first.
+	await page.getByRole('link', { name: 'All lessons' }).click();
 	await page
 		.getByRole('navigation', { name: 'Main' })
 		.getByRole('link', { name: 'Settings' })
@@ -84,6 +86,7 @@ test('keeps the visit’s progress through “Practise more”, which opens the 
 	await page.evaluate(() => Object.assign(window, { visit: 'this one' }));
 
 	// To extra practice by the app's own links, through a review if anything is due.
+	await page.getByRole('link', { name: 'All lessons' }).click();
 	await page
 		.getByRole('navigation', { name: 'Main' })
 		.getByRole('link', { name: /^Review/ })

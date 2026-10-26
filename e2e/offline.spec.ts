@@ -76,7 +76,10 @@ test('a lesson can be done with no connection, without the listening, and is kep
 		}
 		await page.getByRole('button', { name: 'Start practice' }).click();
 		for (const exercise of heardLess) {
-			await expect(page.getByRole('progressbar', { name: 'Progress' })).toBeVisible();
+			await expect(page.getByRole('progressbar', { name: 'Progress' })).toHaveAttribute(
+				'aria-valuetext',
+				/^Question /
+			);
 			await expect(page.getByRole('region', { name: 'Listening question' })).toHaveCount(0);
 			await answerExercise(page, exercise);
 			await continueButton(page).click();

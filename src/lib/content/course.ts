@@ -43,12 +43,14 @@ const letterGroups: {
 			{
 				type: 'text',
 				title: 'Arabic runs right to left',
-				body: 'Arabic is written and read from right to left. Letters join to each other inside a word, so most letters have up to four shapes: on its own, at the start, in the middle and at the end. You will see all of them.'
+				body: 'Arabic is written and read from right to left. Letters join to each other inside a word, so most letters have up to four shapes: on its own, at the start, in the middle and at the end. You will see all of them.',
+				figure: { type: 'direction', word: word(1, 1), ids: ['ba', 'sin', 'mim'] }
 			},
 			{
 				type: 'text',
 				title: 'One shape, different dots',
-				body: 'bā’, tā’, thā’, nūn and yā’ share nearly the same body. Only the dots tell them apart: one dot below, two above, three above, one above, two below.'
+				body: 'bā’, tā’, thā’, nūn and yā’ share nearly the same body. Only the dots tell them apart: one dot below, two above, three above, one above, two below.',
+				figure: { type: 'letters', ids: ['ba', 'ta', 'tha', 'nun', 'ya'] }
 			}
 		]
 	},
@@ -61,7 +63,8 @@ const letterGroups: {
 			{
 				type: 'text',
 				title: 'Same body, new sounds',
-				body: 'These three share one shape and differ by a dot: one below for jīm, none for ḥā’, one above for khā’. ḥā’ and khā’ come from the throat, so listen closely.'
+				body: 'These three share one shape and differ by a dot: one below for jīm, none for ḥā’, one above for khā’. ḥā’ and khā’ come from the throat, so listen closely.',
+				figure: { type: 'letters', ids: ['jim', 'ha', 'kha'] }
 			}
 		]
 	},
@@ -74,7 +77,8 @@ const letterGroups: {
 			{
 				type: 'text',
 				title: 'Six letters never join to the next one',
-				body: 'alif, dāl, dhāl, rā’, zāy and wāw join to the letter before them but never to the letter after. The next letter starts fresh. That is why they have only two shapes.'
+				body: 'alif, dāl, dhāl, rā’, zāy and wāw join to the letter before them but never to the letter after. The next letter starts fresh. That is why they have only two shapes.',
+				figure: { type: 'letters', ids: ['alif', 'dal', 'dhal', 'ra', 'zay', 'waw'] }
 			}
 		]
 	},
@@ -113,7 +117,8 @@ const letterGroups: {
 			{
 				type: 'text',
 				title: 'Nearly there',
-				body: 'qāf is a deep “k” from the back of the throat, and kāf is the ordinary “k”. Many learners mix these two up, so look at them side by side.'
+				body: 'qāf is a deep “k” from the back of the throat, and kāf is the ordinary “k”. Many learners mix these two up, so look at them side by side.',
+				figure: { type: 'letters', ids: ['qaf', 'kaf'] }
 			}
 		]
 	}

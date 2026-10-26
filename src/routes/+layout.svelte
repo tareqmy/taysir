@@ -54,6 +54,8 @@
 	/** Updating reloads the page, which would start a lesson, a review or a practice session again. */
 	const busy = $derived(['/lesson/[id]', '/review', '/practice'].includes(page.route.id ?? ''));
 	const isHome = $derived(page.route.id === '/');
+	/** A lesson has its own slim bar (a way out and its progress) in place of the site's header. */
+	const inLesson = $derived(page.route.id === '/lesson/[id]');
 
 	let topEl = $state<HTMLElement>();
 	let isDesktop = $state(false);
@@ -65,17 +67,19 @@
 			isDesktop = e.matches;
 		};
 		mql.addEventListener('change', onMedia);
+		return () => mql.removeEventListener('change', onMedia);
+	});
 
-		const sync = () => {
-			if (topEl) document.documentElement.style.setProperty('--top-h', `${topEl.offsetHeight}px`);
-		};
+	// The header comes and goes with a lesson, so its height is measured whenever it is drawn.
+	$effect(() => {
+		const top = topEl;
+		if (!top) return;
+		const sync = () =>
+			document.documentElement.style.setProperty('--top-h', `${top.offsetHeight}px`);
 		sync();
-		const ro = topEl ? new ResizeObserver(sync) : undefined;
-		if (topEl && ro) ro.observe(topEl);
-		return () => {
-			mql.removeEventListener('change', onMedia);
-			ro?.disconnect();
-		};
+		const ro = new ResizeObserver(sync);
+		ro.observe(top);
+		return () => ro.disconnect();
 	});
 
 	function openMobileContents() {
@@ -174,75 +178,115 @@
 
 <a class="skip" href="#main">Skip to content</a>
 
-<header class="top" bind:this={topEl}>
-	<div class="top-inner" class:wide={isHome}>
-		<a class="brand" href={resolve('/')}>
-			<svg class="logo" viewBox="0 0 120 120" width="42" height="42" aria-hidden="true">
-				<defs>
-					<radialGradient id="taysir-glow" cx="50%" cy="48%" r="42%">
-						<stop offset="0%" stop-color="#e7a72a" stop-opacity="0.42" />
-						<stop offset="100%" stop-color="#e7a72a" stop-opacity="0" />
-					</radialGradient>
-				</defs>
-				<rect width="120" height="120" rx="27" fill="#1d5a48" />
-				<path d="M24 106V60C24 38 40 24 60 12C80 24 96 38 96 60V106Z" fill="#123f33" />
-				<circle cx="60" cy="58" r="34" fill="url(#taysir-glow)" />
-				<path
-					d="M36 92V60a24 24 0 0 1 48 0v32"
-					fill="none"
-					stroke="#e7a72a"
-					stroke-width="7.5"
-					stroke-linecap="round"
-				/>
-				<path
-					d="M48 92V62a12 12 0 0 1 24 0v30"
-					fill="none"
-					stroke="#f7ebcf"
-					stroke-width="5.5"
-					stroke-linecap="round"
-					opacity="0.85"
-				/>
-			</svg>
-			<span class="brand-text">
-				<span class="brand-title">
-					<span class="name">Taysir</span>
-					<span class="ar" lang="ar">تيسير</span>
+{#if !inLesson}
+	<header class="top" bind:this={topEl}>
+		<div class="top-inner" class:wide={isHome}>
+			<a class="brand" href={resolve('/')}>
+				<svg class="logo" viewBox="0 0 120 120" width="42" height="42" aria-hidden="true">
+					<defs>
+						<radialGradient id="taysir-glow" cx="50%" cy="48%" r="42%">
+							<stop offset="0%" stop-color="#e7a72a" stop-opacity="0.42" />
+							<stop offset="100%" stop-color="#e7a72a" stop-opacity="0" />
+						</radialGradient>
+					</defs>
+					<rect width="120" height="120" rx="27" fill="#1d5a48" />
+					<path d="M24 106V60C24 38 40 24 60 12C80 24 96 38 96 60V106Z" fill="#123f33" />
+					<circle cx="60" cy="58" r="34" fill="url(#taysir-glow)" />
+					<path
+						d="M36 92V60a24 24 0 0 1 48 0v32"
+						fill="none"
+						stroke="#e7a72a"
+						stroke-width="7.5"
+						stroke-linecap="round"
+					/>
+					<path
+						d="M48 92V62a12 12 0 0 1 24 0v30"
+						fill="none"
+						stroke="#f7ebcf"
+						stroke-width="5.5"
+						stroke-linecap="round"
+						opacity="0.85"
+					/>
+				</svg>
+				<span class="brand-text">
+					<span class="brand-title">
+						<span class="name">Taysir</span>
+						<span class="ar" lang="ar">تيسير</span>
+					</span>
+					<span class="brand-sub">Quranic Arabic step by step</span>
 				</span>
-				<span class="brand-sub">Quranic Arabic step by step</span>
-			</span>
-		</a>
-		<nav aria-label="Main">
-			<a href={resolve('/review')} class:active={page.route.id === '/review'}>
-				Review
-				{#if dueCount > 0}
-					<span class="badge" aria-hidden="true">{dueCount}</span>
-					<span class="visually-hidden">({dueCount} due)</span>
-				{/if}
 			</a>
-			<a href={resolve('/about')} class:active={page.route.id === '/about'}>About</a>
-			<a href={resolve('/settings')} class:active={page.route.id === '/settings'}>Settings</a>
-			{#if isHome && !isDesktop}
-				<button
-					type="button"
-					class="contents-btn"
-					aria-label="Contents"
-					title="Contents"
-					onclick={openMobileContents}
-				>
-					<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+			<!-- On a phone the links are icons, so the header is one row; their names are still read. -->
+			<nav aria-label="Main">
+				<a href={resolve('/review')} class:active={page.route.id === '/review'}>
+					<svg class="icon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
 						<path
-							d="M9 6h11M9 12h11M9 18h11M4.5 6h.01M4.5 12h.01M4.5 18h.01"
+							d="M19.5 9.5A8 8 0 0 0 5.3 7.2M4.5 3.5v4h4M4.5 14.5a8 8 0 0 0 14.2 2.3M19.5 20.5v-4h-4"
 							fill="none"
 							stroke="currentColor"
-							stroke-width="2.2"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						/>
+					</svg>
+					<span class="label">Review</span>
+					{#if dueCount > 0}
+						<span class="badge" aria-hidden="true">{dueCount}</span>
+						<span class="visually-hidden">({dueCount} due)</span>
+					{/if}
+				</a>
+				<a href={resolve('/about')} class:active={page.route.id === '/about'}>
+					<svg class="icon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+						<circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2" />
+						<path
+							d="M12 11v5.5M12 7.5v.01"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2.4"
 							stroke-linecap="round"
 						/>
 					</svg>
-				</button>
-			{/if}
-		</nav>
-	</div>
-</header>
+					<span class="label">About</span>
+				</a>
+				<a href={resolve('/settings')} class:active={page.route.id === '/settings'}>
+					<svg class="icon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+						<circle
+							cx="12"
+							cy="12"
+							r="8.6"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2.6"
+							stroke-dasharray="3.38 3.37"
+						/>
+						<circle cx="12" cy="12" r="6.3" fill="none" stroke="currentColor" stroke-width="2" />
+						<circle cx="12" cy="12" r="2.3" fill="none" stroke="currentColor" stroke-width="2" />
+					</svg>
+					<span class="label">Settings</span>
+				</a>
+				{#if isHome && !isDesktop}
+					<button
+						type="button"
+						class="contents-btn"
+						aria-label="Contents"
+						title="Contents"
+						onclick={openMobileContents}
+					>
+						<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+							<path
+								d="M9 6h11M9 12h11M9 18h11M4.5 6h.01M4.5 12h.01M4.5 18h.01"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2.2"
+								stroke-linecap="round"
+							/>
+						</svg>
+					</button>
+				{/if}
+			</nav>
+		</div>
+	</header>
+{/if}
 
 <StorageNotice />
 
@@ -356,6 +400,10 @@
 		background: var(--primary-soft);
 		color: var(--primary);
 	}
+	nav .icon {
+		display: none;
+		flex: none;
+	}
 	.contents-btn {
 		width: 2.35rem;
 		height: 2.35rem;
@@ -389,5 +437,81 @@
 		font-size: 0.74rem;
 		font-weight: 700;
 		text-align: center;
+	}
+	/* On a phone the words would push the links onto a second row under the logo, so each link is
+	   an icon, a thumb-sized square, with its word kept for screen readers. */
+	@media (max-width: 34rem) {
+		.top-inner {
+			gap: 0.5rem;
+			padding: 0.4rem 1rem;
+		}
+		/* Takes the room the links leave, so it is the brand that gives way, not the links. */
+		.brand {
+			flex: 1 1 0;
+			min-width: 0;
+			gap: 0.5rem;
+		}
+		.brand-text {
+			min-width: 0;
+		}
+		/* When the row has no room for the Arabic name, it wraps onto a second line that is cut off,
+		   so it goes as a whole, whatever the fonts, instead of overlapping the links. */
+		.brand-title {
+			flex-wrap: wrap;
+			row-gap: 3rem;
+			max-height: 2.1rem;
+			overflow: hidden;
+		}
+		.logo {
+			width: 2.4rem;
+			height: 2.4rem;
+		}
+		nav {
+			gap: 0;
+		}
+		nav a {
+			position: relative;
+			justify-content: center;
+			width: 2.75rem;
+			min-height: 2.75rem;
+			padding: 0;
+		}
+		nav .icon {
+			display: block;
+		}
+		nav .label {
+			position: absolute;
+			width: 1px;
+			height: 1px;
+			overflow: hidden;
+			clip: rect(0 0 0 0);
+			white-space: nowrap;
+		}
+		/* On the corner of the icon, as on a phone's own apps. */
+		nav .badge {
+			position: absolute;
+			top: 0.1rem;
+			right: 0;
+			min-width: 1.2rem;
+			margin: 0;
+			padding: 0 0.3rem;
+			font-size: 0.7rem;
+			line-height: 1.2rem;
+		}
+		.contents-btn {
+			width: 2.75rem;
+			height: 2.75rem;
+		}
+	}
+	/* On the narrowest phones the English name goes too, and is still read aloud. */
+	@media (max-width: 21rem) {
+		.brand .name {
+			position: absolute;
+			width: 1px;
+			height: 1px;
+			overflow: hidden;
+			clip: rect(0 0 0 0);
+			white-space: nowrap;
+		}
 	}
 </style>

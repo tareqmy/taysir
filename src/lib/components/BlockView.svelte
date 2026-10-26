@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Block } from '../content/types';
 	import LetterCard from './LetterCard.svelte';
+	import LetterFigure from './LetterFigure.svelte';
 	import LexemeCard from './LexemeCard.svelte';
 	import PhraseView from './PhraseView.svelte';
 	import RichText from './RichText.svelte';
@@ -14,6 +15,7 @@
 	<section class="card">
 		{#if block.title}<h2>{block.title}</h2>{/if}
 		<p><RichText text={block.body} /></p>
+		{#if block.figure}<LetterFigure figure={block.figure} />{/if}
 	</section>
 {:else if block.type === 'rule'}
 	<section class="card rule">

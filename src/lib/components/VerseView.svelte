@@ -109,14 +109,19 @@
 	.word:hover {
 		background: var(--surface-2);
 	}
+	/* Amiri Quran's tails and marks reach almost 0.9em below the line (yāʾ with two kasras), far
+	   past the bottom of an ordinary line, so the room below is padding. The gold underline that
+	   marks a word with a card is a border under that room, clear of every letter and mark. */
+	.word .ar {
+		line-height: 1.8;
+		padding-bottom: 0.7em;
+		border-bottom: 2px solid transparent;
+	}
 	.word.learn .ar {
-		text-decoration: underline;
-		text-decoration-color: var(--accent);
-		text-decoration-thickness: 2px;
-		text-underline-offset: 0.45em;
+		border-bottom-color: var(--accent);
 	}
 	.gloss {
-		margin-top: 0.5rem;
+		margin-top: 0.35rem;
 		font-family: var(--font-ui);
 		font-size: 0.85rem;
 		color: var(--ink-soft);

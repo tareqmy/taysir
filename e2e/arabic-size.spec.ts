@@ -10,7 +10,13 @@ import {
 	startAsReader,
 	startWithProgress
 } from './support/learner';
-import { layoutProblems, useWideFonts, widestWords, withBigText } from './support/layout';
+import {
+	inkTouching,
+	layoutProblems,
+	useWideFonts,
+	widestWords,
+	withBigText
+} from './support/layout';
 import { seededLearner } from './support/seed';
 import { expect, test } from './support/test';
 
@@ -167,6 +173,71 @@ test.describe('the Arabic text size', () => {
 test.describe('at the largest Arabic size on a phone', () => {
 	test.use({ viewport: { width: 375, height: 812 } });
 
+	test('shows the four shapes of a letter as one row, at every Arabic size and with big text', async ({
+		page
+	}) => {
+		const letters = lessons.find((l) => l.id === 'letters-1')!;
+		await startAsReader(page);
+		/** The shapes on each card: how many rows they take, and the size of the smallest. */
+		const shapes = () =>
+			page.locator('article.letter').evaluateAll((cards) =>
+				cards.map((card) => {
+					const items = [...card.querySelectorAll('.forms li')];
+					const tops = new Set(items.map((li) => Math.round(li.getBoundingClientRect().top)));
+					const sizes = items.map((li) =>
+						parseFloat(getComputedStyle(li.querySelector('.shape')!).fontSize)
+					);
+					return { count: items.length, rows: tops.size, px: Math.min(...sizes) };
+				})
+			);
+		for (const size of ['standard', 'largest']) {
+			await page.evaluate((size) => localStorage.setItem('taysir.arabicSize', size), size);
+			await page.goto(`/lesson/${letters.id}`);
+			for (let step = 1; step < letters.intro.length; step++) {
+				await page.getByRole('button', { name: 'Continue' }).click();
+			}
+			await expect(page.locator('article.letter')).toHaveCount(6);
+			for (const card of await shapes()) {
+				expect(card.rows, `${size}: shapes in one row`).toBe(1);
+				// Larger than the 32px they were drawn at when they wrapped three and one.
+				expect(card.px, `${size}: shape size`).toBeGreaterThanOrEqual(40);
+			}
+			expect(await shapes()).toContainEqual(expect.objectContaining({ count: 4 }));
+			for (const card of await withBigText(page, shapes)) {
+				expect(card.rows, `${size}, text 200%: shapes in one row`).toBe(1);
+			}
+		}
+	});
+
+	test('keeps every tail and mark of a verse word clear of the line and the meaning under it', async ({
+		page
+	}) => {
+		await startWithProgress(page, seededLearner({ lessonsDone: lessons.length - 1 }).backup);
+
+		// The preview in Settings is Al-Fatiha 1:1, where the yāʾ of ar-raḥīm once ran into its meaning.
+		await openSettings(page);
+		for (const size of ['Smaller', 'Standard', 'Large', 'Largest']) {
+			await chooseSize(page, size);
+			expect(await inkTouching(page), `Settings preview, ${size}`).toEqual([]);
+			expect(await withBigText(page, () => inkTouching(page)), `${size}, text 200%`).toEqual([]);
+		}
+
+		// Al-Mulk holds the word that reaches lowest in the course, أَلِيمٍ (67:28).
+		await page.goto('/verses');
+		await page
+			.locator('.surahs summary', { hasText: surahName(67) })
+			.first()
+			.click();
+		await expect(page.locator('.verse .word').first()).toBeVisible();
+		expect(await inkTouching(page), 'Al-Mulk at Largest').toEqual([]);
+
+		// A grammar lesson's example, which puts each word's meaning under it in the same way.
+		await page.goto('/lesson/grammar-kinds');
+		await page.getByRole('button', { name: 'Continue' }).click();
+		await expect(page.locator('.phrase .word').first()).toBeVisible();
+		expect(await inkTouching(page), 'grammar-kinds example at Largest').toEqual([]);
+	});
+
 	// Nothing may scroll sideways or break a word, at normal text and with text scaled to 200%.
 	test('nothing overflows, even in the lessons with the widest words', async ({ page }) => {
 		test.setTimeout(240_000);
@@ -218,7 +289,10 @@ test.describe('at the largest Arabic size on a phone', () => {
 			}
 			await page.getByRole('button', { name: 'Start practice' }).click();
 			for (const [i, exercise] of lesson.exercises.entries()) {
-				await expect(page.getByRole('progressbar', { name: 'Progress' })).toBeVisible();
+				await expect(page.getByRole('progressbar', { name: 'Progress' })).toHaveAttribute(
+					'aria-valuetext',
+					/^Question /
+				);
 				await check(`${lesson.id}, question ${i + 1} (${exercise.id})`);
 				await answerExercise(page, exercise);
 				await continueButton(page).click();

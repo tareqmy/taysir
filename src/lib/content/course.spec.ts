@@ -235,6 +235,19 @@ describe('alphabet', () => {
 			.flatMap((l) => l.cardIds.map((id) => parseCardId(id).id));
 		expect([...taught].sort()).toEqual(letters.map((l) => l.id).sort());
 	});
+
+	it('spells out a word, in a figure, with exactly the letters it is made of', () => {
+		const figures = lessons.flatMap((l) =>
+			l.intro.flatMap((b) =>
+				b.type === 'text' && b.figure?.type === 'direction' ? [b.figure] : []
+			)
+		);
+		expect(figures.length).toBeGreaterThan(0);
+		for (const figure of figures) {
+			const bare = figure.word.replace(/\p{M}/gu, '');
+			expect(figure.ids.map((id) => letterById(id).glyph).join(''), figure.word).toBe(bare);
+		}
+	});
 });
 
 describe('course', () => {
@@ -268,6 +281,7 @@ describe('course', () => {
 			}
 			for (const block of lesson.intro) {
 				if (block.type === 'letters') block.ids.forEach(letterById);
+				if (block.type === 'text' && block.figure) block.figure.ids.forEach(letterById);
 				if (block.type === 'lexemes' || block.type === 'root') block.ids.forEach(lexemeById);
 				if (block.type === 'verse') verse(block.surah, block.ayah);
 				if (block.type === 'phrase') phraseWords(block.surah, block.ayah, block.from, block.to);

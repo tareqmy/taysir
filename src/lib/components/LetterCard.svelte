@@ -22,51 +22,62 @@
 </script>
 
 <article class="letter card">
-	<div class="glyph ar" lang="ar" aria-hidden="true">{letter.glyph}</div>
-	<div class="info">
-		<h2>{letter.name}</h2>
-		<p class="muted">{letter.sound}</p>
-		<div class="example">
-			<AudioButton
-				url={example.audioUrl}
-				label="Hear {letter.name} in the word {example.text}"
-				small
-			/>
-			<span class="word ar" lang="ar" dir="rtl"
-				><span class="first">{exampleParts[0]}</span>{exampleParts[1]}</span
-			>
-			<span class="muted gloss">“{example.gloss}”</span>
+	<div class="top">
+		<div class="glyph ar" lang="ar" aria-hidden="true">{letter.glyph}</div>
+		<div class="info">
+			<h2>{letter.name}</h2>
+			<p class="muted">{letter.sound}</p>
+			<div class="example">
+				<AudioButton
+					url={example.audioUrl}
+					label="Hear {letter.name} in the word {example.text}"
+					small
+				/>
+				<span class="word ar" lang="ar" dir="rtl"
+					><span class="first">{exampleParts[0]}</span>{exampleParts[1]}</span
+				>
+				<span class="muted gloss">“{example.gloss}”</span>
+			</div>
 		</div>
-		<ul class="forms" aria-label="Shapes of {letter.name}">
-			{#each shapes as [label, shape] (label)}
-				<li>
-					<span class="ar shape" lang="ar" aria-hidden="true">{shape}</span>
-					<span class="label">{label}</span>
-				</li>
-			{/each}
-		</ul>
-		{#if !letter.joins}
-			<p class="note">Never joins to the letter after it.</p>
-		{/if}
 	</div>
+	<!-- The shapes as one set, side by side across the card. -->
+	<ul class="forms" aria-label="Shapes of {letter.name}" style:--shapes={shapes.length}>
+		{#each shapes as [label, shape] (label)}
+			<li>
+				<span class="ar shape" lang="ar" aria-hidden="true">{shape}</span>
+				<span class="label">{label}</span>
+			</li>
+		{/each}
+	</ul>
+	{#if !letter.joins}
+		<p class="note">Never joins to the letter after it.</p>
+	{/if}
 </article>
 
 <style>
-	/* Glyph beside the details when there is room; stacked when large text leaves none. */
 	.letter {
+		display: grid;
+		gap: 1rem;
+	}
+	/* The letter beside its name and sound when there is room; above them when large text leaves none. */
+	.top {
 		display: flex;
 		flex-wrap: wrap;
 		gap: 1rem;
 		align-items: center;
 	}
+	/* Amiri Quran's line puts most of its room above the letter, for marks; the padding below brings
+	   the letter itself to the middle of the tile, and leaves room for a tail such as yāʾ's. */
 	.glyph {
-		flex: 0 0 calc(6rem * var(--ar-scale, 1));
-		max-width: 100%;
+		flex: none;
 		display: grid;
 		place-items: center;
-		min-height: calc(7rem * var(--ar-scale, 1));
-		font-size: calc(4.5rem * var(--ar-scale, 1));
-		line-height: 1.7;
+		width: calc(5rem * var(--ar-scale, 1));
+		height: calc(5rem * var(--ar-scale, 1));
+		max-width: 100%;
+		padding-bottom: 0.6em;
+		font-size: calc(3.2rem * var(--ar-scale, 1));
+		line-height: 1;
 		background: var(--primary-soft);
 		border-radius: var(--radius);
 	}
@@ -86,7 +97,6 @@
 		flex-wrap: wrap;
 		align-items: center;
 		gap: 0.6rem;
-		margin-bottom: 0.75rem;
 	}
 	.word {
 		font-size: calc(1.7rem * var(--ar-scale, 1));
@@ -98,30 +108,39 @@
 	.gloss {
 		font-size: 0.9rem;
 	}
+	/* Always one row, however large the Arabic or the text: the shapes stop growing once the widest,
+	   ṣād's, would no longer fit its column (cqi is a hundredth of the row's width). */
 	.forms {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 0.25rem 0.75rem;
+		container-type: inline-size;
+		display: grid;
+		/* Close together on a wide card too, so they still read as one set. */
+		grid-template-columns: repeat(var(--shapes), minmax(0, calc(6rem * var(--ar-scale, 1))));
+		justify-content: center;
+		gap: 0.5rem;
 		list-style: none;
 		margin: 0;
-		padding: 0;
+		padding: 0.25rem 0.5rem 0.6rem;
+		border-radius: var(--radius);
+		background: var(--surface-2);
 	}
 	.forms li {
 		display: grid;
 		justify-items: center;
-		min-width: calc(3rem * var(--ar-scale, 1));
+		min-width: 0;
 	}
 	.shape {
-		font-size: calc(2rem * var(--ar-scale, 1));
-		line-height: 2;
+		font-size: min(calc(2.8rem * var(--ar-scale, 1)), 16cqi);
+		line-height: 1.2;
+		/* Room for a tail below the letter, clear of the label. */
+		padding-bottom: 0.55em;
 	}
 	.label {
-		font-size: 0.75rem;
+		font-size: 0.8rem;
+		line-height: 1.2;
 		color: var(--ink-soft);
-		margin-top: 0.15rem;
 	}
 	.note {
-		margin: 0.5rem 0 0;
+		margin: 0;
 		font-size: 0.9rem;
 		color: var(--accent-ink);
 	}

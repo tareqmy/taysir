@@ -52,6 +52,40 @@ export async function layoutProblems(page: Page, width: number): Promise<string[
 }
 
 /**
+ * Words of a verse whose letters or marks reach the gold line under them or the meaning below, as
+ * drawn in the real font. A box cannot tell: Amiri Quran's tails and marks reach almost 0.9em below
+ * the baseline, well outside the line the browser lays out, so the ink is measured on a canvas.
+ */
+export async function inkTouching(page: Page): Promise<string[]> {
+	return page.evaluate(() => {
+		const touching: string[] = [];
+		const canvas = document.createElement('canvas').getContext('2d')!;
+		for (const word of document.querySelectorAll<HTMLElement>('.verse .word, .phrase .word')) {
+			const arabic = word.querySelector<HTMLElement>(':scope > .ar')!;
+			const below = word.querySelector<HTMLElement>(':scope > .gloss, :scope > .legend');
+			const style = getComputedStyle(arabic);
+			const size = parseFloat(style.fontSize);
+			canvas.font = `${size}px ${style.fontFamily}`;
+			const ink = canvas.measureText(arabic.textContent!);
+			const box = arabic.getBoundingClientRect();
+			// The baseline of the one line of text: half the spare line height, then the font's ascent.
+			const font = ink.fontBoundingBoxAscent + ink.fontBoundingBoxDescent;
+			const lineTop = box.top + parseFloat(style.borderTopWidth) + parseFloat(style.paddingTop);
+			const baseline =
+				lineTop + (parseFloat(style.lineHeight) - font) / 2 + ink.fontBoundingBoxAscent;
+			const inkBottom = baseline + ink.actualBoundingBoxDescent;
+			// The gold line is the border under the word; the meaning starts below it.
+			const line = box.bottom - parseFloat(style.borderBottomWidth);
+			const floor = Math.min(line, below?.getBoundingClientRect().top ?? Infinity);
+			if (inkBottom > floor - 1) {
+				touching.push(`${arabic.textContent} (${Math.round(inkBottom - floor + 1)}px)`);
+			}
+		}
+		return touching;
+	});
+}
+
+/**
  * Use wide fonts for the app's ordinary text, whatever the machine has. How text wraps depends on
  * how wide the fonts are, and the build machine's fonts are not the learner's: a test run on
  * narrow fonts can pass what wider ones would break. Verdana and DejaVu are about as wide as

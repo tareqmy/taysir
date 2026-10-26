@@ -84,7 +84,10 @@ for (const mode of modes) {
 					await page.getByRole('button', { name: 'Continue' }).click();
 				}
 				await page.getByRole('button', { name: 'Start practice' }).click();
-				await expect(page.getByRole('progressbar', { name: 'Progress' })).toBeVisible();
+				await expect(page.getByRole('progressbar', { name: 'Progress' })).toHaveAttribute(
+					'aria-valuetext',
+					/^Question 1 of/
+				);
 				await audit(page, 'lesson: first question');
 
 				await answerAll(page, lesson.exercises.slice(0, listenAt));

@@ -13,10 +13,14 @@
 
 	let {
 		exercises,
+		progressBar = true,
 		onanswer,
+		onprogress,
 		onfinish
 	}: {
 		exercises: Exercise[];
+		/** False when the page shows how far the learner has got itself, as a lesson's bar does. */
+		progressBar?: boolean;
 		/**
 		 * Called once per answer. `firstAttempt` is false when the exercise is a retry.
 		 * `elapsedMs` is how long the question was on screen, or undefined if the learner left the
@@ -28,6 +32,8 @@
 			firstAttempt: boolean,
 			elapsedMs?: number
 		) => void;
+		/** Called with the questions answered so far and how many there are, as either changes. */
+		onprogress?: (done: number, total: number) => void;
 		onfinish: (summary: RunSummary) => void;
 	} = $props();
 
@@ -57,6 +63,9 @@
 	}
 
 	const current = $derived(queue[index]);
+
+	// A wrong answer comes back at the end, so the total can grow as well.
+	$effect(() => onprogress?.(index, queue.length));
 	const showAudioNow = $derived(
 		current?.exercise.audioUrl &&
 			(feedback !== null ||
@@ -123,16 +132,18 @@
 
 {#if current}
 	<div class="runner">
-		<div
-			class="bar"
-			role="progressbar"
-			aria-valuemin="0"
-			aria-valuemax={queue.length}
-			aria-valuenow={index}
-			aria-label="Progress"
-		>
-			<div class="fill" style:width="{(index / queue.length) * 100}%"></div>
-		</div>
+		{#if progressBar}
+			<div
+				class="bar"
+				role="progressbar"
+				aria-valuemin="0"
+				aria-valuemax={queue.length}
+				aria-valuenow={index}
+				aria-label="Progress"
+			>
+				<div class="fill" style:width="{(index / queue.length) * 100}%"></div>
+			</div>
+		{/if}
 
 		<div class="question">
 			<h2 tabindex="-1" bind:this={heading} use:focusOnMount>

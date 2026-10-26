@@ -60,7 +60,10 @@ async function readByKeyboard(page: Page, lesson: Lesson) {
 		await expect(next).toBeFocused();
 		await page.keyboard.press('Enter');
 	}
-	await expect(page.getByRole('progressbar', { name: 'Progress' })).toBeVisible();
+	await expect(page.getByRole('progressbar', { name: 'Progress' })).toHaveAttribute(
+		'aria-valuetext',
+		/^Question 1 of/
+	);
 }
 
 /** Answer a whole lesson's questions by keyboard, moving on with Continue where focus lands. */
@@ -134,7 +137,10 @@ test.describe('every screen, by the Tab key', () => {
 					await page.getByRole('button', { name: 'Continue' }).click();
 				}
 				await page.getByRole('button', { name: 'Start practice' }).click();
-				await expect(page.getByRole('progressbar', { name: 'Progress' })).toBeVisible();
+				await expect(page.getByRole('progressbar', { name: 'Progress' })).toHaveAttribute(
+					'aria-valuetext',
+					/^Question 1 of/
+				);
 				await auditTabOrder(page, 'lesson: first question');
 				await answerAll(page, listening.exercises.slice(0, listenAt));
 				await expect(page.getByRole('region', { name: 'Listening question' })).toBeVisible();
